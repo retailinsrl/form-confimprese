@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compilazione e Anteprima PDF</title>
+    
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Gestione e Anteprima Modulo PDF</h1>
+        
+        <div id="stato-caricamento" class="status">Caricamento del PDF in corso...</div>
+
+        <div class="progress-container" style="margin-bottom: 25px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-weight: bold; color: #2c3e50; font-size: 14px;">Avanzamento Compilazione</span>
+                <span id="progress-text" style="font-weight: bold; color: #2c3e50; font-size: 14px;">0%</span>
+            </div>
+            <div class="progress-bar-bg" style="width: 100%; height: 10px; background-color: #ecf0f1; border-radius: 5px; overflow: hidden;">
+                <div id="progress-bar-fill" style="width: 1%; height: 100%; background-color: #3498db; transition: width 0.3s ease;"></div>
+            </div>
+        </div>
+
+        <div class="step-box">
+            <div id="step-0" class="form-step">
+                <h3>Richiesta di Adesione a Confimprese</h3>
+                <table>
+                    <tr>
+                        <p>Procedendo con il compilamento del seguente form, il sottoscritto richiede di essere ammesso a <b>CONFIMPRESE – LE IMPRESE DEL COMMERCIO MODERNO</b>, con sede in Piazza Sant’Ambrogio 16 – 20123 Milano. Con l’adesione, la scrivente società si impegna a:</p>
+                            <ul>
+                                <li>osservare lo Statuto Sociale e il Codice Etico di Confimprese;</li>
+                                <li>inviare una visura camerale aggiornata;</li>
+                                <li>Per l'attivazione di tutti i servizi e l'invio delle comunicazioni è necessario inviare l'organigramma o in alternativa la scheda contatti “Allegato A”;</li>
+                                <li>prendere visione dell’informativa al trattamento dei dati personali sotto riportata e fornire il relativo consenso;</li>
+                                <li>provvedere al pagamento della quota associativa annuale (12 mesi) di 5.800,00 € che include:
+                                    <ul>
+                                        <li>adesione a Confimprese con accesso a tutti i servizi offerti dall’Associazione, compreso l’Osservatorio Consumi a cui le Aziende partecipano inviando mensilmente il proprio fatturato;</li>
+                                        <li>partecipazione alle iniziative organizzate da Confimprese per i propri associati.</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        <p><b>NB:</b> È prevista una quota integrativa pari a 1.700,00 € (dal secondo anno) per le aziende con un volume d’affari superiore ai 50 milioni di € annui. L'importo della quota annuale è determinato</p>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" id="input-terms-conditions" name="input-terms-conditions" onclick="clickTerminiCondizioni(this)" style="width: 100%; padding: 20px; margin-bottom: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;"></td>
+                        <td><label for="input-terms-conditions">Con la sottoscrizione della presente richiesta di ammissione, il Richiedente conferma di aver preso visione dell’allegata informativa sul trattamento dei dati resa da Confimprese ai sensi della normativa vigente.</label></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="step-1" class="form-step" style="display: none;justify-content: space-between; margin-top: 20px;gap: 15px;width:100%">
+                <h3>Dati Società e Rappresentante</h3>
+                <div style="display: flex; gap: 15px; width: 100%; margin-bottom: 10px;">
+                    <input type="text" id="input-nome-societa" placeholder="Nome della Società" required style="width: 80%; padding: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
+                    
+                    <select id="input-tipo-societa" name="input-tipo-societa" required style="width: 20%; padding: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
+                        <option value="" disabled selected>Tipo di azienda</option>
+                        
+                        <optgroup label="Società di Capitali">
+                            <option value="SRL">S.r.l. (Società a Responsabilità Limitata)</option>
+                            <option value="SRLS">S.r.l.s. (Società a Responsabilità Limitata Semplificata)</option>
+                            <option value="SPA">S.p.A. (Società per Azioni)</option>
+                            <option value="SAPA">S.a.p.a. (Società in Accomandita per Azioni)</option>
+                        </optgroup>
+                        
+                        <optgroup label="Società di Persone">
+                            <option value="SNC">S.n.c. (Società in Nome Collettivo)</option>
+                            <option value="SAS">S.a.s. (Società in Accomandita Semplice)</option>
+                            <option value="SS">S.s. (Società Semplice)</option>
+                        </optgroup>
+                        
+                        <optgroup label="Ditte e Imprese Individuali">
+                            <option value="DI">Ditta Individuale</option>
+                            <option value="IF">Impresa Familiare</option>
+                        </optgroup>
+                        
+                        <optgroup label="Altre Forme">
+                            <option value="COOP">Società Cooperativa (Soc. Coop.)</option>
+                            <option value="SB">Società Benefit (S.B.)</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <input type="text" id="input-sede" placeholder="Sede della Società" style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
+                <input type="text" id="input-nome-rappresentante" placeholder="Nome e Cognome del Rappresentante" style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
+            </div>
+
+            <div id="step-2" class="form-step" style="display: none;">
+                <h3>Referente per Confimprese</h3>
+                <input type="text" id="input-nome-ref" placeholder="Nome e Cognome" style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
+                <input type="text" id="input-ruolo-ref" placeholder="Ruolo in azienda" style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
+                <input type="email" id="input-email-ref" placeholder="Indirizzo Email" style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
+                <input type="tel" id="input-mob-ref" placeholder="Recapito Telefonico" style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
+                <input type="text" id="input-sito-ref" placeholder="Sito web" style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
+                <input type="text" id="input-marchi-ref" placeholder="Marchi" style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
+                <input type="text" id="input-sdi-ref" placeholder="Codice SDI" style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
+                <input type="email" id="input-pec-ref" placeholder="Indirizzo PEC" style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
+                <input type="text" id="input-piva-ref" placeholder="Partita IVA" style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
+
+                <table>
+                    <tr>
+                        <td><input type="checkbox" id="input-ck-ref" name="input-ck-ref" style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;"></td>
+                        <td><label for="input-ck-ref">Coincide col referente operativo</label></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="step-3" class="form-step" style="display: none;">
+                <h3>Dati di Contatto</h3>
+                <input type="email" id="input-email" placeholder="Indirizzo Email PEC" style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
+            </div>
+
+            <div style="display: flex; justify-content: space-between; margin-top: 20px; width: 100%; gap: 15px">
+                <button id="btn-indietro" onclick="cambiaStep(-1)" style="display: none;">Indietro</button>
+                <button id="btn-avanti" onclick="cambiaStep(1)" disabled>Avanti</button>
+                <button id="btn-revisiona" onclick="avviaRevisione()" style="display: none;" disabled>Genera Anteprima PDF</button>
+            </div>
+        </div>
+
+        <div id="anteprima-revisione" style="margin-top: 20px;">
+            <p style="color: #7f8c8d; text-align: center;">Il PDF compilato apparirà qui in anteprima dopo aver cliccato su "Genera Anteprima PDF".</p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    
+</body>
+</html>
