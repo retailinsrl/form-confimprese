@@ -32,13 +32,34 @@ async function inizializzaPdf(){
 // 1. Configura la mappatura dei campi per tutte e 8 le pagine
 const campi = [
     // Campi Pagina 1 (Indice pagina: 0)
-    { id: "input-nome-societa", x: 100, y: 620, pagina: 0, required: true, step: 1 },
-    { id: "input-tipo-societa", x: 100, y: 620, pagina: 0, required: true, step: 1 },
+    { 
+        id: "input-nome-societa", x: 100, y: 620, pagina: 0, required: true, step: 1,
+        // Questa funzione dice esattamente come renderizzare questo specifico campo
+        render: (page, val, c) => {
+            const tipo = document.getElementById("input-tipo-societa").value.trim().toUpperCase();
+            page.drawText(`${val} ${tipo}`, { x: c.x, y: c.y, size: 8 });
+        }
+    },
+    { id: "input-tipo-societa", required: true, step: 1 },
     { id: "input-sede", x: 100, y: 582, pagina: 0, required: true, step: 1 },
-    { id: "input-nome-rappresentante", x: 200, y: 543, pagina: 0, required: true, step: 1 },
+    { 
+        id: "input-nome-rappresentante", x: 200, y: 543, pagina: 0, required: true, step: 1,
+        render: (page, val, c) => {
+            const cognome = document.getElementById("input-cognome-rappresentante").value.trim().toUpperCase();
+            page.drawText(`${val} ${cognome}`, { x: c.x, y: c.y, size: 8 });
+        }
+    },
+    { id: "input-cognome-rappresentante", required: true, step: 1 },
     
     // Campi Pagina 2 (Indice pagina: 1)
-    { id: "input-nome-ref", x: 128, y: 603, pagina: 1, required: true, step: 2 },
+    { 
+        id: "input-nome-ref", x: 128, y: 603, pagina: 1, required: true, step: 2,
+        render: (page, val, c) => {
+            const cognome = document.getElementById("input-cognome-ref").value.trim().toUpperCase();
+            page.drawText(`${val} ${cognome}`, { x: c.x, y: c.y, size: 8 });
+        }
+    },
+    { id: "input-cognome-ref", required: true, step: 2 },
     { id: "input-ruolo-ref", x: 322, y: 603, pagina: 1, required: true, step: 2 },
     { id: "input-email-ref", x: 80, y: 588, pagina: 1, required: true, step: 2 },
     { id: "input-mob-ref", x: 350, y: 588, pagina: 1, required: true, step: 2 },
@@ -67,14 +88,37 @@ function cambiaStep(direzione) {
             valore: document.getElementById(c.id).value.trim().toUpperCase()
         }));
 
-    const formaGiuridica = document.getElementById("input-tipo-societa").value;
+    valori.forEach(c => { 
+        const inputElement = document.getElementById(c.id);
+        if (inputElement) {
+            inputElement.classList.remove('campo-errore');
+        }
+    });
 
+    if(direzione === 1) {
+        
+        const campiVuoti = valori.filter(c => !c.valore);
+        
+        if (campiVuoti.length > 0) {
+            campiVuoti.forEach(c => {
+                const inputElement = document.getElementById(c.id);
+                if (inputElement) {
+                    inputElement.classList.add('campo-errore');
+                }
+            });
+            
+            alert("Per favore, compila tutti i campi in questa pagina prima di proseguire.");
+            return;
+        }
+    }
+
+    /*
     // Verifica che tutti i campi di tutte le pagine siano stati compilati
     if (valori.some(c => !c.valore && direzione === 1)) {
         alert("Per favore, compila tutti i campi in questa pagina prima di proseguire.");
         return;
     }
-    
+    */
     // Nascondi lo step corrente
     document.getElementById(`step-${stepCorrente}`).style.display = "none";
 
@@ -148,24 +192,28 @@ async function avviaRevisione() {
         size: 10
     });
 
-    // Cicla i campi e li scrive sulla rispettiva pagina (0, 1, 2, ... fino a 7)
+    // Cicla i campi e li scrive sulla rispettiva pagina
     valori.forEach(c => {
+        // Se il campo deve essere ignorato nella stampa autonoma, passa oltre
+        if (!c.x) return;
+
+        // Se la pagina non esiste restituisce errore
         const paginaTarget = pagine[c.pagina]; 
-        if (paginaTarget) {
-            if(c.id == "input-nome-societa")
-                    paginaTarget.drawText(`${c.valore} ${document.getElementById("input-tipo-societa").value}`, {
-                    x: c.x,
-                    y: c.y,
-                    size: 8
-                });
-            else if (c.id != "input-tipo-societa")
-                paginaTarget.drawText(c.valore, {
-                    x: c.x,
-                    y: c.y,
-                    size: 8
-                });
-        } else {
+        if (!paginaTarget) {
             console.error(`ERRORE: La pagina con indice ${c.pagina} non esiste nel PDF!`);
+            return;
+        }
+
+        // Se il campo ha un metodo di rendering personalizzato, usa quello
+        if (typeof c.render === "function") {
+            c.render(paginaTarget, c.valore, c);
+        } else {
+            // Altrimenti procedi con il posizionamento standard automatico
+            paginaTarget.drawText(c.valore, {
+                x: c.x,
+                y: c.y,
+                size: 8
+            });
         }
     });
 

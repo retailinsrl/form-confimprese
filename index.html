@@ -13,7 +13,8 @@
 <body>
 
     <div class="container">
-        <h1>Gestione e Anteprima Modulo PDF</h1>
+        <a href="https://confimprese.it/"><img src="logoConfimprese.jpg" alt="Confimprese" style="width: 30%; display: block;margin: auto;"></a>
+        <h1>Modulo di Adesione</h1>
         
         <div id="stato-caricamento" class="status">Caricamento del PDF in corso...</div>
 
@@ -56,7 +57,7 @@
 
             <div id="step-1" class="form-step" style="display: none;justify-content: space-between; margin-top: 20px;gap: 15px;width:100%">
                 <h3>Dati Società e Rappresentante</h3>
-                <div style="display: flex; gap: 15px; width: 100%; margin-bottom: 10px;">
+                <div class="flex-form">
                     <input type="text" id="input-nome-societa" placeholder="Nome della Società" required style="width: 80%; padding: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
                     
                     <select id="input-tipo-societa" name="input-tipo-societa" required style="width: 20%; padding: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
@@ -86,25 +87,39 @@
                         </optgroup>
                     </select>
                 </div>
-                <input type="text" id="input-sede" placeholder="Sede della Società" style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
-                <input type="text" id="input-nome-rappresentante" placeholder="Nome e Cognome del Rappresentante" style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
+                <input type="text" id="input-sede" placeholder="Sede della Società" class="input-form">
+                <div class="flex-form">
+                    <input type="text" id="input-nome-rappresentante" placeholder="Nome del Rappresentante" class="input-form" style="width: 50%;">
+                    <input type="text" id="input-cognome-rappresentante" placeholder="Cognome del Rappresentante" class="input-form" style="width: 50%;">
+                </div>
             </div>
 
             <div id="step-2" class="form-step" style="display: none;">
                 <h3>Referente per Confimprese</h3>
-                <input type="text" id="input-nome-ref" placeholder="Nome e Cognome" style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
-                <input type="text" id="input-ruolo-ref" placeholder="Ruolo in azienda" style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
-                <input type="email" id="input-email-ref" placeholder="Indirizzo Email" style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
-                <input type="tel" id="input-mob-ref" placeholder="Recapito Telefonico" style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
-                <input type="text" id="input-sito-ref" placeholder="Sito web" style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
-                <input type="text" id="input-marchi-ref" placeholder="Marchi" style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
-                <input type="text" id="input-sdi-ref" placeholder="Codice SDI" style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
-                <input type="email" id="input-pec-ref" placeholder="Indirizzo PEC" style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
-                <input type="text" id="input-piva-ref" placeholder="Partita IVA" style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
+                <div class="flex-form">
+                        <input type="text" id="input-nome-ref" placeholder="Nome referente" class="input-form" style="width:50%">
+                        <input type="text" id="input-cognome-ref" placeholder="Cognome referente" class="input-form" style="width:50%">
+                </div>
+                <select id="input-ruolo-ref" name="input-ruolo-ref" required class="input-form">
+                    <option value="" disabled selected>Ruolo in azienda</option>
+                    <option value="OPERAIO">Operaio</option>
+                    <option value="IMPIEGATO">Impiegato</option>
+                    <option value="DIRIGENTE">Dirigente</option>
+                    <option value="QUADRO">Quadro</option>
+                </select>
+                <div class="flex-form">
+                    <input type="email" id="input-email-ref" placeholder="Indirizzo Email" class="input-form" style="width: 80%">
+                    <input type="tel" id="input-mob-ref" placeholder="Recapito Tel." class="input-form" style="width: 20%">
+                </div>
+                <input type="text" id="input-sito-ref" placeholder="Sito web" class="input-form">
+                <input type="text" id="input-marchi-ref" placeholder="Marchi" class="input-form">
+                <input type="text" id="input-sdi-ref" placeholder="Codice SDI" class="input-form">
+                <input type="email" id="input-pec-ref" placeholder="Indirizzo PEC" class="input-form">
+                <input type="text" id="input-piva-ref" placeholder="Partita IVA" class="input-form">
 
                 <table>
                     <tr>
-                        <td><input type="checkbox" id="input-ck-ref" name="input-ck-ref" style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;"></td>
+                        <td><input type="checkbox" id="input-ck-ref" name="input-ck-ref" class="input-form"></td>
                         <td><label for="input-ck-ref">Coincide col referente operativo</label></td>
                     </tr>
                 </table>
@@ -112,7 +127,7 @@
 
             <div id="step-3" class="form-step" style="display: none;">
                 <h3>Dati di Contatto</h3>
-                <input type="email" id="input-email" placeholder="Indirizzo Email PEC" style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
+                <input type="email" id="input-email" placeholder="Indirizzo Email PEC" class="input-form">
             </div>
 
             <div style="display: flex; justify-content: space-between; margin-top: 20px; width: 100%; gap: 15px">
@@ -127,6 +142,5 @@
         </div>
     </div>
     <script src="script.js"></script>
-    
 </body>
 </html>
