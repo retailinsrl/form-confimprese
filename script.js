@@ -69,13 +69,24 @@ const campi = [
     { id: "input-pec-ref", x: 319, y: 542, pagina: 1, required: true, step: 2 },
     { id: "input-piva-ref", x: 450, y: 542, pagina: 1, required: true, step: 2 },
 
+    { 
+        id: "input-nome-rop", x: 128, y: 496, pagina: 1, required: true, step: 3,
+        render: (page, val, c) => {
+            const cognome = document.getElementById("input-cognome-rop").value.trim().toUpperCase();
+            page.drawText(`${val} ${cognome}`, { x: c.x, y: c.y, size: 8 });
+        }
+    },
+    { id: "input-cognome-rop", required: true, step: 3 },
+    { id: "input-ruolo-rop", x: 322, y: 496, pagina: 1, required: true, step: 3 },
+    { id: "input-email-rop", x: 80, y: 481, pagina: 1, required: true, step: 3 },
+    { id: "input-mob-rop", x: 350, y: 481, pagina: 1, required: true, step: 3 },
     // Campi Pagina 3 (Indice pagina: 2)
     
     // ... Aggiungi qui i campi per le pagine da 4 a 8
 ];
 
 let stepCorrente = 0;
-const totaleStep = 3; // Modifica in 8 quando avrai aggiunto tutti gli step
+const totaleStep = 4; // Modifica in 8 quando avrai aggiunto tutti gli step
 
 // 2. Funzione per navigare tra gli step del form
 function cambiaStep(direzione) {
@@ -104,6 +115,7 @@ function cambiaStep(direzione) {
                 const inputElement = document.getElementById(c.id);
                 if (inputElement) {
                     inputElement.classList.add('campo-errore');
+                    console.error(inputElement);
                 }
             });
             
@@ -112,15 +124,11 @@ function cambiaStep(direzione) {
         }
     }
 
-    /*
-    // Verifica che tutti i campi di tutte le pagine siano stati compilati
-    if (valori.some(c => !c.valore && direzione === 1)) {
-        alert("Per favore, compila tutti i campi in questa pagina prima di proseguire.");
-        return;
-    }
-    */
+
     // Nascondi lo step corrente
     document.getElementById(`step-${stepCorrente}`).style.display = "none";
+
+    if(document.getElementById("input-ck-ref").checked && stepCorrente === 2 && direzione === 1) direzione++;
 
     // Aggiorna l'indice dello step
     stepCorrente += direzione;
@@ -319,4 +327,10 @@ function scaricaPdfLocale(bytes, nomeFile) {
 
 function clickTerminiCondizioni(checkbox) {
     document.getElementById("btn-avanti").disabled = !checkbox.checked;
+}
+
+function stessoReferente(checkbox) {
+    ["nome", "cognome", "ruolo", "email", "mob"].forEach(c => {
+        document.getElementById(`input-${c}-rop`).value = checkbox.checked ? document.getElementById(`input-${c}-ref`).value : "";
+    });
 }

@@ -58,9 +58,9 @@
             <div id="step-1" class="form-step" style="display: none;justify-content: space-between; margin-top: 20px;gap: 15px;width:100%">
                 <h3>Dati Società e Rappresentante</h3>
                 <div class="flex-form">
-                    <input type="text" id="input-nome-societa" placeholder="Nome della Società" required style="width: 80%; padding: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
+                    <input type="text" id="input-nome-societa" class="input-form" placeholder="Nome della Società" style="width: 80%;">
                     
-                    <select id="input-tipo-societa" name="input-tipo-societa" required style="width: 20%; padding: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;">
+                    <select id="input-tipo-societa" name="input-tipo-societa" class="input-form" style="width: 20%;">
                         <option value="" disabled selected>Tipo di azienda</option>
                         
                         <optgroup label="Società di Capitali">
@@ -100,7 +100,7 @@
                         <input type="text" id="input-nome-ref" placeholder="Nome referente" class="input-form" style="width:50%">
                         <input type="text" id="input-cognome-ref" placeholder="Cognome referente" class="input-form" style="width:50%">
                 </div>
-                <select id="input-ruolo-ref" name="input-ruolo-ref" required class="input-form">
+                <select id="input-ruolo-ref" name="input-ruolo-ref" class="input-form">
                     <option value="" disabled selected>Ruolo in azienda</option>
                     <option value="OPERAIO">Operaio</option>
                     <option value="IMPIEGATO">Impiegato</option>
@@ -113,19 +113,39 @@
                 </div>
                 <input type="text" id="input-sito-ref" placeholder="Sito web" class="input-form">
                 <input type="text" id="input-marchi-ref" placeholder="Marchi" class="input-form">
-                <input type="text" id="input-sdi-ref" placeholder="Codice SDI" class="input-form">
-                <input type="email" id="input-pec-ref" placeholder="Indirizzo PEC" class="input-form">
-                <input type="text" id="input-piva-ref" placeholder="Partita IVA" class="input-form">
-
+                <div class="flex-form">
+                    <input type="text" id="input-sdi-ref" placeholder="Codice SDI" class="input-form" style="width: 33%">
+                    <input type="email" id="input-pec-ref" placeholder="Indirizzo PEC" class="input-form" style="width: 34%">
+                    <input type="text" id="input-piva-ref" placeholder="Partita IVA" class="input-form" style="width: 33%">
+                </div>
                 <table>
                     <tr>
-                        <td><input type="checkbox" id="input-ck-ref" name="input-ck-ref" class="input-form"></td>
+                        <td><input type="checkbox" id="input-ck-ref" name="input-ck-ref" class="input-form" onclick="stessoReferente(this)"></td>
                         <td><label for="input-ck-ref">Coincide col referente operativo</label></td>
                     </tr>
                 </table>
             </div>
 
             <div id="step-3" class="form-step" style="display: none;">
+                <h3>Referente operativo</h3>
+                <div class="flex-form">
+                        <input type="text" id="input-nome-rop" placeholder="Nome ref. operativo" class="input-form" style="width:50%">
+                        <input type="text" id="input-cognome-rop" placeholder="Cognome ref. operativo" class="input-form" style="width:50%">
+                </div>
+                <select id="input-ruolo-rop" name="input-ruolo-rop" class="input-form">
+                    <option value="" disabled selected>Ruolo in azienda</option>
+                    <option value="OPERAIO">Operaio</option>
+                    <option value="IMPIEGATO">Impiegato</option>
+                    <option value="DIRIGENTE">Dirigente</option>
+                    <option value="QUADRO">Quadro</option>
+                </select>
+                <div class="flex-form">
+                    <input type="email" id="input-email-rop" placeholder="Indirizzo Email" class="input-form" style="width: 80%">
+                    <input type="tel" id="input-mob-rop" placeholder="Recapito Tel." class="input-form" style="width: 20%">
+                </div>
+            </div>
+
+            <div id="step-4" class="form-step" style="display: none;">
                 <h3>Dati di Contatto</h3>
                 <input type="email" id="input-email" placeholder="Indirizzo Email PEC" class="input-form">
             </div>
