@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compilazione e Anteprima PDF</title>
+    <title>Adesione | Confimprese</title>
     
+    <link rel="icon" href="img/favicon.png" sizes="32x32">
+
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
@@ -13,7 +15,7 @@
 <body>
 
     <div class="container">
-        <a href="https://confimprese.it/"><img src="logoConfimprese.jpg" alt="Confimprese" style="width: 30%; display: block;margin: auto;"></a>
+        <a href="https://confimprese.it/"><img src="img/logoConfimprese.jpg" alt="Confimprese" style="width: 30%; display: block;margin: auto;"></a>
         <h1>Modulo per Richiesta di Adesione</h1>
         
         <div id="stato-caricamento" class="status">Caricamento del PDF in corso...</div>
@@ -31,28 +33,120 @@
         <div class="step-box">
             <div id="step-0" class="form-step">
                 <h3>Note informative</h3>
-                <table>
-                    <tr>
-                        <p>Procedendo con il compilamento del seguente form, il sottoscritto richiede di essere ammesso a <b>CONFIMPRESE – LE IMPRESE DEL COMMERCIO MODERNO</b>, con sede in Piazza Sant’Ambrogio 16 – 20123 Milano. Con l’adesione, la scrivente società si impegna a:</p>
-                            <ul>
-                                <li>osservare lo Statuto Sociale e il Codice Etico di Confimprese;</li>
-                                <li>inviare una visura camerale aggiornata;</li>
-                                <li>Per l'attivazione di tutti i servizi e l'invio delle comunicazioni è necessario inviare l'organigramma o in alternativa la scheda contatti “Allegato A”;</li>
-                                <li>prendere visione dell’informativa al trattamento dei dati personali sotto riportata e fornire il relativo consenso;</li>
-                                <li>provvedere al pagamento della quota associativa annuale (12 mesi) di 5.800,00 € che include:
-                                    <ul>
-                                        <li>adesione a Confimprese con accesso a tutti i servizi offerti dall’Associazione, compreso l’Osservatorio Consumi a cui le Aziende partecipano inviando mensilmente il proprio fatturato;</li>
-                                        <li>partecipazione alle iniziative organizzate da Confimprese per i propri associati.</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        <p><b>NB:</b> È prevista una quota integrativa pari a 1.700,00 € (dal secondo anno) per le aziende con un volume d’affari superiore ai 50 milioni di € annui. L'importo della quota annuale è determinato</p>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" id="input-terms-conditions" name="input-terms-conditions" onclick="clickTerminiCondizioni(this)" style="width: 100%; padding: 20px; margin-bottom: 10px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;"></td>
-                        <td><label for="input-terms-conditions">Con la sottoscrizione della presente richiesta di ammissione, il Richiedente conferma di aver preso visione dell’allegata informativa sul trattamento dei dati resa da Confimprese ai sensi della normativa vigente.</label></td>
-                    </tr>
-                </table>
+                <p>Procedendo con il compilamento del seguente form, il sottoscritto richiede di essere ammesso a <b>CONFIMPRESE – LE IMPRESE DEL COMMERCIO MODERNO</b>, con sede in Piazza Sant’Ambrogio 16 – 20123 Milano. Con l’adesione, la scrivente società si impegna a:</p>
+                <ul>
+                    <li>osservare lo Statuto Sociale e il Codice Etico di Confimprese;</li>
+                    <li>inviare una visura camerale aggiornata;</li>
+                    <li>Per l'attivazione di tutti i servizi e l'invio delle comunicazioni è necessario inviare l'organigramma o in alternativa la scheda contatti “Allegato A”;</li>
+                    <li>prendere visione dell’informativa al trattamento dei dati personali sotto riportata e fornire il relativo consenso;</li>
+                    <li>provvedere al pagamento della quota associativa annuale (12 mesi) di 5.800,00 € che include:
+                        <ul>
+                            <li>adesione a Confimprese con accesso a tutti i servizi offerti dall’Associazione, compreso l’Osservatorio Consumi a cui le Aziende partecipano inviando mensilmente il proprio fatturato;</li>
+                            <li>partecipazione alle iniziative organizzate da Confimprese per i propri associati.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p><b>NB:</b> È prevista una quota integrativa pari a 1.700,00 € (dal secondo anno) per le aziende con un volume d’affari superiore ai 50 milioni di € annui. L'importo della quota annuale è determinato</p>
+                <section style="margin-bottom: 10px;">
+                    <details>
+                        <summary><b>Informativa sul Trattamento dei Dati Personali</summary></b></summary>
+                        <p>Confimprese – Le Imprese del Commercio Moderno (“Confimprese”), consapevole dell’importanza della tutela dei dati personali, avvisa i propri associati (“Associati”) che in occasione della richiesta di ammissione all’associazione e nell’esecuzione del rapporto associativo potranno essere trattati anche dati personali di persone fisiche (tra cui, ad esempio, legale rappresentante e personale di contatto degli Associati) (“Interessati”). Tali dati saranno trattati nel rispetto della normativa vigente. Ai sensi dell’articolo 13 Regolamento (UE) n. 2016/679 (il “Regolamento”), dunque, Confimprese fornisce le seguenti informazioni in merito alle modalità di gestione e ai trattamenti di tali dati.</p>
+
+                        <section>
+                            <details>
+                                <summary><strong>1. Tipi di dati raccolti.</strong></summary>
+                                <p>In occasione della richiesta di ammissione all’associazione e nell’esecuzione del rapporto associativo, Confimprese tratta i seguenti dati delle persone fisiche che operano per conto del proprio Associato – ad esempio, legale rappresentante e personale di contatto – così come volontariamente dallo stesso forniti (“Dati”): (i) dati anagrafici; e (ii) dati di contatto (i “Dati”).</p>
+                            </details>
+
+                            <details>
+                                <summary><strong>2. Finalità e base giuridica del trattamento. </strong></summary>
+                                <p>I Dati saranno trattati per le seguenti finalità:</p>
+                                <ol type="a">
+                                    <li>dare esecuzione al rapporto associativo, in particolare instaurando e mantenendo quell’efficiente e sistematica cooperazione tra l’insieme delle imprese associate, i pubblici poteri, gli industriali e gli operatori del settore di cui allo Statuto. In tale ambito rientrano, a titolo esemplificativo, (i) la comunicazione dei Dati ad altri Associati o a partner di Confimprese, i quali, al di fuori delle iniziative associative, agiranno come autonomi titolari del trattamento; (ii) l’invio di materiale promozionale di interesse per l’Associato tramite messaggi di posta elettronica, sms, mms e messaggistica istantanea relativi a servizi di Confimprese o dei suoi Associati e partner; e (iii) l’invio di newsletter relative alle attività svolte da Confimprese in favore dei propri Associati. La base giuridica che legittima tale trattamento è l’art. 6 par. 1, lett. b) del Regolamento in quanto il trattamento è necessario all’esecuzione del contratto di associazione o delle misure precontrattuali di cui l’associato è parte;</li>
+                                    <li>far valere o difendere in sede giudiziaria un diritto. Base giuridica che legittima tale trattamento è il combinato disposto degli artt. 6 par. 1, lett. f) e 9 par. 2 lett. f) del Regolamento, in quanto esso è necessario per accertare, esercitare o difendere un diritto in sede giudiziaria;</li>
+                                    <li>adempiere ad eventuali richieste dell’Autorità giudiziaria. Base giuridica che legittima tale trattamento è l’art. 6 par. 1, lett. c) del Regolamento, in quanto esso è necessario per adempiere un obbligo legale al quale è soggetto il titolare del trattamento.</li>
+                                </ol>
+                            </details>
+
+                            <details>
+                                <summary><strong>3. Periodo di conservazione dei Dati.</strong></summary>
+                                <p>I Dati trattati per le finalità di cui al punto 2 saranno conservati per tutta la durata del rapporto associativo e poi immediatamente cancellati, ad eccezione di quelli necessari per il rispetto della normativa (in particolare in tema fiscale, contabile e amministrativa) o per adempiere ad altri obblighi di legge e documentare le attività svolte. In queste ipotesi, i dati saranno cancellati nei termini previsti dalle predette normative.</p>
+                            </details>
+
+                            <details>
+                                <summary><strong>4. Modalità del trattamento.</strong></summary>
+                                <p>I Dati saranno trattati, da personale di Confimprese a ciò espressamente autorizzato, con strumenti elettronici e memorizzati su supporti informatici e cartacei, organizzati in data base e su ogni altro tipo di supporto idoneo. Sono osservate specifiche misure di sicurezza per prevenire la perdita dei Dati, usi illeciti o non corretti ed accessi non autorizzati. Il trattamento dei Dati non comporta processi decisionali automatizzati.</p>
+                            </details>
+
+                            <details>
+                                <summary><strong>5. Il conferimento dei Dati.</strong></summary>
+                                <p>Il conferimento dei Dati per le finalità di cui al punto 2 è obbligatorio essendo connaturato all’elaborazione della richiesta di amissione a Confimprese e alla conseguente instaurazione del rapporto associativo; in difetto di conferimento dei Dati, Confimprese non potrà dare corso né alla richiesta di associazione e né al conseguente rapporto associativo.</p>
+                            </details>
+
+                            <details>
+                                <summary><strong>6. Comunicazione dei Dati.</strong></summary>
+                                <p>I Dati potranno essere comunicati a:</p>
+                                <ol type="i">
+                                    <li>soggetti a cui norme di legge o normative secondarie riconoscono la facoltà e l’interesse di accedere ai Dati;</li>
+                                    <li>Associati e partner di Confimprese, nell’ambito della cooperazione prevista dallo Statuto tra l’insieme delle imprese associate, i pubblici poteri, gli industriali e gli operatori del settore;</li>
+                                    <li>società, associazioni o studi professionali che prestano servizi ed attività per conto di Confimprese in qualità di Responsabili del Trattamento (“Responsabili”) per l’adempimento di obblighi di legge e per ogni esigenza organizzativa ed amministrativa necessaria per fornire i servizi richiesti.</li>
+                                </ol>
+                                <p>I nominativi dei Responsabili sono riportati in un elenco aggiornato disponibile presso Confimprese (richiedibile ai recapiti di cui al punto 9). I Dati non saranno diffusi.</p>
+                            </details>
+
+                            <details>
+                                <summary><strong>7. Trasferimento di Dati a soggetti situati fuori dall’Unione Europea o ad organizzazioni internazionali.</strong></summary>
+                                <p>Confimprese non trasferisce i Dati elaborati per la finalità indicata nella presente informativa in paesi situati fuori dall’Unione Europea o ad organizzazioni internazionali.</p>
+                            </details>
+
+                            <details>
+                            <summary><strong>8. Diritti degli Interessati.</strong></summary>
+                            <p>Gli Interessati possono esercitare in ogni momento i diritti previsti dal Regolamento, tra cui:</p>
+                                <ul>
+                                    <li>richiedere informazioni su:
+                                        <ol type="i">
+                                            <li>origine dei Dati;</li>
+                                            <li>finalità e modalità del trattamento;</li>
+                                            <li>logica applicata in caso di uso di strumenti elettronici;</li>
+                                            <li>estremi identificativi di Confimprese e dei Responsabili.</li>
+                                        </ol>
+                                    </li>
+                                    <li>ottenere:
+                                        <ol type="i">
+                                            <li>l’accesso, l’aggiornamento, la rettifica o l’integrazione dei Dati;</li>
+                                            <li>la cancellazione, la trasformazione in forma anonima o il blocco dei Dati trattati in violazione di legge;</li>
+                                            <li>la limitazione del trattamento dei Dati;</li>
+                                            <li>la copia dei Dati in formato standard.</li>
+                                        </ol>
+                                    </li>
+                                    <li>opporsi, in tutto o in parte, ai trattamenti svolti:
+                                        <ol type="a">
+                                            <li>per fini di ricerca scientifica, storica o di ricerca statistica e ancorché pertinenti allo scopo della raccolta, laddove tale opposizione sia fondata su motivi connessi alla sua situazione particolare;</li>
+                                            <li>per l'esecuzione di un compito di interesse pubblico o connesso all'esercizio di pubblici poteri di cui è investito il titolare del trattamento o per il perseguimento del legittimo interesse del titolare del trattamento o di terzi;</li>
+                                            <li>ai fini di invio di materiale promozionale e pubblicitario e di marketing diretto;</li>
+                                        </ol>
+                                    </li>
+                                    <li>revocare il proprio consenso al trattamento, in qualsiasi momento senza pregiudicare la liceità del trattamento basata sul consenso prestato prima della revoca.</li>
+                                    <li>proporre, qualora ritengano che il trattamento dei Dati violi la normativa, reclamo all’autorità di controllo dello Stato membro in cui risiedono abitualmente o lavorano oppure del luogo ove si è verificata la presunta violazione. L’Autorità di controllo italiana può essere raggiunta ai recapiti presenti su www.garanteprivacy.it.</li>
+                                </ul>
+                            </details>
+
+                            <details>
+                                <summary><strong>9. Titolare del trattamento – Dati di contatto.</strong></summary>
+                                <p>Il Titolare del trattamento è Confimprese – Le Imprese del Commercio Moderno (P. Iva n. 13204620150), Piazza Sant’Ambrogio, 16, 20123, Milano, in persona del legale rappresentante pro tempore. Confimprese può essere contattata al seguente indirizzo: segreteriagenerale@confimprese.it. Per esercitare i diritti sopra elencati, l’Interessato potrà scrivere al seguente indirizzo: segreteriagenerale@confimprese.it. Confimprese si riserva il diritto di aggiornare la presente informativa.</p>
+                            </details>
+                        
+                        </section>
+                    </details>
+                </section>
+                <div class="flex-form">
+                    <input type="checkbox" id="input-terms-conditions" name="input-terms-conditions" onclick="clickTerminiCondizioni(this)" style="width: 3%;">
+                    <label for="input-terms-conditions" style="width: 97%;">Ho preso visione delle Note Informative.</label>
+                </div>
+                <div class="flex-form">
+                    <input type="checkbox" id="input-ck-tdp" style="width: 3%;" onclick="clickTerminiCondizioni(this)">
+                    <label for="input-ck-tdp" style="width: 97%;">Ho letto e acconsento all'Informativa sul Trattamento dei Dati Personali.</label>
+                </div>
             </div>
 
             <div id="step-1" class="form-step" style="display: none;justify-content: space-between; margin-top: 20px;gap: 15px;width:100%">
@@ -100,13 +194,7 @@
                         <input type="text" id="input-nome-ref" placeholder="Nome referente" class="input-form" style="width:50%">
                         <input type="text" id="input-cognome-ref" placeholder="Cognome referente" class="input-form" style="width:50%">
                 </div>
-                <select id="input-ruolo-ref" name="input-ruolo-ref" class="input-form">
-                    <option value="" disabled selected>Ruolo in azienda</option>
-                    <option value="OPERAIO">Operaio</option>
-                    <option value="IMPIEGATO">Impiegato</option>
-                    <option value="DIRIGENTE">Dirigente</option>
-                    <option value="QUADRO">Quadro</option>
-                </select>
+                <input type="text" id="input-ruolo-ref" name="input-ruolo-ref" class="input-form" placeholder="Ruolo in azienda">
                 <div class="flex-form">
                     <input type="email" id="input-email-ref" placeholder="Indirizzo Email" class="input-form" style="width: 80%">
                     <input type="tel" id="input-mob-ref" placeholder="Recapito Tel." class="input-form" style="width: 20%">
@@ -118,12 +206,11 @@
                     <input type="email" id="input-pec-ref" placeholder="Indirizzo PEC" class="input-form" style="width: 34%">
                     <input type="text" id="input-piva-ref" placeholder="Partita IVA" class="input-form" style="width: 33%">
                 </div>
-                <table>
-                    <tr>
-                        <td><input type="checkbox" id="input-ck-ref" name="input-ck-ref" class="input-form" onclick="stessoReferente(this)"></td>
-                        <td><label for="input-ck-ref">Coincide col referente operativo</label></td>
+                <div class="flex-form">
+                        <input type="checkbox" id="input-ck-ref" name="input-ck-ref" onclick="stessoReferente(this)" style="width: 3%;">
+                        <label for="input-ck-ref" style="width: 97%;">Coincide col referente operativo</label>
                     </tr>
-                </table>
+                </div>
             </div>
 
             <div id="step-3" class="form-step" style="display: none;">
@@ -132,19 +219,18 @@
                         <input type="text" id="input-nome-rop" placeholder="Nome ref. operativo" class="input-form" style="width:50%">
                         <input type="text" id="input-cognome-rop" placeholder="Cognome ref. operativo" class="input-form" style="width:50%">
                 </div>
-                <select id="input-ruolo-rop" name="input-ruolo-rop" class="input-form">
-                    <option value="" disabled selected>Ruolo in azienda</option>
-                    <option value="OPERAIO">Operaio</option>
-                    <option value="IMPIEGATO">Impiegato</option>
-                    <option value="DIRIGENTE">Dirigente</option>
-                    <option value="QUADRO">Quadro</option>
-                </select>
+                <input type="text" id="input-ruolo-rop" name="input-ruolo-rop" class="input-form" placeholder="Ruolo in azienda">
                 <div class="flex-form">
                     <input type="email" id="input-email-rop" placeholder="Indirizzo Email" class="input-form" style="width: 80%">
                     <input type="tel" id="input-mob-rop" placeholder="Recapito Tel." class="input-form" style="width: 20%">
                 </div>
             </div>
-
+            <!--
+            <div id="step-4" class="form-step" style="display: none;">
+                <h3>Dati di Rete</h3>
+                <input type="email" id="input-email" placeholder="Indirizzo Email PEC" class="input-form">
+            </div>
+            -->
             <div id="step-4" class="form-step" style="display: none;">
                 <h3>Dati di Contatto</h3>
                 <input type="email" id="input-email" placeholder="Indirizzo Email PEC" class="input-form">

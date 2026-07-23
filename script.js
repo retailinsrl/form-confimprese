@@ -76,7 +76,7 @@ const campi = [
             page.drawText(`${val} ${cognome}`, { x: c.x, y: c.y, size: 8 });
         }
     },
-    { id: "input-cognome-rop", required: true, step: 3 },
+    { id: "input-cognome-rop", required: true, step: 4 },
     { id: "input-ruolo-rop", x: 322, y: 496, pagina: 1, required: true, step: 3 },
     { id: "input-email-rop", x: 80, y: 481, pagina: 1, required: true, step: 3 },
     { id: "input-mob-rop", x: 350, y: 481, pagina: 1, required: true, step: 3 },
@@ -325,12 +325,17 @@ function scaricaPdfLocale(bytes, nomeFile) {
     URL.revokeObjectURL(link.href);
 }
 
+var count = 0;
 function clickTerminiCondizioni(checkbox) {
-    document.getElementById("btn-avanti").disabled = !checkbox.checked;
+    count = checkbox.checked ? count+1 : count-1;
+    console.log(count);
+    document.getElementById("btn-avanti").disabled = count < 2;
 }
+
 
 function stessoReferente(checkbox) {
     ["nome", "cognome", "ruolo", "email", "mob"].forEach(c => {
         document.getElementById(`input-${c}-rop`).value = checkbox.checked ? document.getElementById(`input-${c}-ref`).value : "";
     });
 }
+
