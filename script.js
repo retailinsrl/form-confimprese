@@ -41,7 +41,23 @@ const campi = [
         }
     },
     { id: "input-tipo-societa", required: true, step: 1 },
-    { id: "input-sede", x: 100, y: 582, pagina: 0, required: true, step: 1 },
+    // Start
+    { 
+        id: "input-sede-via", x: 100, y: 582, pagina: 0, required: true, step: 1,
+        render: (page, val, c) => {
+            const nCiv = document.getElementById("input-sede-nciv").value;
+            const citta = document.getElementById("input-sede-citta").value.trim().toUpperCase();
+            const prov = document.getElementById("input-sede-prov").value.trim().toUpperCase();
+            const cap = document.getElementById("input-sede-cap").value.trim().toUpperCase();
+            page.drawText(`${val}, ${nCiv} - ${cap} ${citta} (${prov})`, { x: c.x, y: c.y, size: 8 });
+        }
+    },
+    { id: "input-sede-nciv", required: true, step: 1 },
+    { id: "input-sede-citta", required: true, step: 1 },
+    { id: "input-sede-prov", required: true, step: 1 },
+    { id: "input-sede-cap", required: true, step: 1 },
+    // End
+
     { 
         id: "input-nome-rappresentante", x: 200, y: 543, pagina: 0, required: true, step: 1,
         render: (page, val, c) => {
@@ -76,7 +92,7 @@ const campi = [
             page.drawText(`${val} ${cognome}`, { x: c.x, y: c.y, size: 8 });
         }
     },
-    { id: "input-cognome-rop", required: true, step: 4 },
+    { id: "input-cognome-rop", required: true, step: 3 },
     { id: "input-ruolo-rop", x: 322, y: 496, pagina: 1, required: true, step: 3 },
     { id: "input-email-rop", x: 80, y: 481, pagina: 1, required: true, step: 3 },
     { id: "input-mob-rop", x: 350, y: 481, pagina: 1, required: true, step: 3 },
@@ -328,14 +344,18 @@ function scaricaPdfLocale(bytes, nomeFile) {
 var count = 0;
 function clickTerminiCondizioni(checkbox) {
     count = checkbox.checked ? count+1 : count-1;
-    console.log(count);
     document.getElementById("btn-avanti").disabled = count < 2;
 }
 
-
-function stessoReferente(checkbox) {
-    ["nome", "cognome", "ruolo", "email", "mob"].forEach(c => {
-        document.getElementById(`input-${c}-rop`).value = checkbox.checked ? document.getElementById(`input-${c}-ref`).value : "";
+const campiRef= ["nome", "cognome", "ruolo", "email", "mob"];
+function stessoReferente() {
+    campiRef.forEach(c => {
+        document.getElementById(`input-${c}-rop`).value = document.getElementById("input-ck-ref").checked ? document.getElementById(`input-${c}-ref`).value : "";
     });
 }
-
+document.addEventListener("DOMContentLoaded", () => {
+    campiRef.forEach(c => {
+        // Ascolta ogni singolo carattere digitato (evento 'input')
+        document.getElementById(`input-${c}-ref`).addEventListener("input", stessoReferente);
+    });
+});

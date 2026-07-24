@@ -181,7 +181,16 @@
                         </optgroup>
                     </select>
                 </div>
-                <input type="text" id="input-sede" placeholder="Sede della Società" class="input-form">
+                <hr style="margin-bottom: 10px;margin-top: 0;">
+                <div class="flex-form">
+                    <input type="text" id="input-sede-via" placeholder="Sede della Società" class="input-form" style="width: 70%">
+                    <input type="number" id="input-sede-nciv" placeholder="N° Civ." class="input-form" style="width: 30%">
+                </div>
+                <div class="flex-form">
+                    <input type="text" id="input-sede-prov" placeholder="Prov." class="input-form" style="width: 25%" minlength="2" maxlength="2">
+                    <input type="text" id="input-sede-citta" placeholder="Città" class="input-form" style="width: 50%">
+                    <input type="number" id="input-sede-cap" placeholder="CAP" class="input-form" style="width: 25%" minlength="5" maxlength="5">
+                </div>
                 <div class="flex-form">
                     <input type="text" id="input-nome-rappresentante" placeholder="Nome del Rappresentante" class="input-form" style="width: 50%;">
                     <input type="text" id="input-cognome-rappresentante" placeholder="Cognome del Rappresentante" class="input-form" style="width: 50%;">
