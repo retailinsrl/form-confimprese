@@ -2,7 +2,7 @@
 
 | **VERSIONE** | **OWNER** | **AZIENDA** | **DATA** | **NOTE** |
 | --- | --- | --- | --- | --- |
-| `1.0.0` | Matteo Spasiano | Retail IN S.r.l. | 24/07/2026 | *Prima release* |
+| `1.0.0` | Matteo Spasiano | Retail IN S.r.l. | 01/09/2026 | *Prima release* |
 
 ---
 
@@ -76,11 +76,11 @@ Di seguito vengono riportati i campi implementati nel form, con il relativo comp
 
 ## Firma
 
-Descrivi il metodo di firma…
+Firma ancora da implementare.
 
 ## Invio via mail
 
-La logica di invio mail è stata implementata tramite script PHP che utilizza il metodo `mail($to, $subject, $body, $headers)` .
+La logica di invio mail è stata implementata tramite script PHP che utilizza la libreria `PHPMailer`.
 
 # Tecnologie utilizzate
 
