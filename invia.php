@@ -1,57 +1,130 @@
 <?php
-// Disabilitiamo la visualizzazione degli errori HTML per non corrompere il JSON di risposta
-ini_set('display_errors', 0);
-error_reporting(0);
+header('Content-Type: application/json');
 
-// Permetti la ricezione di dati da JavaScript
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Headers: Content-Type");
-header("Content-Type: application/json");
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
-// Leggiamo i dati inviati dal JavaScript
-$inputJSON = file_get_contents('php://input');
-$input = json_decode($inputJSON, TRUE);
+require 'PHPMailer/Exception.php';
+require 'PHPMailer/PHPMailer.php';
+require 'PHPMailer/SMTP.php';
 
-if (!$input || !isset($input['pdfBase64'])) {
-    echo json_encode(["status" => "error", "message" => "Dati mancanti dal client."]);
-    exit;
+// --- FUNZIONE PER CARICARE IL FILE .ENV ---
+function caricaVariabiliAmbiente($percorso) {
+    if (!file_exists($percorso)) {
+        return false;
+    }
+
+    $righe = file($percorso, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($righe as $riga) {
+        // Ignora i commenti nel file .env
+        if (strpos(trim($riga), '#') === 0) continue;
+
+        // Separa la chiave dal valore
+        list($chiave, $valore) = explode('=', $riga, 2);
+        
+        $chiave = trim($chiave);
+        $valore = trim($valore);
+
+        // Rimuove eventuali virgolette attorno al valore
+        $valore = trim($valore, '"\'');
+
+        // Salva la variabile d'ambiente nel sistema
+        putenv(sprintf('%s=%s', $chiave, $valore));
+    }
+    return true;
 }
 
-$nomeUtente = $input['nomeUtente'] ?? 'Utente Anonimo';
-$pdfBase64 = $input['pdfBase64'];
+// Eseguiamo il caricamento del file .env che si trova nella stessa cartella
+caricaVariabiliAmbiente(__DIR__ . '/.env');
 
-// Configurazione Email
-$to = "spasiano.matteo02@gmail.com";
-$subject = "Nuovo PDF Compilato da " . $nomeUtente;
-$senderMail = "matteo.spasiano@retailin.it"; // Mittente fittizio per il test locale
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
+        // 1. Raccogliamo i dati dai normali array di PHP
+        $nomeUtente = $_POST['nomeUtente'] ?? 'Utente';
+        
+        // Rimuovi i caratteri di a capo (\r e \n) per prevenire l'Email Header Injection
+        $nomeUtentePulito = str_replace(array("\r", "\n", "%0a", "%0d"), '', $nomeUtentePulito);
 
-// Creazione di un ID univoco per separare il testo dall'allegato (Boundary)
-$boundary = md5(time());
+        // Limita la lunghezza del testo per evitare attacchi di tipo Buffer Overflow
+        $nomeUtentePulito = substr($nomeUtentePulito, 0, 50);
 
-// Intestazioni (Headers) dell'e-mail
-$headers = "MIME-Version: 1.0\r\n";
-$headers .= "From: " . $senderMail . "\r\n";
-$headers .= "Reply-To: " . $senderMail . "\r\n";
-$headers .= "Content-Type: multipart/mixed; boundary=\"" . $boundary . "\"\r\n";
+        // Verifichiamo che il file sia arrivato correttamente e senza errori di upload
+        if (!isset($_FILES['filePdf']) || $_FILES['filePdf']['error'] !== UPLOAD_ERR_OK) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Errore nel caricamento del file PDF sul server.'
+            ]);
+            exit;
+        }
 
-// Corpo dell'e-mail (Testo + Allegato)
-$body = "--" . $boundary . "\r\n";
-$body .= "Content-Type: text/html; charset=\"UTF-8\"\r\n";
-$body .= "Content-Transfer-Encoding: 7bit\r\n\r\n";
-$body .= "<p>Ciao,</p><p>In allegato trovi il documento PDF compilato e bloccato da <b>" . htmlspecialchars($nomeUtente) . "</b>.</p>\r\n\r\n";
+        // Controlla l'estensione del file originale
+        $estensione = strtolower(pathinfo($_FILES['filePdf']['name'], PATHINFO_EXTENSION));
+        if ($estensione !== 'pdf') {
+            echo json_encode(['status' => 'error', 'message' => 'Formato file non consentito. Solo PDF.']);
+            exit;
+        }
 
-// Sezione dell'allegato PDF
-$body .= "--" . $boundary . "\r\n";
-$body .= "Content-Type: application/pdf; name=\"documento_compilato.pdf\"\r\n";
-$body .= "Content-Transfer-Encoding: base64\r\n";
-$body .= "Content-Disposition: attachment; filename=\"documento_compilato.pdf\"\r\n\r\n";
-$body .= chunk_split($pdfBase64) . "\r\n";
-$body .= "--" . $boundary . "--";
+        // Verifica il vero tipo MIME del file (non fidarti solo dell'estensione)
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $tipoMime = finfo_file($finfo, $_FILES['filePdf']['tmp_name']);
+        finfo_close($finfo);
 
-// Invio effettivo tramite il server mail di PHP
-if (mail($to, $subject, $body, $headers)) {
-    echo json_encode(["status" => "success", "message" => "E-mail inviata con successo via PHP!"]);
+        if ($tipoMime !== 'application/pdf') {
+            echo json_encode(['status' => 'error', 'message' => 'Il contenuto del file non è un vero PDF.']);
+            exit;
+        }
+
+        // Informazioni sul file temporaneo salvato sul server
+        $percorsoTemporaneo = $_FILES['filePdf']['tmp_name'];
+        $nomeOriginaleFile  = $_FILES['filePdf']['name'];
+
+        // 2. Configurazione PHPMailer
+        $mail = new PHPMailer(true);
+
+        $mail->isSMTP();
+        $mail->Host       = getenv('SMTP_HOST'); 
+        $mail->SMTPAuth   = true;
+        $mail->Username   = getenv('SMTP_USER');
+        $mail->Password   = getenv('SMTP_PASS');
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port       = intval(getenv('SMTP_PORT'));
+
+        $mail->setFrom('matteo.spasiano@retailin.it', 'Moduli Confimprese');
+        $mail->addAddress('spasiano.matteo02@gmail.com', 'Destinatario');
+
+        $mail->isHTML(true);
+        $mail->Subject = "Nuovo modulo PDF da: " . $nomeUtentePulito;
+
+        // Il tag htmlspecialchars neutralizza qualsiasi tentativo di XSS nel corpo della mail
+        $mail->Body    = "In allegato trovi il documento inviato da <strong>" . htmlspecialchars($nomeUtentePulito, ENT_QUOTES, 'UTF-8') . "</strong>.";
+        $mail->AltBody = "In allegato trovi il documento inviato da " . $nomeUtentePulito . ".";
+
+        // 3. ALLEGATO: Usiamo addAttachment passando il file temporaneo sul server
+        // Parametri: (Percorso file fisico sul server, Nome che vedrà il destinatario)
+        $mail->addAttachment($percorsoTemporaneo, $nomeOriginaleFile);
+
+        $mail->send();
+
+        // 4. Risposta di successo
+        echo json_encode([
+            'status' => 'success',
+            'message' => 'Email inviata con successo con il PDF allegato!'
+        ]);
+
+    } catch (Exception $e) {
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Errore PHPMailer: ' . $mail->ErrorInfo
+        ]);
+    } catch (\Throwable $e) {
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Errore interno: ' . $e->getMessage()
+        ]);
+    }
 } else {
-    echo json_encode(["status" => "error", "message" => "Il server locale non è riuscito a processare la funzione mail()."]);
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Metodo non consentito.'
+    ]);
 }
-?>

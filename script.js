@@ -98,11 +98,26 @@ const campi = [
     { id: "input-mob-rop", x: 350, y: 481, pagina: 1, required: true, step: 3 },
     // Campi Pagina 3 (Indice pagina: 2)
     
+    // Campi Pagina 4 (Indice pagina: 3)
+    { id: "input-ndip-sede", x: 120, y: 700, pagina: 3, required: false, step: 4 },
+    { id: "input-ndip-pv", x: 150, y: 481, pagina: 3, required: false, step: 4 },
+    { id: "input-occ-indiretti", x: 350, y: 481, pagina: 3, required: false, step: 4 },
+    { id: "input-fatt-24", x: 350, y: 481, pagina: 3, required: false, step: 4 },
+    { id: "input-fatt-23", x: 350, y: 481, pagina: 3, required: false, step: 4 },
+    { id: "input-fatt-22", x: 350, y: 481, pagina: 3, required: false, step: 4 },
+    { id: "input-varf-24", x: 350, y: 481, pagina: 3, required: false, step: 4 },
+    { id: "input-varf-23", x: 350, y: 481, pagina: 3, required: false, step: 4 },
+    { id: "input-varf-22", x: 350, y: 481, pagina: 3, required: false, step: 4 },
+    { id: "input-sell-out", x: 350, y: 481, pagina: 3, required: false, step: 4 },
+    { id: "input-quota-mercato", x: 350, y: 481, pagina: 3, required: false, step: 4 },
+    { id: "input-fma-dir", x: 350, y: 481, pagina: 3, required: false, step: 4 },
+    { id: "input-fma-franchising", x: 350, y: 481, pagina: 3, required: false, step: 4 },
     // ... Aggiungi qui i campi per le pagine da 4 a 8
+    
 ];
 
 let stepCorrente = 0;
-const totaleStep = 4; // Modifica in 8 quando avrai aggiunto tutti gli step
+const totaleStep = 5; // Modifica in 8 quando avrai aggiunto tutti gli step
 
 // 2. Funzione per navigare tra gli step del form
 function cambiaStep(direzione) {
@@ -189,7 +204,7 @@ async function avviaRevisione() {
     // Raccoglie tutti i valori del form
     const valori = campi.map(c => ({
         ...c,
-        valore: document.getElementById(c.id).value.trim().toUpperCase()
+        valore: document.getElementById(c.id).value.toString().trim().toUpperCase()
     }));
 
     // Verifica che tutti i campi di tutte le pagine siano stati compilati
@@ -275,7 +290,7 @@ async function revisionaModuli(){
 }
 
 // 3. CONFERMA E INVIO VIA PHP (Senza limiti di peso!)
-async function confermaEInvia(event){
+async function confermaEInvia(event) {
     const btn = event.target;
     try {
         btn.textContent = "Attendere...";
@@ -284,30 +299,24 @@ async function confermaEInvia(event){
         const form = pdfDoc.getForm();
         const nomeUtente = document.getElementById("input-nome-societa")?.value.trim() || "Utente";
 
-        // Appiattiamo il PDF (lo rendiamo non modificabile)
-        //form.flatten();
-
+        // Salva i byte del PDF
         pdfBytesModificato = await pdfDoc.save();
 
-        // Convertiamo in Base64
-        const pdfBase64 = btoa(
-            new Uint8Array(pdfBytesModificato)
-            .reduce((data, byte) => data + String.fromCharCode(byte), '')
-        );
+        // 1. Trasformiamo i byte in un vero file binario (Blob)
+        const pdfBlob = new Blob([pdfBytesModificato], { type: 'application/pdf' });
 
-        // Prepariamo i dati da inviare al server PHP
-        const datiDaInviare = {
-            nomeUtente: nomeUtente,
-            pdfBase64: pdfBase64
-        };
+        // 2. Creiamo l'oggetto FormData per simulare l'invio di un form standard
+        const datiForm = new FormData();
+        datiForm.append('nomeUtente', nomeUtente);
+        
+        // Aggiungiamo il file specificando: nome parametro, il blob, e il nome file fisico
+        const nomeFile = `modulo_${nomeUtente.replace(/[^a-zA-Z0-9_-]/g, '_')}.pdf`;
+        datiForm.append('filePdf', pdfBlob, nomeFile);
 
-        // Facciamo una richiesta POST a invia.php nella stessa cartella
+        // 3. Facciamo la richiesta POST (Fetch imposta gli header multipart/form-data da sola)
         const risposta = await fetch('invia.php', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(datiDaInviare)
+            body: datiForm // Passiamo direttamente l'oggetto FormData
         });
 
         const risultato = await risposta.json();
@@ -317,7 +326,6 @@ async function confermaEInvia(event){
             btn.textContent = "Inviato ✓";
         } else {
             alert('Errore dal server: ' + risultato.message);
-            // Ripristino pulsante in caso di errore
             btn.textContent = "Conferma e Invia Mail";
             btn.disabled = false;
         }
@@ -325,7 +333,6 @@ async function confermaEInvia(event){
     } catch (err) {
         console.error(err);
         alert("Errore di connessione con il server PHP.");
-        // Ripristino pulsante in caso di errore
         btn.textContent = "Conferma e Invia Mail";
         btn.disabled = false;
     }

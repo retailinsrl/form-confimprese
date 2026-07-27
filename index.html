@@ -261,13 +261,101 @@
                     <input type="tel" id="input-mob-rop" placeholder="Recapito Tel." class="input-form" style="width: 20%">
                 </div>
             </div>
-            <!--
+            
             <div id="step-4" class="form-step" style="display: none;">
-                <h3>Dati di Rete</h3>
-                <input type="email" id="input-email" placeholder="Indirizzo Email PEC" class="input-form">
+                <h3>Fattori Dimensionali Italia</h3>
+
+                <!-- Sezione Dipendenti -->
+                <fieldset style="margin-bottom: 10px; padding: 15px;">
+                    <legend><strong>N° Dipendenti</strong></legend>
+                    
+                    <div class="flex-form" style="display: flex; gap: 15px; margin-bottom: 10px;">
+                        <div style="flex: 1;">
+                            <label for="input-ndip-sede" style="display: block; margin-bottom: 5px;">Sede</label>
+                            <input type="number" id="input-ndip-sede" class="input-form" style="width: 100%;">
+                        </div>
+                        <div style="flex: 1;">
+                            <label for="input-ndip-pv" style="display: block; margin-bottom: 5px;">Punti Vendita diretti</label>
+                            <input type="number" id="input-ndip-pv" class="input-form" style="width: 100%;">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="input-occ-indiretti" style="display: block; margin-bottom: 5px;">Occupazione creata da rete Franchising / Punti Vendita non diretti</label>
+                        <input type="number" id="input-occ-indiretti" class="input-form" style="width: 100%;">
+                    </div>
+                </fieldset>
+
+                <!-- Sezione Fatturato -->
+                <fieldset style="margin-bottom: 10px; padding: 15px;">
+                    <legend><strong>Fatturato (Euro)</strong></legend>
+                    <div class="flex-form" style="display: flex; gap: 10px;">
+                        <div style="flex: 1;">
+                            <label for="input-fatt-24" style="display: block; margin-bottom: 5px;">2024</label>
+                            <input type="number" id="input-fatt-24" class="input-form" style="width: 100%;">
+                        </div>
+                        <div style="flex: 1;">
+                            <label for="input-fatt-23" style="display: block; margin-bottom: 5px;">2023</label>
+                            <input type="number" id="input-fatt-23" class="input-form" style="width: 100%;">
+                        </div>
+                        <div style="flex: 1;">
+                            <label for="input-fatt-22" style="display: block; margin-bottom: 5px;">2022</label>
+                            <input type="number" id="input-fatt-22" class="input-form" style="width: 100%;">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Sezione Volume d'affari Franchising -->
+                <fieldset style="margin-bottom: 10px; padding: 15px;">
+                    <legend><strong>Volume d'affari Rete Franchising</strong></legend>
+                    <div class="flex-form" style="display: flex; gap: 10px;">
+                        <div style="flex: 1;">
+                            <label for="input-varf-24" style="display: block; margin-bottom: 5px;">2024</label>
+                            <input type="number" id="input-varf-24" class="input-form" style="width: 100%;">
+                        </div>
+                        <div style="flex: 1;">
+                            <label for="input-varf-23" style="display: block; margin-bottom: 5px;">2023</label>
+                            <input type="number" id="input-varf-23" class="input-form" style="width: 100%;">
+                        </div>
+                        <div style="flex: 1;">
+                            <label for="input-varf-22" style="display: block; margin-bottom: 5px;">2022</label>
+                            <input type="number" id="input-varf-22" class="input-form" style="width: 100%;">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Sezione Dati di Mercato -->
+                <fieldset style="margin-bottom: 10px; padding: 15px;">
+                    <legend><strong>Performance e Mercato</strong></legend>
+                    <div class="flex-form" style="display: flex; gap: 15px;">
+                        <div style="flex: 1;">
+                            <label for="input-sell-out" style="display: block; margin-bottom: 5px;">Sell-Out Totale</label>
+                            <input type="number" id="input-sell-out" class="input-form" style="width: 100%;">
+                        </div>
+                        <div style="flex: 1;">
+                            <label for="input-quota-mercato" style="display: block; margin-bottom: 5px;">% Quota di mercato</label>
+                            <input type="number" id="input-quota-mercato" class="input-form" style="width: 100%;">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Sezione Fatturato Medio PDV -->
+                <fieldset style="margin-bottom: 10px; padding: 15px;">
+                    <legend><strong>Fatturato medio annuo Pdv</strong></legend>
+                    <div class="flex-form" style="display: flex; gap: 15px;">
+                        <div style="flex: 1;">
+                            <label for="input-fma-dir" style="display: block; margin-bottom: 5px;">Rete diretta</label>
+                            <input type="number" id="input-fma-dir" class="input-form" style="width: 100%;">
+                        </div>
+                        <div style="flex: 1;">
+                            <label for="input-fma-franchising" style="display: block; margin-bottom: 5px;">Rete franchising</label>
+                            <input type="number" id="input-fma-franchising" class="input-form" style="width: 100%;">
+                        </div>
+                    </div>
+                </fieldset>
             </div>
-            -->
-            <div id="step-4" class="form-step" style="display: none;">
+            
+            <div id="step-5" class="form-step" style="display: none;">
                 <h3>Dati di Contatto</h3>
                 <input type="email" id="input-email" placeholder="Indirizzo Email PEC" class="input-form">
             </div>
