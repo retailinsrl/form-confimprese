@@ -99,19 +99,19 @@ const campi = [
     // Campi Pagina 3 (Indice pagina: 2)
     
     // Campi Pagina 4 (Indice pagina: 3)
-    { id: "input-ndip-sede", x: 120, y: 700, pagina: 3, required: false, step: 4 },
-    { id: "input-ndip-pv", x: 150, y: 481, pagina: 3, required: false, step: 4 },
-    { id: "input-occ-indiretti", x: 350, y: 481, pagina: 3, required: false, step: 4 },
-    { id: "input-fatt-24", x: 350, y: 481, pagina: 3, required: false, step: 4 },
-    { id: "input-fatt-23", x: 350, y: 481, pagina: 3, required: false, step: 4 },
-    { id: "input-fatt-22", x: 350, y: 481, pagina: 3, required: false, step: 4 },
-    { id: "input-varf-24", x: 350, y: 481, pagina: 3, required: false, step: 4 },
-    { id: "input-varf-23", x: 350, y: 481, pagina: 3, required: false, step: 4 },
-    { id: "input-varf-22", x: 350, y: 481, pagina: 3, required: false, step: 4 },
-    { id: "input-sell-out", x: 350, y: 481, pagina: 3, required: false, step: 4 },
-    { id: "input-quota-mercato", x: 350, y: 481, pagina: 3, required: false, step: 4 },
-    { id: "input-fma-dir", x: 350, y: 481, pagina: 3, required: false, step: 4 },
-    { id: "input-fma-franchising", x: 350, y: 481, pagina: 3, required: false, step: 4 },
+    { id: "input-ndip-sede", x: 140, y: 722, pagina: 3, required: false, step: 4 },
+    { id: "input-ndip-pv", x: 210, y: 707, pagina: 3, required: false, step: 4 },
+    { id: "input-occ-indiretti", x: 345, y: 692, pagina: 3, required: false, step: 4 },
+    { id: "input-fatt-24", x: 150, y: 677, pagina: 3, required: false, step: 4 },
+    { id: "input-fatt-23", x: 282, y: 677, pagina: 3, required: false, step: 4 },
+    { id: "input-fatt-22", x: 415, y: 677, pagina: 3, required: false, step: 4 },
+    { id: "input-varf-24", x: 256, y: 662, pagina: 3, required: false, step: 4 },
+    { id: "input-varf-23", x: 345, y: 662, pagina: 3, required: false, step: 4 },
+    { id: "input-varf-22", x: 440, y: 662, pagina: 3, required: false, step: 4 },
+    { id: "input-sell-out", x: 130, y: 647, pagina: 3, required: false, step: 4 },
+    { id: "input-quota-mercato", x: 160, y: 630, pagina: 3, required: false, step: 4 },
+    { id: "input-fma-dir", x: 225, y: 615, pagina: 3, required: false, step: 4 },
+    { id: "input-fma-franchising", x: 245, y: 601, pagina: 3, required: false, step: 4 },
     // ... Aggiungi qui i campi per le pagine da 4 a 8
     
 ];
