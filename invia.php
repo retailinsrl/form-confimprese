@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $nomeUtente = $_POST['nomeUtente'] ?? 'Utente';
         
         // Rimuovi i caratteri di a capo (\r e \n) per prevenire l'Email Header Injection
-        $nomeUtentePulito = str_replace(array("\r", "\n", "%0a", "%0d"), '', $nomeUtentePulito);
+        $nomeUtentePulito = str_replace(array("\r", "\n", "%0a", "%0d"), '', $nomeUtente);
 
         // Limita la lunghezza del testo per evitare attacchi di tipo Buffer Overflow
         $nomeUtentePulito = substr($nomeUtentePulito, 0, 50);
@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mail->Subject = "Nuovo modulo PDF da: " . $nomeUtentePulito;
 
         // Il tag htmlspecialchars neutralizza qualsiasi tentativo di XSS nel corpo della mail
-        $mail->Body    = "Buongiorno,<br>in allegato trovi il Modulo di Adesione a Confimprese compilato per conto di <strong>" . htmlspecialchars($nomeUtentePulito, ENT_QUOTES, 'UTF-8') . "</strong>.<br>Grazie,<br>Il team Confimprese.";
+        $mail->Body    = "Buongiorno,<br>in allegato trovi il Modulo di Adesione a Confimprese compilato per conto di <strong>" . htmlspecialchars($nomeUtentePulito, ENT_QUOTES, 'UTF-8') . "</strong>.<br><br>Grazie,<br>Il team Confimprese.";
         $mail->AltBody = "In allegato trovi il Modulo di Adesione a Confimprese compilato per conto di " . $nomeUtentePulito . ".";
 
         // 3. ALLEGATO: Usiamo addAttachment passando il file temporaneo sul server
