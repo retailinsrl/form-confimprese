@@ -297,7 +297,7 @@ async function confermaEInvia(event) {
         btn.disabled = true;
         
         const form = pdfDoc.getForm();
-        const nomeUtente = document.getElementById("input-nome-societa")?.value.trim() || "Utente";
+        const nomeUtente = document.getElementById("input-nome-societa").value.trim() || "Utente";
 
         // Salva i byte del PDF
         pdfBytesModificato = await pdfDoc.save();

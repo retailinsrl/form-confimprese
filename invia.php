@@ -96,8 +96,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mail->Subject = "Nuovo modulo PDF da: " . $nomeUtentePulito;
 
         // Il tag htmlspecialchars neutralizza qualsiasi tentativo di XSS nel corpo della mail
-        $mail->Body    = "In allegato trovi il documento inviato da <strong>" . htmlspecialchars($nomeUtentePulito, ENT_QUOTES, 'UTF-8') . "</strong>.";
-        $mail->AltBody = "In allegato trovi il documento inviato da " . $nomeUtentePulito . ".";
+        $mail->Body    = "Buongiorno,<br>in allegato trovi il Modulo di Adesione a Confimprese compilato per conto di <strong>" . htmlspecialchars($nomeUtentePulito, ENT_QUOTES, 'UTF-8') . "</strong>.<br>Grazie,<br>Il team Confimprese.";
+        $mail->AltBody = "In allegato trovi il Modulo di Adesione a Confimprese compilato per conto di " . $nomeUtentePulito . ".";
 
         // 3. ALLEGATO: Usiamo addAttachment passando il file temporaneo sul server
         // Parametri: (Percorso file fisico sul server, Nome che vedrà il destinatario)
