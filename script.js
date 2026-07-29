@@ -96,28 +96,47 @@ const campi = [
     { id: "input-ruolo-rop", x: 322, y: 496, pagina: 1, required: true, step: 3 },
     { id: "input-email-rop", x: 80, y: 481, pagina: 1, required: true, step: 3 },
     { id: "input-mob-rop", x: 350, y: 481, pagina: 1, required: true, step: 3 },
+
     // Campi Pagina 3 (Indice pagina: 2)
-    
+    { id: "input-div-ass", x: 63, y: 362.5, pagina: 2, required: false, step: 4, 
+        render: (page, valArray, c) => {
+            if (!valArray || !Array.isArray(valArray)) return; 
+
+            valArray.forEach(val => {
+                const placeY = c.y - (13.45 * val);
+                page.drawText(`X`, { x: c.x, y: placeY, size: 10 });
+            });
+        }
+    },
+    { id: "input-altro-ass", x: 170, y: 188, pagina: 2, required: false, step: 4 },
+    { id: "input-ccnl", x: 63, y: 143.5, pagina: 2, required: false, step: 4, 
+        render: (page, val, c) => {
+            const placeY = c.y - (15.45 * val);
+            page.drawText(`X`, { x: c.x, y: placeY, size: 10 });
+        }
+    },
+    { id: "input-altro-ccnl", x: 170, y: 98, pagina: 2, required: false, step: 4 },
+
     // Campi Pagina 4 (Indice pagina: 3)
-    { id: "input-ndip-sede", x: 140, y: 722, pagina: 3, required: false, step: 4 },
-    { id: "input-ndip-pv", x: 210, y: 707, pagina: 3, required: false, step: 4 },
-    { id: "input-occ-indiretti", x: 345, y: 692, pagina: 3, required: false, step: 4 },
-    { id: "input-fatt-24", x: 150, y: 677, pagina: 3, required: false, step: 4 },
-    { id: "input-fatt-23", x: 282, y: 677, pagina: 3, required: false, step: 4 },
-    { id: "input-fatt-22", x: 415, y: 677, pagina: 3, required: false, step: 4 },
-    { id: "input-varf-24", x: 256, y: 662, pagina: 3, required: false, step: 4 },
-    { id: "input-varf-23", x: 345, y: 662, pagina: 3, required: false, step: 4 },
-    { id: "input-varf-22", x: 440, y: 662, pagina: 3, required: false, step: 4 },
-    { id: "input-sell-out", x: 130, y: 647, pagina: 3, required: false, step: 4 },
-    { id: "input-quota-mercato", x: 160, y: 630, pagina: 3, required: false, step: 4 },
-    { id: "input-fma-dir", x: 225, y: 615, pagina: 3, required: false, step: 4 },
-    { id: "input-fma-franchising", x: 245, y: 601, pagina: 3, required: false, step: 4 },
+    { id: "input-ndip-sede", x: 140, y: 722, pagina: 3, required: false, step: 5 },
+    { id: "input-ndip-pv", x: 210, y: 707, pagina: 3, required: false, step: 5 },
+    { id: "input-occ-indiretti", x: 345, y: 692, pagina: 3, required: false, step: 5 },
+    { id: "input-fatt-24", x: 150, y: 677, pagina: 3, required: false, step: 5 },
+    { id: "input-fatt-23", x: 282, y: 677, pagina: 3, required: false, step: 5 },
+    { id: "input-fatt-22", x: 415, y: 677, pagina: 3, required: false, step: 5 },
+    { id: "input-varf-24", x: 256, y: 662, pagina: 3, required: false, step: 5 },
+    { id: "input-varf-23", x: 345, y: 662, pagina: 3, required: false, step: 5 },
+    { id: "input-varf-22", x: 440, y: 662, pagina: 3, required: false, step: 5 },
+    { id: "input-sell-out", x: 130, y: 647, pagina: 3, required: false, step: 5 },
+    { id: "input-quota-mercato", x: 160, y: 630, pagina: 3, required: false, step: 5 },
+    { id: "input-fma-dir", x: 225, y: 615, pagina: 3, required: false, step: 5 },
+    { id: "input-fma-franchising", x: 245, y: 601, pagina: 3, required: false, step: 5 },
     // ... Aggiungi qui i campi per le pagine da 4 a 8
     
 ];
 
 let stepCorrente = 0;
-const totaleStep = 5; // Modifica in 8 quando avrai aggiunto tutti gli step
+const totaleStep = 6; // Modifica in 8 quando avrai aggiunto tutti gli step
 
 // 2. Funzione per navigare tra gli step del form
 function cambiaStep(direzione) {
@@ -201,14 +220,34 @@ function aggiornaIndicatori() {
 
 // Genera PDF per revisione
 async function avviaRevisione() {
+    
     // Raccoglie tutti i valori del form
-    const valori = campi.map(c => ({
-        ...c,
-        valore: document.getElementById(c.id).value.toString().trim().toUpperCase()
-    }));
+    const valori = campi.map(c => {
+        const elemento = document.getElementById(c.id);
+        let valoreEstratto;
+
+        if (c.id === "input-div-ass") {
+            // Se l'elemento non esiste nella pagina per sicurezza evitiamo crash
+            if (!elemento) {
+                valoreEstratto = [];
+            } else {
+                // Raccoglie l'array di checkbox selezionate
+                const checkboxSpuntate = elemento.querySelectorAll('input[name="associazioni[]"]:checked');
+                valoreEstratto = Array.from(checkboxSpuntate).map(cb => cb.value);
+            }
+        } else {
+            // Per tutti gli altri campi standard (input, select) estrae la stringa pulita
+            valoreEstratto = elemento && elemento.value ? elemento.value.toString().trim().toUpperCase() : "";
+        }
+
+        return {
+            ...c,
+            valore: valoreEstratto
+        };
+    });
 
     // Verifica che tutti i campi di tutte le pagine siano stati compilati
-    if (valori.some(c => !c.valore && c.required)) {
+    if (valori.some(c => c.required && (!c.valore || (Array.isArray(c.valore) && c.valore.length === 0)))) {
         alert("Per favore, compila tutti i campi in tutte le pagine prima di generare il PDF.");
         return;
     }
@@ -516,3 +555,43 @@ document.getElementById('input-regione').addEventListener('change', function() {
         selectProvincia.disabled = true;
     }
 });
+
+document.getElementById("input-ccnl").addEventListener('change', function() {
+    // Attiva se selezionato "Altro", disattiva se selezionato qualsiasi altro valore
+    document.getElementById("input-altro-ccnl").disabled = document.getElementById("input-ccnl").value != 3;
+    
+    // Se viene selezionato un altro valore, pulisce il testo digitato in precedenza
+    if(document.getElementById("input-altro-ccnl").disabled)
+        document.getElementById("input-altro-ccnl").value = "";
+})
+
+function attivaAltro(checkbox) {
+    // Attiva se selezionato, disattiva se deselezionato
+    document.getElementById("input-altro-ass").disabled = !checkbox.checked;
+    
+    // Se viene deselezionato, pulisce il testo digitato in precedenza
+    if (!checkbox.checked) {
+        document.getElementById("input-altro-ass").value = "";
+    }
+}
+
+function getAssociazioni() {
+    // Prende solo le checkbox spuntate dentro quel div specifico
+    const checkboxSpuntate = document.querySelectorAll('#input-div-ass input[name="associazioni[]"]:checked');
+    
+    // Mappa le checkbox nei rispettivi valori
+    const valArray = Array.from(checkboxSpuntate).map(cb => cb.value);
+
+    return valArray;
+}
+
+// 3. (Opzionale) Se vuoi ascoltare i cambiamenti in tempo reale nel div
+document.getElementById('input-div-ass').addEventListener('change', function(e) {
+    // Ogni volta che l'utente clicca una checkbox aggiorna l'array
+    if (e.target.name === 'associazioni[]' /*|| e.target.id === 'input-altro-ass'*/){
+        const selezioniAggiornate = getAssociazioni();
+    }
+});
+
+// Ascolta anche la digitazione in tempo reale nel campo "Altro"
+document.getElementById('input-altro-ass').addEventListener('input', getAssociazioni);

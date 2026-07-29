@@ -185,7 +185,7 @@
                     <input type="text" id="input-nome-rappresentante" placeholder="Nome del Rappresentante" class="input-form" style="width: 50%;">
                     <input type="text" id="input-cognome-rappresentante" placeholder="Cognome del Rappresentante" class="input-form" style="width: 50%;">
                 </div>
-                <hr style="margin-bottom: 10px;margin-top: 0;">
+                <hr class="form-separator">
                 <div class="flex-form">
                     <select id="input-regione" class="input-form" style="width: 50%;">
                         <option value="" disabled selected>Seleziona una regione</option>
@@ -263,10 +263,45 @@
             </div>
             
             <div id="step-4" class="form-step" style="display: none;">
+                <h3>Altre informazioni</h3>
+                <label for="input-div-ass"><strong>A quali altre associazioni la vostra azienda è iscritta?</strong></label>
+                <div id="input-div-ass" class="input-div-ck">
+                    <label><input type="checkbox" name="associazioni[]" value="0"> Aires</label><br>
+                    <label><input type="checkbox" name="associazioni[]" value="1"> Aigrim</label><br>
+                    <label><input type="checkbox" name="associazioni[]" value="2"> Assofranchising</label><br>
+                    <label><input type="checkbox" name="associazioni[]" value="3"> CNCC</label><br>
+                    <label><input type="checkbox" name="associazioni[]" value="4"> Confcommercio</label><br>
+                    <label><input type="checkbox" name="associazioni[]" value="5"> Confindustria</label><br>
+                    <label><input type="checkbox" name="associazioni[]" value="6"> Federdistribuzione</label><br>
+                    <label><input type="checkbox" name="associazioni[]" value="7"> Federfranchising</label><br>
+                    <label><input type="checkbox" name="associazioni[]" value="8"> Fipe</label><br>
+                    <label><input type="checkbox" name="associazioni[]" value="9"> Netcomm</label><br>
+                    <label><input type="checkbox" name="associazioni[]" value="10"> Community Retail 5.0</label><br>
+                    <label><input type="checkbox" name="associazioni[]" value="11"> Retail Institute Italy</label><br>
+                    <label><input type="checkbox" name="associazioni[]" value="12"> Ubri</label><br>
+                    <label style="display: flex; align-items: center; gap: 8px; width: 100%;">
+                        <input type="checkbox" name="associazioni[]" value="13" onclick="attivaAltro(this)"> Altro
+                        <input type="text" name="" id="input-altro-ass" class="input-form" placeholder="Altro..." style="flex-grow: 1;" disabled>
+                    </label>
+                </div>
+                <hr class="form-separator">
+                <div class="flex-form">
+                    <select name="input-ccnl" id="input-ccnl" class="input-form" style="width: 50%;">
+                        <option value="" disabled selected>Tipologia di contratto applicata...</option>
+                        <option value="0">CCNL Commercio Confcommercio</option>
+                        <option value="1">CCNL Commercio Federdistribuzione</option>
+                        <option value="2">CCNL Turismo Confcommercio</option>
+                        <option value="3">Altro...</option>
+                    </select>
+                    <input type="text" id="input-altro-ccnl" class="input-form" placeholder="Altro..." style="width: 50%" disabled>
+                </div>
+            </div>
+
+            <div id="step-5" class="form-step" style="display: none;">
                 <h3>Fattori Dimensionali Italia</h3>
 
                 <!-- Sezione Dipendenti -->
-                <fieldset style="margin-bottom: 10px; padding: 15px;">
+                <fieldset>
                     <legend><strong>N° Dipendenti</strong></legend>
                     
                     <div class="flex-form" style="display: flex; gap: 15px; margin-bottom: 10px;">
@@ -355,7 +390,7 @@
                 </fieldset>
             </div>
             
-            <div id="step-5" class="form-step" style="display: none;">
+            <div id="step-6" class="form-step" style="display: none;">
                 <h3>Dati di Contatto</h3>
                 <input type="email" id="input-email" placeholder="Indirizzo Email PEC" class="input-form">
             </div>
