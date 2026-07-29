@@ -391,8 +391,14 @@
             </div>
             
             <div id="step-6" class="form-step" style="display: none;">
-                <h3>Dati di Contatto</h3>
-                <input type="email" id="input-email" placeholder="Indirizzo Email PEC" class="input-form">
+                <h3>E-mail con copia Modulo</h3>
+                <div id="container-email">
+                    <!-- Avvolgiamo il primo input in flex-form per dargli lo stesso comportamento -->
+                    <div class="email-row flex-form">
+                        <input type="email" id="input-email" placeholder="Indirizzo Email" class="input-form input-email-dest">
+                    </div>
+                </div>
+                <button type="button" id="btn-aggiungi-email" style="margin-top: 5px;">+ Aggiungi destinatario</button>
             </div>
 
             <div style="display: flex; justify-content: space-between; margin-top: 20px; width: 100%; gap: 15px">

@@ -48,6 +48,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Limita la lunghezza del testo per evitare attacchi di tipo Buffer Overflow
         $nomeUtentePulito = substr($nomeUtentePulito, 0, 50);
 
+        // ---- INTEGRAZIONE: Gestione e validazione email dinamiche ----
+        $destinatari = isset($_POST['email']) ? $_POST['email'] : [];
+        
+        if (!is_array($destinatari) || empty($destinatari)) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Nessun indirizzo email specificato.'
+            ]);
+            exit;
+        }
+        // -------------------------------------------------------------
+
         // Verifichiamo che il file sia arrivato correttamente e senza errori di upload
         if (!isset($_FILES['filePdf']) || $_FILES['filePdf']['error'] !== UPLOAD_ERR_OK) {
             echo json_encode([
@@ -89,8 +101,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port       = intval(getenv('SMTP_PORT'));
 
-        $mail->setFrom('matteo.spasiano@retailin.it', 'Moduli Confimprese');
-        $mail->addAddress('spasiano.matteo02@gmail.com', 'Destinatario');
+        $mail->setFrom(getenv('SMTP_USER'), 'Moduli Confimprese');
+
+        // ---- INTEGRAZIONE: Aggiunta dinamica dei destinatari validati ----
+        $emailAggiunte = 0;
+        foreach ($destinatari as $email) {
+            // Pulizia da eventuali spazi o tentativi di header injection anche nell'email
+            $emailPulita = str_replace(array("\r", "\n", "%0a", "%0d"), '', trim($email));
+            
+            if (filter_var($emailPulita, FILTER_VALIDATE_EMAIL)) {
+                $mail->addAddress($emailPulita);
+                $emailAggiunte++;
+            }
+        }
+
+        // Se nessuna email ha superato la validazione, blocca l'invio
+        if ($emailAggiunte === 0) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Nessun indirizzo email fornito risulta valido.'
+            ]);
+            exit;
+        }
+        // -----------------------------------------------------------------
 
         $mail->isHTML(true);
         $mail->Subject = "Nuovo modulo PDF da: " . $nomeUtentePulito;
@@ -100,7 +133,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mail->AltBody = "In allegato trovi il Modulo di Adesione a Confimprese compilato per conto di " . $nomeUtentePulito . ".";
 
         // 3. ALLEGATO: Usiamo addAttachment passando il file temporaneo sul server
-        // Parametri: (Percorso file fisico sul server, Nome che vedrà il destinatario)
         $mail->addAttachment($percorsoTemporaneo, $nomeOriginaleFile);
 
         $mail->send();

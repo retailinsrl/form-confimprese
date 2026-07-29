@@ -338,24 +338,48 @@ async function confermaEInvia(event) {
         const form = pdfDoc.getForm();
         const nomeUtente = document.getElementById("input-nome-societa").value.trim().toUpperCase() || "UTENTE";
 
+        // ---- NUOVA LOGICA: Recupero email dinamiche ----
+        const inputEmail = document.querySelectorAll(".input-email-dest");
+        const listaEmail = [];
+        
+        inputEmail.forEach(input => {
+            const email = input.value.trim();
+            if (email !== "") {
+                listaEmail.push(email);
+            }
+        });
+
+        if (listaEmail.length === 0) {
+            alert("Inserisci almeno un indirizzo email valido.");
+            btn.textContent = "Conferma e Invia Mail";
+            btn.disabled = false;
+            return;
+        }
+        // ------------------------------------------------
+
         // Salva i byte del PDF
         pdfBytesModificato = await pdfDoc.save();
 
         // 1. Trasformiamo i byte in un vero file binario (Blob)
         const pdfBlob = new Blob([pdfBytesModificato], { type: 'application/pdf' });
 
-        // 2. Creiamo l'oggetto FormData per simulare l'invio di un form standard
+        // 2. Creiamo l'oggetto FormData
         const datiForm = new FormData();
         datiForm.append('nomeUtente', nomeUtente);
         
-        // Aggiungiamo il file specificando: nome parametro, il blob, e il nome file fisico
+        // Appendiamo ogni email all'array 'email[]'
+        listaEmail.forEach(email => {
+            datiForm.append('email[]', email);
+        });
+        
+        // Aggiungiamo il file PDF
         const nomeFile = `modulo_${nomeUtente.replace(/[^a-zA-Z0-9_-]/g, '_')}.pdf`;
         datiForm.append('filePdf', pdfBlob, nomeFile);
 
-        // 3. Facciamo la richiesta POST (Fetch imposta gli header multipart/form-data da sola)
+        // 3. Facciamo la richiesta POST
         const risposta = await fetch('invia.php', {
             method: 'POST',
-            body: datiForm // Passiamo direttamente l'oggetto FormData
+            body: datiForm 
         });
 
         const risultato = await risposta.json();
@@ -595,3 +619,23 @@ document.getElementById('input-div-ass').addEventListener('change', function(e) 
 
 // Ascolta anche la digitazione in tempo reale nel campo "Altro"
 document.getElementById('input-altro-ass').addEventListener('input', getAssociazioni);
+
+document.getElementById('btn-aggiungi-email').addEventListener('click', () => {
+    const container = document.getElementById('container-email');
+    
+    // Crea la nuova riga
+    const row = document.createElement('div');
+    row.className = 'flex-form';
+    //row.style.marginBottom = '0px'; // Aggiunge un po' di spazio sotto la riga (visto che flex-form ha margin-bottom: 0)
+    
+    // Inserisce l'input (con style="flex: 1" per espandersi) e il bottone
+    row.innerHTML = `
+        <input type="email" class="input-form input-email-dest" placeholder="Indirizzo Email" style="width: 93%">
+        <button type="button" class="input-form btn-rimuovi-email" style="width: 7%; background-color: red; font-weight: bold; margin-top: 0">&#128465;</button>
+    `;
+    
+    // Gestione della rimozione del campo
+    row.querySelector('.btn-rimuovi-email').addEventListener('click', () => row.remove());
+    
+    container.appendChild(row);
+});
