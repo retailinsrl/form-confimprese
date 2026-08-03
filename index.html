@@ -264,6 +264,7 @@
             
             <div id="step-4" class="form-step" style="display: none;">
                 <h3>Altre informazioni</h3>
+                <input type="text" id="input-competitor" class="input-form" placeholder="Principali competitor">
                 <label for="input-div-ass"><strong>A quali altre associazioni la vostra azienda è iscritta?</strong></label>
                 <div id="input-div-ass" class="input-div-ck">
                     <label><input type="checkbox" name="associazioni[]" value="0"> Aires</label><br>
@@ -391,6 +392,54 @@
             </div>
             
             <div id="step-6" class="form-step" style="display: none;">
+                <h3>Fattori Dimensionali Estero</h3>
+                <div id="input-radio-est" class="flex-form" style="flex: 1;">
+                    <strong>Siete presenti all'estero?</strong>
+                    <input type="radio" name="input-radio-est-selected" id="input-radio-est-y" value="1">Si
+                    <input type="radio" name="input-radio-est-selected" id="input-radio-est-n" value="0" checked>No
+                </div>
+                <div id="input-div-est" style="display: none; margin-top: 10px;">
+                    <hr class="form-separator">
+                    <input type="text" id="input-paesi-estero" class="input-form" placeholder="Paesi in cui siete presenti all'estero">
+                    <fieldset style="margin-bottom: 10px; padding: 15px;">
+                        <legend><strong>N° Punti Vendita estero</strong></legend>
+                        <div class="flex-form" style="display: flex; gap: 10px;">
+                            <div style="flex: 1;">
+                                <label for="input-est-dir" style="display: block; margin-bottom: 5px;">Diretti</label>
+                                <input type="number" id="input-est-dir" class="input-form" style="width: 100%;">
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="input-est-fr" style="display: block; margin-bottom: 5px;">Franchising</label>
+                                <input type="number" id="input-est-fr" class="input-form" style="width: 100%;">
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="input-est-altro" style="display: block; margin-bottom: 5px;">Altro (Specificare la formula)</label>
+                                <input type="text" id="input-est-altro" class="input-form" style="width: 100%;">
+                            </div>
+                        </div>
+                    </fieldset>
+                    <input type="text" id="input-est-plan" class="input-form" placeholder="Paesi in cui sareste interessati ad aprire punti vendita">
+                    <fieldset style="margin-bottom: 10px; padding: 15px;">
+                        <legend><strong>Piani di sviluppo (obiettivi a 3 anni)</strong></legend>
+                        <div class="flex-form" style="display: flex; gap: 10px;">
+                            <div style="flex: 1;">
+                                <label for="input-plan-dir" style="display: block; margin-bottom: 5px;">Rete diretta</label>
+                                <input type="number" id="input-plan-dir" class="input-form" style="width: 100%;">
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="input-plan-fr" style="display: block; margin-bottom: 5px;">Rete franchising</label>
+                                <input type="number" id="input-plan-fr" class="input-form" style="width: 100%;">
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="input-plan-altro" style="display: block; margin-bottom: 5px;">Altro (Specificare)</label>
+                                <input type="text" id="input-plan-altro" class="input-form" style="width: 100%;">
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+
+            <div id="step-7" class="form-step" style="display: none;">
                 <h3>E-mail con copia Modulo</h3>
                 <div id="container-email">
                     <!-- Avvolgiamo il primo input in flex-form per dargli lo stesso comportamento -->
@@ -412,6 +461,9 @@
             <p style="color: #7f8c8d; text-align: center;">Il PDF compilato apparirà qui in anteprima dopo aver cliccato su "Genera Anteprima PDF".</p>
         </div>
     </div>
+
+    <script src="campiTest.js"></script>
+    <script src="province.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
