@@ -64,7 +64,7 @@ const campi = [
     { id: "input-mob-rop", x: 350, y: 481, pagina: 1, required: true, step: 3 },
 
     // Campi Pagina 3 (Indice pagina: 2)
-    { id: "input-competitor", x: 63, y: 443, pagina: 2, required: false, step: 4},
+    { id: "input-competitor", x: 63, y: 423, pagina: 2, required: false, step: 4},
     { id: "input-div-ass", x: 63, y: 362.5, pagina: 2, required: false, step: 4, 
         render: (page, valArray, c) => {
             if (!valArray || !Array.isArray(valArray)) return; 
