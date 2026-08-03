@@ -114,7 +114,7 @@ const campi = [
     { id: "input-est-dir", x: 110, y: 602, pagina: 6, required: false, step: 6 },
     { id: "input-est-fr", x: 235, y: 602, pagina: 6, required: false, step: 6 },
     { id: "input-est-altro", x: 405, y: 602, pagina: 6, required: false, step: 6 },
-    { id: "input-est-plan", x: 63, y: 557, pagina: 6, required: false, step: 6 },
+    { id: "input-est-plan", x: 63, y: 558.5, pagina: 6, required: false, step: 6 },
     { id: "input-plan-dir", x: 115, y: 512, pagina: 6, required: false, step: 6 },
     { id: "input-plan-fr", x: 130, y: 497, pagina: 6, required: false, step: 6 },
     { id: "input-plan-altro", x: 150, y: 482, pagina: 6, required: false, step: 6 },
