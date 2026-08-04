@@ -441,9 +441,8 @@ document.getElementById('btn-aggiungi-email').addEventListener('click', () => {
     // Crea la nuova riga
     const row = document.createElement('div');
     row.className = 'flex-form';
-    //row.style.marginBottom = '0px'; // Aggiunge un po' di spazio sotto la riga (visto che flex-form ha margin-bottom: 0)
     
-    // Inserisce l'input (con style="flex: 1" per espandersi) e il bottone
+    // Inserisce l'input e il bottone
     row.innerHTML = `
         <input type="email" class="input-form input-email-dest" placeholder="Indirizzo Email" style="width: 93%">
         <button type="button" class="input-form btn-rimuovi-email" style="width: 7%; background-color: red; font-weight: bold; margin-top: 0">&#128465;</button>
@@ -457,4 +456,66 @@ document.getElementById('btn-aggiungi-email').addEventListener('click', () => {
 
 document.getElementById("input-radio-est").addEventListener('change', (event) => {
     document.getElementById("input-div-est").style.display = event.target.value === "0" ? "none" : "block";
+});
+
+// Funzione per aggiornare i numeri dei placeholder
+function aggiornaMarchi() {
+    const container = document.getElementById('container-marchi');
+    const righe = container.querySelectorAll('.flex-form');
+
+    righe.forEach((row, index) => {
+        const nuovoIndex = index + 1;
+        const input = row.querySelector('input[type="text"]');
+        let btnRimuovi = row.querySelector('.btn-rimuovi-marchio');
+
+        // 1. Aggiorna ID e Placeholder
+        input.id = `input-m${nuovoIndex}-nome`;
+        input.placeholder = `Nome Marchio #${nuovoIndex}`;
+
+        // 2. Se c'è solo 1 riga, rimuove il pulsante elimina (se presente) e allarga l'input
+        if (righe.length === 1) {
+            input.style.width = '100%';
+            if (btnRimuovi) btnRimuovi.remove();
+        } else {
+            // Se ci sono più righe, assicura che l'input sia al 93% e che ci sia il pulsante
+            input.style.width = '93%';
+            
+            if (!btnRimuovi) {
+                btnRimuovi = document.createElement('button');
+                btnRimuovi.type = 'button';
+                btnRimuovi.className = 'input-form btn-rimuovi-marchio';
+                btnRimuovi.style.cssText = 'width: 7%; background-color: red; font-weight: bold; margin-top: 0;';
+                btnRimuovi.innerHTML = '&#128465;';
+
+                // Listener per la rimozione
+                btnRimuovi.addEventListener('click', () => {
+                    row.remove();
+                    aggiornaMarchi(); // Riordina id, placeholder e layout
+                });
+
+                row.appendChild(btnRimuovi);
+            }
+        }
+    });
+}
+
+document.getElementById('btn-aggiungi-marchio').addEventListener('click', () => {
+    const container = document.getElementById('container-marchi');
+    const righeAttuali = container.querySelectorAll('.flex-form').length;
+
+    // Limite massimo 3
+    if (righeAttuali >= 3) {
+        alert('Puoi inserire al massimo 3 marchi.');
+        return;
+    }
+
+    // Crea la nuova riga (vuota, se ne occupa aggiornaMarchi)
+    const row = document.createElement('div');
+    row.className = 'flex-form marchi-row';
+    row.innerHTML = `<input type="text" class="input-form">`;
+
+    container.appendChild(row);
+
+    // Aggiorna subito ID, placeholder, bottoni di eliminazione e larghezze
+    aggiornaMarchi();
 });

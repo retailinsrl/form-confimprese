@@ -46,7 +46,27 @@ const campi = [
     { id: "input-email-ref", x: 80, y: 588, pagina: 1, required: true, step: 2 },
     { id: "input-mob-ref", x: 350, y: 588, pagina: 1, required: true, step: 2 },
     { id: "input-sito-ref", x: 110, y: 573, pagina: 1, required: false, step: 2 },
-    { id: "input-marchi-ref", x: 80, y: 558, pagina: 1, required: false, step: 2 },
+    //{ id: "input-marchi-ref", x: 80, y: 558, pagina: 1, required: false, step: 2 },
+    { 
+        id: "input-m1-nome", x: 80, y: 558, pagina: 1, required: false, step: 2,
+        render: (page, val, c) => {
+            const el2 = document.getElementById("input-m2-nome");
+            const el3 = document.getElementById("input-m3-nome");
+
+            const m1 = val ? val.trim().toUpperCase() : "";
+            const m2 = el2 ? el2.value.trim().toUpperCase() : "";
+            const m3 = el3 ? el3.value.trim().toUpperCase() : "";
+
+            // Unisce i marchi esistenti con una virgola e uno spazio
+            const testoCompleto = [m1, m2, m3].filter(Boolean).join(", ");
+
+            if (testoCompleto) {
+                page.drawText(testoCompleto, { x: c.x, y: c.y, size: 8 });
+            }
+        }
+    },
+    { id: "input-m2-nome", required: false, step: 2 },
+    { id: "input-m3-nome", required: false, step: 2 },
     { id: "input-sdi-ref", x: 230, y: 542, pagina: 1, required: true, step: 2 },
     { id: "input-pec-ref", x: 319, y: 542, pagina: 1, required: true, step: 2 },
     { id: "input-piva-ref", x: 450, y: 542, pagina: 1, required: true, step: 2 },
