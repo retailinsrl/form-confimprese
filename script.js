@@ -455,10 +455,6 @@ document.getElementById("input-radio-est").addEventListener('change', (event) =>
 function aggiornaMarchi() {
     const container = document.getElementById('container-marchi');
     const righe = container.querySelectorAll('.flex-form');
-    
-    // Recuperiamo anche le righe del riepilogo (se esistono) per aggiornare i loro ID
-    const containerRiepilogo = document.getElementById('container-riepilogo-marchi'); // Modifica col tuo ID reale
-    const righeRiepilogo = containerRiepilogo ? containerRiepilogo.querySelectorAll('.flex-form') : [];
 
     righe.forEach((row, index) => {
         const nuovoIndex = index + 1;
@@ -469,21 +465,7 @@ function aggiornaMarchi() {
         inputM.id = `input-m${nuovoIndex}-nome`;
         inputM.placeholder = `Nome Marchio #${nuovoIndex}`;
 
-        // 2. Se esiste un input corrispettivo nel riepilogo, aggiorna anche il suo ID
-        if (righeRiepilogo[index]) {
-            const inputRM = righeRiepilogo[index].querySelector('input');
-            if (inputRM) {
-                inputRM.id = `input-rm${nuovoIndex}-nome`;
-                
-                // Sincronizza subito il valore corrente
-                inputRM.value = inputM.value;
-
-                // Collega l'evento per i cambiamenti futuri
-                inputM.oninput = () => { inputRM.value = inputM.value; };
-            }
-        }
-
-        // 3. Gestione del pulsante di rimozione e del layout
+        // 2. Gestione del pulsante di rimozione e del layout
         if (righe.length === 1) {
             inputM.style.width = '100%';
             if (btnRimuovi) btnRimuovi.remove();
@@ -503,11 +485,6 @@ function aggiornaMarchi() {
             // IMPORTANTE: Aggiorniamo SEMPRE l'evento click per riflettere la riga e l'indice corretti
             btnRimuovi.onclick = () => {
                 row.remove();
-                
-                // Se hai una riga corrispondente nel riepilogo, rimuovi anche quella!
-                if (righeRiepilogo[index]) {
-                    righeRiepilogo[index].remove();
-                }
 
                 // Ricalcola tutti gli ID, placeholder e associazioni
                 aggiornaMarchi();
