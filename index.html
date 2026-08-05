@@ -319,11 +319,10 @@
                             <label for="input-ndip-pv" style="display: block; margin-bottom: 5px;">Punti Vendita diretti</label>
                             <input type="number" id="input-ndip-pv" class="input-form" style="width: 100%;">
                         </div>
-                    </div>
-
-                    <div>
-                        <label for="input-occ-indiretti" style="display: block; margin-bottom: 5px;">Occupazione creata da rete Franchising / Punti Vendita non diretti</label>
-                        <input type="number" id="input-occ-indiretti" class="input-form" style="width: 100%;">
+                        <div style="flex: 1;">
+                            <label for="input-occ-indiretti" style="display: block; margin-bottom: 5px;">Rete Franchising</label>
+                            <input type="number" id="input-occ-indiretti" class="input-form" style="width: 100%;">
+                        </div>
                     </div>
                 </fieldset>
 
@@ -395,8 +394,260 @@
                     </div>
                 </fieldset>
             </div>
-            
-            <div id="step-6" class="form-step" style="display: none;">
+
+            <div id="step-6" class="form-step" style="display: none">
+                <h3>Dati Rete</h3>
+                <h4>Marchio #1</h4>
+                <div class="flex-form">
+                    <input type="text" id="input-rm1-nome" class="input-form" placeholder="Nome Marchio" style="width: 80%;">
+                    <input type="number" id="input-rm1-anno" class="input-form" placeholder="Anno di inizio attività" style="width: 20%;">
+                </div>
+                <fieldset style="margin-bottom: 10px; padding: 15px;">
+                        <legend><strong>N° Punti Vendita</strong></legend>
+                        <div class="flex-form" style="display: flex; gap: 10px;">
+                            <div style="flex: 1;">
+                                <label for="input-rm1-npv-dir" style="display: block; margin-bottom: 5px;">Diretti</label>
+                                <input type="number" id="input-rm1-npv-dir" class="input-form" style="width: 100%;">
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="input-rm1-npv-fr" style="display: block; margin-bottom: 5px;">Franchising</label>
+                                <input type="number" id="input-rm1-npv-fr" class="input-form" style="width: 100%;">
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="input-rm1-npv-altro" style="display: block; margin-bottom: 5px;">Altro (Specificare)</label>
+                                <input type="text" id="input-rm1-npv-altro" class="input-form" style="width: 100%;">
+                            </div>
+                        </div>
+                </fieldset>
+                <label for="input-rm1-ub-div"><strong>Ubicazione ottimale</strong></label>
+                <div id="input-rm1-ub-div" name="input-rm1-ub-div" class="input-div-ck" style="flex: 1;">
+                    <label><input type="checkbox" name="ubicazioni1[]" value="0"> Centri Commerciali</label><br>
+                    <label><input type="checkbox" name="ubicazioni1[]" value="1"> Outlet</label><br>
+                    <label><input type="checkbox" name="ubicazioni1[]" value="2"> Retail Park</label><br>
+                    <label><input type="checkbox" name="ubicazioni1[]" value="3"> Travel</label><br>
+                    <label><input type="checkbox" name="ubicazioni1[]" value="4"> Vie dello shopping</label><br>
+                    <label><input type="checkbox" name="ubicazioni1[]" value="5"> Negozi di prossimità</label><br>
+                    <label><input type="checkbox" name="ubicazioni1[]" value="6"> Aree periferiche nelle città metropolitane</label><br>
+                    <label style="display: flex; align-items: center; gap: 8px; width: 100%;">
+                        <input type="checkbox" name="ubicazioni1[]" value="7" onclick="attivaAltroUbicazione(this, 1)"> Altro
+                        <input type="text" name="" id="input-rm1-ub-altro" class="input-form" placeholder="Altro..." style="flex-grow: 1;" disabled>
+                    </label>
+                </div>
+                <fieldset style="margin-bottom: 10px; padding: 15px;">
+                        <legend><strong>Metratura media Punti Vendita</strong></legend>
+                        <div class="flex-form" style="display: flex; gap: 10px;">
+                            <div style="flex: 1;">
+                                <label for="input-rm1-mq-dir" style="display: block; margin-bottom: 5px;">Diretti</label>
+                                <select id="input-rm1-mq-dir" class="input-form">
+                                    <option value="" disabled selected>Seleziona una metratura...</option>
+                                    <option value="0">Piccola (da 15 a 200 m²)</option>
+                                    <option value="1">Media (da 200 a 600 m²)</option>
+                                    <option value="2">Grande (oltre 600 m²)</option>
+                                </select>
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="input-rm1-mq-fr" style="display: block; margin-bottom: 5px;">Franchising</label>
+                                <select id="input-rm1-mq-fr" class="input-form">
+                                    <option value="" disabled selected>Seleziona una metratura...</option>
+                                    <option value="0">Piccola (da 15 a 200 m²)</option>
+                                    <option value="1">Media (da 200 a 600 m²)</option>
+                                    <option value="2">Grande (oltre 600 m²)</option>
+                                </select>
+                            </div>
+                        </div>
+                </fieldset>
+                <fieldset style="margin-bottom: 10px; padding: 15px;">
+                        <legend><strong>Piani di Sviluppo (obiettivi a 3 anni)</strong></legend>
+                        <div class="flex-form" style="display: flex; gap: 10px;">
+                            <div style="flex: 1;">
+                                <label for="input-rm1-ps-dir" style="display: block; margin-bottom: 5px;">N° PdV Diretti</label>
+                                <input type="text" id="input-rm1-ps-dir" class="input-form" style="width: 100%;">
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="input-rm1-ps-fr" style="display: block; margin-bottom: 5px;">N° PdV Franchising</label>
+                                <input type="text" id="input-rm1-ps-fr" class="input-form" style="width: 100%;">
+                            </div>
+                        </div>
+                </fieldset>
+                <label for="input-rm1-cs-div"><strong>Canali di Sviluppo</strong></label>
+                <div id="input-rm1-cs-div" name="input-rm1-cs-div" class="input-div-ck">
+                    <label><input id="input-rm1-cs-0" type="checkbox"> Rete diretta</label><br>
+                    <label><input id="input-rm1-cs-1" type="checkbox"> Franchising</label><br>
+                    <label><input id="input-rm1-cs-2" type="checkbox"> E-commerce di proprietà</label><br>
+                    <label><input id="input-rm1-cs-3" type="checkbox"> Piattaforme e-commerce (Amazon/Altri Marketplace)</label><br>
+                    <label><input id="input-rm1-cs-4" type="checkbox"> Wholesale</label><br>
+                </div>
+            </div>
+
+            <div id="step-7" class="form-step" style="display: none">
+                <h3>Dati Rete</h3>
+                <h4>Marchio #2</h4>
+                <div class="flex-form">
+                    <input type="text" id="input-rm2-nome" class="input-form" placeholder="Nome Marchio" style="width: 80%;">
+                    <input type="number" id="input-rm2-anno" class="input-form" placeholder="Anno di inizio attività" style="width: 20%;">
+                </div>
+                <fieldset style="margin-bottom: 10px; padding: 15px;">
+                        <legend><strong>N° Punti Vendita</strong></legend>
+                        <div class="flex-form" style="display: flex; gap: 10px;">
+                            <div style="flex: 1;">
+                                <label for="input-rm2-npv-dir" style="display: block; margin-bottom: 5px;">Diretti</label>
+                                <input type="number" id="input-rm2-npv-dir" class="input-form" style="width: 100%;">
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="input-rm2-npv-fr" style="display: block; margin-bottom: 5px;">Franchising</label>
+                                <input type="number" id="input-rm2-npv-fr" class="input-form" style="width: 100%;">
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="input-rm2-npv-altro" style="display: block; margin-bottom: 5px;">Altro (Specificare)</label>
+                                <input type="text" id="input-rm2-npv-altro" class="input-form" style="width: 100%;">
+                            </div>
+                        </div>
+                </fieldset>
+                <label for="input-rm2-ub-div"><strong>Ubicazione ottimale</strong></label>
+                <div id="input-rm2-ub-div" name="input-rm1-ub-div" class="input-div-ck">
+                    <label><input type="checkbox" name="ubicazioni2[]" value="0"> Centri Commerciali</label><br>
+                    <label><input type="checkbox" name="ubicazioni2[]" value="1"> Outlet</label><br>
+                    <label><input type="checkbox" name="ubicazioni2[]" value="2"> Retail Park</label><br>
+                    <label><input type="checkbox" name="ubicazioni2[]" value="3"> Travel</label><br>
+                    <label><input type="checkbox" name="ubicazioni2[]" value="4"> Vie dello shopping</label><br>
+                    <label><input type="checkbox" name="ubicazioni2[]" value="5"> Negozi di prossimità</label><br>
+                    <label><input type="checkbox" name="ubicazioni2[]" value="6"> Aree periferiche nelle città metropolitane</label><br>
+                    <label style="display: flex; align-items: center; gap: 8px; width: 100%;">
+                        <input type="checkbox" name="ubicazioni2[]" value="7" onclick="attivaAltroUbicazione(this, 2)"> Altro
+                        <input type="text" name="" id="input-rm2-ub-altro" class="input-form" placeholder="Altro..." style="flex-grow: 1;" disabled>
+                    </label>
+                </div>
+                <fieldset style="margin-bottom: 10px; padding: 15px;">
+                        <legend><strong>Metratura media Punti Vendita</strong></legend>
+                        <div class="flex-form" style="display: flex; gap: 10px;">
+                            <div style="flex: 1;">
+                                <label for="input-rm2-mq-dir" style="display: block; margin-bottom: 5px;">Diretti</label>
+                                <select id="input-rm2-mq-dir" class="input-form">
+                                    <option value="" disabled selected>Seleziona una metratura...</option>
+                                    <option value="0">Piccola (da 15 a 200 m²)</option>
+                                    <option value="1">Media (da 200 a 600 m²)</option>
+                                    <option value="2">Grande (oltre 600 m²)</option>
+                                </select>
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="input-rm2-mq-fr" style="display: block; margin-bottom: 5px;">Franchising</label>
+                                <select id="input-rm2-mq-fr" class="input-form">
+                                    <option value="" disabled selected>Seleziona una metratura...</option>
+                                    <option value="0">Piccola (da 15 a 200 m²)</option>
+                                    <option value="1">Media (da 200 a 600 m²)</option>
+                                    <option value="2">Grande (oltre 600 m²)</option>
+                                </select>
+                            </div>
+                        </div>
+                </fieldset>
+                <fieldset style="margin-bottom: 10px; padding: 15px;">
+                        <legend><strong>Piani di Sviluppo (obiettivi a 3 anni)</strong></legend>
+                        <div class="flex-form" style="display: flex; gap: 10px;">
+                            <div style="flex: 1;">
+                                <label for="input-rm2-ps-dir" style="display: block; margin-bottom: 5px;">N° PdV Diretti</label>
+                                <input type="text" id="input-rm2-ps-dir" class="input-form" style="width: 100%;">
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="input-rm2-ps-fr" style="display: block; margin-bottom: 5px;">N° PdV Franchising</label>
+                                <input type="text" id="input-rm2-ps-fr" class="input-form" style="width: 100%;">
+                            </div>
+                        </div>
+                </fieldset>
+                <label for="input-rm2-cs-div"><strong>Canali di Sviluppo</strong></label>
+                <div id="input-rm2-cs-div" name="input-rm2-cs-div" class="input-div-ck">
+                    <label><input type="checkbox" name="canali2[]" value="0"> Rete diretta</label><br>
+                    <label><input type="checkbox" name="canali2[]" value="1"> Franchising</label><br>
+                    <label><input type="checkbox" name="canali2[]" value="2"> E-commerce di proprietà</label><br>
+                    <label><input type="checkbox" name="canali2[]" value="3"> Piattaforme e-commerce (Amazon/Altri Marketplace)</label><br>
+                    <label><input type="checkbox" name="canali2[]" value="4"> Wholesale</label><br>
+                </div>
+            </div>
+
+            <div id="step-8" class="form-step" style="display: none">
+                <h3>Dati Rete</h3>
+                <h4>Marchio #3</h4>
+                <div class="flex-form">
+                    <input type="text" id="input-rm3-nome" class="input-form" placeholder="Nome Marchio" style="width: 80%;">
+                    <input type="number" id="input-rm3-anno" class="input-form" placeholder="Anno di inizio attività" style="width: 20%;">
+                </div>
+                <fieldset style="margin-bottom: 10px; padding: 15px;">
+                        <legend><strong>N° Punti Vendita</strong></legend>
+                        <div class="flex-form" style="display: flex; gap: 10px;">
+                            <div style="flex: 1;">
+                                <label for="input-rm3-npv-dir" style="display: block; margin-bottom: 5px;">Diretti</label>
+                                <input type="number" id="input-rm3-npv-dir" class="input-form" style="width: 100%;">
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="input-rm3-npv-fr" style="display: block; margin-bottom: 5px;">Franchising</label>
+                                <input type="number" id="input-rm3-npv-fr" class="input-form" style="width: 100%;">
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="input-rm3-npv-altro" style="display: block; margin-bottom: 5px;">Altro (Specificare)</label>
+                                <input type="text" id="input-rm3-npv-altro" class="input-form" style="width: 100%;">
+                            </div>
+                        </div>
+                </fieldset>
+                <label for="input-rm3-ub-div"><strong>Ubicazione ottimale</strong></label>
+                <div id="input-rm3-ub-div" name="input-rm3-ub-div" class="input-div-ck">
+                    <label><input type="checkbox" name="ubicazioni3[]" value="0"> Centri Commerciali</label><br>
+                    <label><input type="checkbox" name="ubicazioni3[]" value="1"> Outlet</label><br>
+                    <label><input type="checkbox" name="ubicazioni3[]" value="2"> Retail Park</label><br>
+                    <label><input type="checkbox" name="ubicazioni3[]" value="3"> Travel</label><br>
+                    <label><input type="checkbox" name="ubicazioni3[]" value="4"> Vie dello shopping</label><br>
+                    <label><input type="checkbox" name="ubicazioni3[]" value="5"> Negozi di prossimità</label><br>
+                    <label><input type="checkbox" name="ubicazioni3[]" value="6"> Aree periferiche nelle città metropolitane</label><br>
+                    <label style="display: flex; align-items: center; gap: 8px; width: 100%;">
+                        <input type="checkbox" name="ubicazioni3[]" value="7" onclick="attivaAltroUbicazione(this, 3)"> Altro
+                        <input type="text" name="" id="input-rm3-ub-altro" class="input-form" placeholder="Altro..." style="flex-grow: 1;" disabled>
+                    </label>
+                </div>
+                <fieldset style="margin-bottom: 10px; padding: 15px;">
+                        <legend><strong>Metratura media Punti Vendita</strong></legend>
+                        <div class="flex-form" style="display: flex; gap: 10px;">
+                            <div style="flex: 1;">
+                                <label for="input-rm3-mq-dir" style="display: block; margin-bottom: 5px;">Diretti</label>
+                                <select id="input-rm3-mq-dir" class="input-form">
+                                    <option value="" disabled selected>Seleziona una metratura...</option>
+                                    <option value="0">Piccola (da 15 a 200 m²)</option>
+                                    <option value="1">Media (da 200 a 600 m²)</option>
+                                    <option value="2">Grande (oltre 600 m²)</option>
+                                </select>
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="input-rm3-mq-fr" style="display: block; margin-bottom: 5px;">Franchising</label>
+                                <select id="input-rm3-mq-fr" class="input-form">
+                                    <option value="" disabled selected>Seleziona una metratura...</option>
+                                    <option value="0">Piccola (da 15 a 200 m²)</option>
+                                    <option value="1">Media (da 200 a 600 m²)</option>
+                                    <option value="2">Grande (oltre 600 m²)</option>
+                                </select>
+                            </div>
+                        </div>
+                </fieldset>
+                <fieldset style="margin-bottom: 10px; padding: 15px;">
+                        <legend><strong>Piani di Sviluppo (obiettivi a 3 anni)</strong></legend>
+                        <div class="flex-form" style="display: flex; gap: 10px;">
+                            <div style="flex: 1;">
+                                <label for="input-rm3-ps-dir" style="display: block; margin-bottom: 5px;">N° PdV Diretti</label>
+                                <input type="text" id="input-rm3-ps-dir" class="input-form" style="width: 100%;">
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="input-rm3-ps-fr" style="display: block; margin-bottom: 5px;">N° PdV Franchising</label>
+                                <input type="text" id="input-rm3-ps-fr" class="input-form" style="width: 100%;">
+                            </div>
+                        </div>
+                </fieldset>
+                <label for="input-rm3-cs-div"><strong>Canali di Sviluppo</strong></label>
+                <div id="input-rm3-cs-div" name="input-rm3-cs-div" class="input-div-ck">
+                    <label><input type="checkbox" name="canali3[]" value="0"> Rete diretta</label><br>
+                    <label><input type="checkbox" name="canali3[]" value="1"> Franchising</label><br>
+                    <label><input type="checkbox" name="canali3[]" value="2"> E-commerce di proprietà</label><br>
+                    <label><input type="checkbox" name="canali3[]" value="3"> Piattaforme e-commerce (Amazon/Altri Marketplace)</label><br>
+                    <label><input type="checkbox" name="canali3[]" value="4"> Wholesale</label><br>
+                </div>
+            </div>
+
+            <div id="step-9" class="form-step" style="display: none;">
                 <h3>Fattori Dimensionali Estero</h3>
                 <div id="input-radio-est" class="flex-form" style="flex: 1;">
                     <strong>Siete presenti all'estero?</strong>
@@ -444,12 +695,12 @@
                 </div>
             </div>
 
-            <div id="step-7" class="form-step" style="display: none;">
+            <div id="step-10" class="form-step" style="display: none;">
                 <h3>E-mail con copia Modulo</h3>
                 <div id="container-email">
                     <!-- Avvolgiamo il primo input in flex-form per dargli lo stesso comportamento -->
                     <div class="email-row flex-form">
-                        <input type="email" id="input-email" placeholder="Indirizzo Email" class="input-form input-email-dest">
+                        <input type="email" id="input-email" placeholder="Indirizzo Email #1" class="input-form input-email-dest">
                     </div>
                 </div>
                 <button type="button" id="btn-aggiungi-email" style="margin-top: 5px;">+ Aggiungi destinatario</button>
@@ -459,6 +710,7 @@
                 <button id="btn-indietro" onclick="cambiaStep(-1)" style="display: none;">Indietro</button>
                 <button id="btn-avanti" onclick="cambiaStep(1)" disabled>Avanti</button>
                 <button id="btn-revisiona" onclick="avviaRevisione()" style="display: none;" disabled>Genera Anteprima PDF</button>
+                
             </div>
         </div>
 
@@ -467,7 +719,7 @@
         </div>
     </div>
 
-    <script src="campi.js"></script>
+    <script src="campiTest.js"></script>
     <script src="province.js"></script>
     <script src="script.js"></script>
 </body>

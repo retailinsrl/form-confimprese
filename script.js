@@ -30,7 +30,7 @@ async function inizializzaPdf(){
 }
 
 let stepCorrente = 0;
-const totaleStep = 7; // Modifica in 8 quando avrai aggiunto tutti gli step
+const totaleStep = 10;
 
 // 2. Funzione per navigare tra gli step del form
 function cambiaStep(direzione) {
@@ -116,36 +116,26 @@ function aggiornaIndicatori() {
 async function avviaRevisione() {
     
     // Raccoglie tutti i valori del form
+    const checkboxIds = ["input-div-ass", "input-rm1-ub-div", "input-rm2-ub-div", "input-rm3-ub-div", "input-rm2-cs-div", "input-rm3-cs-div"];
+
     const valori = campi.map(c => {
         const elemento = document.getElementById(c.id);
         let valoreEstratto;
 
-        if (c.id === "input-div-ass") {
-            // Se l'elemento non esiste nella pagina per sicurezza evitiamo crash
-            if (!elemento) {
-                valoreEstratto = [];
-            } else {
-                // Raccoglie l'array di checkbox selezionate
-                const checkboxSpuntate = elemento.querySelectorAll('input[name="associazioni[]"]:checked');
-                valoreEstratto = Array.from(checkboxSpuntate).map(cb => cb.value);
-            }
-        } else if (c.id === "input-radio-est") {
-            // [Gestione Specifica per il tuo Radio Button]
-            // Invece di cercare l'ID del contenitore, cerchiamo l'input con quel 'name' che è stato selezionato
-            const radioSelezionato = document.querySelector('input[name="input-radio-est-selected"]:checked');
-            
-            // Se l'utente ha selezionato qualcosa prendiamo il valore ("0" o "1"), altrimenti stringa vuota
-            valoreEstratto = radioSelezionato ? radioSelezionato.value : "";
+        if (checkboxIds.includes(c.id))
+            // Multi-checkbox
+            valoreEstratto = elemento ? Array.from(elemento.querySelectorAll(c.selector), cb => cb.value) : [];
+        else if (c.id === "input-radio-est")
+            // Radio button specifico
+            valoreEstratto = document.querySelector(c.selector)?.value || "";
+        else if (elemento?.type === "checkbox")
+            // Checkbox singolo: restituisce true se spuntato, false se deselezionato
+            valoreEstratto = elemento.checked;
+        else
+            // Altri campi standard (input, select)
+            valoreEstratto = elemento?.value ? elemento.value.toString().trim().toUpperCase() : "";
 
-        } else {
-            // Per tutti gli altri campi standard (input, select) estrae la stringa pulita
-            valoreEstratto = elemento && elemento.value ? elemento.value.toString().trim().toUpperCase() : "";
-        }
-
-        return {
-            ...c,
-            valore: valoreEstratto
-        };
+        return { ...c, valore: valoreEstratto };
     });
 
     // Verifica che tutti i campi di tutte le pagine siano stati compilati
@@ -159,55 +149,22 @@ async function avviaRevisione() {
 
     const pagine = pdfDoc.getPages();
 
-    // Aggiungi data sulla pagina 1, 7 e 8 (indice 0, 6 e 7)
-    const oggi = new Intl.DateTimeFormat("it-IT", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric"
-    }).format(new Date()).toUpperCase();
-
-    pagine[0].drawText(`MILANO, ${oggi}`, {
-        x: 45,
-        y: 152,
-        size: 10
-    });
-
-    pagine[6].drawText(`MILANO, ${oggi}`, {
-        x: 45,
-        y: 362,
-        size: 10
-    });
-
-    pagine[7].drawText(`MILANO, ${oggi}`, {
-        x: 80,
-        y: 302,
-        size: 10
-    });
-
-
     // Cicla i campi e li scrive sulla rispettiva pagina
     valori.forEach(c => {
         // Se il campo deve essere ignorato nella stampa autonoma, passa oltre
-        if (!c.x) return;
+        if (c.x === undefined || c.y === undefined) return;
 
         // Se la pagina non esiste restituisce errore
         const paginaTarget = pagine[c.pagina]; 
-        if (!paginaTarget) {
-            console.error(`ERRORE: La pagina con indice ${c.pagina} non esiste nel PDF!`);
-            return;
-        }
+        if (!paginaTarget)
+            return console.error(`ERRORE: La pagina con indice ${c.pagina} non esiste nel PDF!`);
 
         // Se il campo ha un metodo di rendering personalizzato, usa quello
-        if (typeof c.render === "function") {
+        if (typeof c.render === "function")
             c.render(paginaTarget, c.valore, c);
-        } else {
+        else
             // Altrimenti procedi con il posizionamento standard automatico
-            paginaTarget.drawText(c.valore, {
-                x: c.x,
-                y: c.y,
-                size: 8
-            });
-        }
+            paginaTarget.drawText(c.valore, { x: c.x, y: c.y, size: 8});
     });
 
     // Avvia la revisione finale a schermo
@@ -253,24 +210,39 @@ async function confermaEInvia(event) {
         const form = pdfDoc.getForm();
         const nomeUtente = document.getElementById("input-nome-societa").value.trim().toUpperCase() || "UTENTE";
 
-        // ---- NUOVA LOGICA: Recupero email dinamiche ----
-        const inputEmail = document.querySelectorAll(".input-email-dest");
+        // ---- NUOVA LOGICA: Recupero e validazione email dinamiche ----
+        const inputEmail = document.querySelectorAll("#container-email .input-email-dest");
         const listaEmail = [];
-        
+        let emailNonValida = false;
+
         inputEmail.forEach(input => {
             const email = input.value.trim();
             if (email !== "") {
-                listaEmail.push(email);
+                // Controllo nativo del browser sul formato email
+                if (!input.checkValidity()) {
+                    emailNonValida = true;
+                    input.reportValidity(); // Mostra il fumetto di errore nativo
+                } else {
+                    listaEmail.push(email);
+                }
             }
         });
 
+        // Se un'email non è formattata correttamente
+        if (emailNonValida) {
+            btn.textContent = "Conferma e Invia Mail";
+            btn.disabled = false;
+            return;
+        }
+
+        // Se nessuna email è stata inserita
         if (listaEmail.length === 0) {
             alert("Inserisci almeno un indirizzo email valido.");
             btn.textContent = "Conferma e Invia Mail";
             btn.disabled = false;
             return;
         }
-        // ------------------------------------------------
+        // ------------------------------------------------------------
 
         // Salva i byte del PDF
         pdfBytesModificato = await pdfDoc.save();
@@ -282,7 +254,7 @@ async function confermaEInvia(event) {
         const datiForm = new FormData();
         datiForm.append('nomeUtente', nomeUtente);
         
-        // Appendiamo ogni email all'array 'email[]'
+        // Appendiamo ogni email all'array 'email[]' per PHP
         listaEmail.forEach(email => {
             datiForm.append('email[]', email);
         });
@@ -291,7 +263,7 @@ async function confermaEInvia(event) {
         const nomeFile = `modulo_${nomeUtente.replace(/[^a-zA-Z0-9_-]/g, '_')}.pdf`;
         datiForm.append('filePdf', pdfBlob, nomeFile);
 
-        // 3. Facciamo la richiesta POST
+        // 3. Facciamo la richiesta POST a PHP
         const risposta = await fetch('invia.php', {
             method: 'POST',
             body: datiForm 
@@ -414,44 +386,65 @@ function attivaAltro(checkbox) {
     }
 }
 
-function getAssociazioni() {
-    // Prende solo le checkbox spuntate dentro quel div specifico
-    const checkboxSpuntate = document.querySelectorAll('#input-div-ass input[name="associazioni[]"]:checked');
-    
-    // Mappa le checkbox nei rispettivi valori
-    const valArray = Array.from(checkboxSpuntate).map(cb => cb.value);
+function aggiornaEmail() {
+    const container = document.getElementById('container-email');
+    const righe = container.querySelectorAll('.email-row');
 
-    return valArray;
+    righe.forEach((row, index) => {
+        const nuovoIndex = index + 1;
+        const input = row.querySelector('input[type="email"]');
+        let btnRimuovi = row.querySelector('.btn-rimuovi-email');
+
+        // 1. Aggiorna ID e Placeholder
+        input.id = `input-email-${nuovoIndex}`;
+        input.placeholder = `Indirizzo Email #${nuovoIndex}`;
+
+        // 2. Se c'è solo 1 email, rimuove il cestino e imposta la larghezza al 100%
+        if (righe.length === 1) {
+            input.style.width = '100%';
+            if (btnRimuovi) btnRimuovi.remove();
+        } else {
+            // Se ci sono più email, assegna larghezza 93% e inserisce il tasto elimina
+            input.style.width = '93%';
+            
+            if (!btnRimuovi) {
+                btnRimuovi = document.createElement('button');
+                btnRimuovi.type = 'button';
+                btnRimuovi.className = 'input-form btn-rimuovi-email';
+                btnRimuovi.style.cssText = 'width: 7%; background-color: red; font-weight: bold; margin-top: 0;';
+                btnRimuovi.innerHTML = '&#128465;';
+
+                // Listener per la rimozione
+                btnRimuovi.addEventListener('click', () => {
+                    row.remove();
+                    aggiornaEmail(); // Riordina id, placeholder e layout
+                });
+
+                row.appendChild(btnRimuovi);
+            }
+        }
+    });
 }
-
-// 3. (Opzionale) Se vuoi ascoltare i cambiamenti in tempo reale nel div
-document.getElementById('input-div-ass').addEventListener('change', function(e) {
-    // Ogni volta che l'utente clicca una checkbox aggiorna l'array
-    if (e.target.name === 'associazioni[]' /*|| e.target.id === 'input-altro-ass'*/){
-        const selezioniAggiornate = getAssociazioni();
-    }
-});
-
-// Ascolta anche la digitazione in tempo reale nel campo "Altro"
-document.getElementById('input-altro-ass').addEventListener('input', getAssociazioni);
 
 document.getElementById('btn-aggiungi-email').addEventListener('click', () => {
     const container = document.getElementById('container-email');
-    
+    const righeAttuali = container.querySelectorAll('.email-row').length;
+
+    // Limite massimo 5 email
+    if (righeAttuali >= 5) {
+        alert('Puoi inserire al massimo 5 indirizzi email.');
+        return;
+    }
+
     // Crea la nuova riga
     const row = document.createElement('div');
-    row.className = 'flex-form';
-    
-    // Inserisce l'input e il bottone
-    row.innerHTML = `
-        <input type="email" class="input-form input-email-dest" placeholder="Indirizzo Email" style="width: 93%">
-        <button type="button" class="input-form btn-rimuovi-email" style="width: 7%; background-color: red; font-weight: bold; margin-top: 0">&#128465;</button>
-    `;
-    
-    // Gestione della rimozione del campo
-    row.querySelector('.btn-rimuovi-email').addEventListener('click', () => row.remove());
-    
+    row.className = 'email-row flex-form';
+    row.innerHTML = `<input type="email" class="input-form input-email-dest">`;
+
     container.appendChild(row);
+
+    // Riorfana ID, placeholder e cestini
+    aggiornaEmail();
 });
 
 document.getElementById("input-radio-est").addEventListener('change', (event) => {
@@ -462,23 +455,40 @@ document.getElementById("input-radio-est").addEventListener('change', (event) =>
 function aggiornaMarchi() {
     const container = document.getElementById('container-marchi');
     const righe = container.querySelectorAll('.flex-form');
+    
+    // Recuperiamo anche le righe del riepilogo (se esistono) per aggiornare i loro ID
+    const containerRiepilogo = document.getElementById('container-riepilogo-marchi'); // Modifica col tuo ID reale
+    const righeRiepilogo = containerRiepilogo ? containerRiepilogo.querySelectorAll('.flex-form') : [];
 
     righe.forEach((row, index) => {
         const nuovoIndex = index + 1;
-        const input = row.querySelector('input[type="text"]');
+        const inputM = row.querySelector('input[type="text"]');
         let btnRimuovi = row.querySelector('.btn-rimuovi-marchio');
 
-        // 1. Aggiorna ID e Placeholder
-        input.id = `input-m${nuovoIndex}-nome`;
-        input.placeholder = `Nome Marchio #${nuovoIndex}`;
+        // 1. Aggiorna ID e Placeholder di inputM
+        inputM.id = `input-m${nuovoIndex}-nome`;
+        inputM.placeholder = `Nome Marchio #${nuovoIndex}`;
 
-        // 2. Se c'è solo 1 riga, rimuove il pulsante elimina (se presente) e allarga l'input
+        // 2. Se esiste un input corrispettivo nel riepilogo, aggiorna anche il suo ID
+        if (righeRiepilogo[index]) {
+            const inputRM = righeRiepilogo[index].querySelector('input');
+            if (inputRM) {
+                inputRM.id = `input-rm${nuovoIndex}-nome`;
+                
+                // Sincronizza subito il valore corrente
+                inputRM.value = inputM.value;
+
+                // Collega l'evento per i cambiamenti futuri
+                inputM.oninput = () => { inputRM.value = inputM.value; };
+            }
+        }
+
+        // 3. Gestione del pulsante di rimozione e del layout
         if (righe.length === 1) {
-            input.style.width = '100%';
+            inputM.style.width = '100%';
             if (btnRimuovi) btnRimuovi.remove();
         } else {
-            // Se ci sono più righe, assicura che l'input sia al 93% e che ci sia il pulsante
-            input.style.width = '93%';
+            inputM.style.width = '93%';
             
             if (!btnRimuovi) {
                 btnRimuovi = document.createElement('button');
@@ -487,14 +497,21 @@ function aggiornaMarchi() {
                 btnRimuovi.style.cssText = 'width: 7%; background-color: red; font-weight: bold; margin-top: 0;';
                 btnRimuovi.innerHTML = '&#128465;';
 
-                // Listener per la rimozione
-                btnRimuovi.addEventListener('click', () => {
-                    row.remove();
-                    aggiornaMarchi(); // Riordina id, placeholder e layout
-                });
-
                 row.appendChild(btnRimuovi);
             }
+
+            // IMPORTANTE: Aggiorniamo SEMPRE l'evento click per riflettere la riga e l'indice corretti
+            btnRimuovi.onclick = () => {
+                row.remove();
+                
+                // Se hai una riga corrispondente nel riepilogo, rimuovi anche quella!
+                if (righeRiepilogo[index]) {
+                    righeRiepilogo[index].remove();
+                }
+
+                // Ricalcola tutti gli ID, placeholder e associazioni
+                aggiornaMarchi();
+            };
         }
     });
 }
@@ -518,4 +535,36 @@ document.getElementById('btn-aggiungi-marchio').addEventListener('click', () => 
 
     // Aggiorna subito ID, placeholder, bottoni di eliminazione e larghezze
     aggiornaMarchi();
+});
+
+// 1. Attiva/Disattiva il campo di testo "Altro" in base alla checkbox
+function attivaAltroUbicazione(checkbox, i) {
+    const inputAltro = document.getElementById(`input-rm${i}-ub-altro`);
+    
+    inputAltro.disabled = !checkbox.checked;
+    
+    // Se viene deselezionata, pulisce il campo di testo
+    if (!checkbox.checked) {
+        inputAltro.value = "";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Usiamo indici da 1 a 3 (1, 2, 3) per coincidere con i tuoi ID (input-m1-nome, input-m2-nome, ...)
+    [1, 2, 3].forEach(i => {
+        const inputSource = document.getElementById(`input-m${i}-nome`);
+        const inputTarget = document.getElementById(`input-rm${i}-nome`);
+
+        // Sincronizza da input-mX a input-rmX
+        if (inputSource && inputTarget) {
+            inputSource.addEventListener("input", () => {
+                inputTarget.value = inputSource.value;
+            });
+
+            // Sincronizza bidirezionale (da input-rmX a input-mX)
+            inputTarget.addEventListener("input", () => {
+                inputSource.value = inputTarget.value;
+            });
+        }
+    });
 });
