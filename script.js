@@ -108,21 +108,52 @@ function cambiaStep(direzione) {
     aggiornaIndicatori();
 }
 
-function aggiornaIndicatori() {
-    // 1. Calcola la percentuale di completamento
-    const percentuale = (stepCorrente / totaleStep) * 100;
+let intervalloAnimazione = null;
+let percentualeVisualizzata = 0; // Tiene traccia del punto in cui si trova visivamente la barra
 
-    // 2. Aggiorna la larghezza della barra colorata
+function aggiornaIndicatori() {
+    // 1. Calcola la percentuale target reale dello step
+    const percentualeTarget = (stepCorrente / totaleStep) * 100;
+
     const barFill = document.getElementById("progress-bar-fill");
-    if (barFill) {
-        barFill.style.width = `${percentuale}%`;
-    }
-    
-    // 3. Aggiorna il testo descrittivo (es. "Pagina 2 di 8")
     const progressText = document.getElementById("progress-text");
-    if (progressText) {
-        progressText.innerText = `${percentuale.toFixed(0)}%`;
-    }
+
+    // Interrompe un'eventuale animazione ancora in corso
+    if (intervalloAnimazione) clearInterval(intervalloAnimazione);
+
+    // 2. Avvia l'incremento a piccoli passi casuali
+    intervalloAnimazione = setInterval(() => {
+        // Genera un passo casuale (es. tra 0.5% e 2.5% per ogni frame)
+        const passoRandom = (Math.random() * 2) + 0.5;
+
+        if (percentualeVisualizzata < percentualeTarget) {
+            percentualeVisualizzata += passoRandom;
+            
+            // Assicurati di non superare il valore target
+            if (percentualeVisualizzata >= percentualeTarget) {
+                percentualeVisualizzata = percentualeTarget;
+                clearInterval(intervalloAnimazione);
+            }
+        } else if (percentualeVisualizzata > percentualeTarget) {
+            // Gestisce anche la navigazione all'indietro
+            percentualeVisualizzata -= passoRandom;
+            
+            if (percentualeVisualizzata <= percentualeTarget) {
+                percentualeVisualizzata = percentualeTarget;
+                clearInterval(intervalloAnimazione);
+            }
+        } else {
+            clearInterval(intervalloAnimazione);
+        }
+
+        // 3. Aggiorna la barra e il testo
+        if (barFill) {
+            barFill.style.width = `${percentualeVisualizzata.toFixed(1)}%`;
+        }
+        if (progressText) {
+            progressText.innerText = `${percentualeVisualizzata.toFixed(0)}%`;
+        }
+    }, 20); // Velocità dell'animazione (ogni 20ms aggiorna)
 }
 
 // Genera PDF per revisione
