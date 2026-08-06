@@ -29,17 +29,16 @@ const campi = [
     
     // Campi Pagina 1 (Indice pagina: 0)
     { 
-        id: "input-nome-societa", x: 100, y: 620, pagina: 0, required: false, step: 1,
+        id: "input-nome-societa", x: 100, y: 620, pagina: 0, required: true, step: 1,
         // Questa funzione dice esattamente come renderizzare questo specifico campo
         render: (page, val, c) => {
             const tipo = document.getElementById("input-tipo-societa").value.trim().toUpperCase();
             page.drawText(`${val} ${tipo}`, { x: c.x, y: c.y, size: 8 });
         }
     },
-    { id: "input-tipo-societa", required: false, step: 1 },
-    // Start
+    { id: "input-tipo-societa", required: true, step: 1 },
     { 
-        id: "input-sede-via", x: 100, y: 582, pagina: 0, required: false, step: 1,
+        id: "input-sede-via", x: 100, y: 582, pagina: 0, required: true, step: 1,
         render: (page, val, c) => {
             const nCiv = document.getElementById("input-sede-nciv").value;
             const citta = document.getElementById("input-sede-citta").value.trim().toUpperCase();
@@ -48,33 +47,32 @@ const campi = [
             page.drawText(`${val}, ${nCiv} - ${cap} ${citta} (${prov})`, { x: c.x, y: c.y, size: 8 });
         }
     },
-    { id: "input-sede-nciv", required: false, step: 1 },
-    { id: "input-sede-citta", required: false, step: 1 },
-    { id: "input-sede-prov", required: false, step: 1 },
-    { id: "input-sede-cap", required: false, step: 1 },
-    // End
+    { id: "input-sede-nciv", required: true, step: 1 },
+    { id: "input-sede-citta", required: true, step: 1 },
+    { id: "input-sede-prov", required: true, step: 1 },
+    { id: "input-sede-cap", required: true, step: 1 },
 
     { 
-        id: "input-nome-rappresentante", x: 200, y: 543, pagina: 0, required: false, step: 1,
+        id: "input-nome-rappresentante", x: 200, y: 543, pagina: 0, required: true, step: 1,
         render: (page, val, c) => {
             const cognome = document.getElementById("input-cognome-rappresentante").value.trim().toUpperCase();
             page.drawText(`${val} ${cognome}`, { x: c.x, y: c.y, size: 8 });
         }
     },
-    { id: "input-cognome-rappresentante", required: false, step: 1 },
+    { id: "input-cognome-rappresentante", required: true, step: 1 },
     
     // Campi Pagina 2 (Indice pagina: 1)
     { 
-        id: "input-nome-ref", x: 128, y: 603, pagina: 1, required: false, step: 2,
+        id: "input-nome-ref", x: 128, y: 603, pagina: 1, required: true, step: 2,
         render: (page, val, c) => {
             const cognome = document.getElementById("input-cognome-ref").value.trim().toUpperCase();
             page.drawText(`${val} ${cognome}`, { x: c.x, y: c.y, size: 8 });
         }
     },
-    { id: "input-cognome-ref", required: false, step: 2 },
-    { id: "input-ruolo-ref", x: 322, y: 603, pagina: 1, required: false, step: 2 },
-    { id: "input-email-ref", x: 80, y: 588, pagina: 1, required: false, step: 2 },
-    { id: "input-mob-ref", x: 350, y: 588, pagina: 1, required: false, step: 2 },
+    { id: "input-cognome-ref", required: true, step: 2 },
+    { id: "input-ruolo-ref", x: 322, y: 603, pagina: 1, required: true, step: 2 },
+    { id: "input-email-ref", x: 80, y: 588, pagina: 1, required: true, step: 2 },
+    { id: "input-mob-ref", x: 350, y: 588, pagina: 1, required: true, step: 2 },
     { id: "input-sito-ref", x: 110, y: 573, pagina: 1, required: false, step: 2 },
     { 
         id: "input-m1-nome", x: 80, y: 558, pagina: 1, required: false, step: 2,
@@ -96,21 +94,21 @@ const campi = [
     },
     { id: "input-m2-nome", required: false, step: 2 },
     { id: "input-m3-nome", required: false, step: 2 },
-    { id: "input-sdi-ref", x: 230, y: 542, pagina: 1, required: false, step: 2 },
-    { id: "input-pec-ref", x: 319, y: 542, pagina: 1, required: false, step: 2 },
-    { id: "input-piva-ref", x: 450, y: 542, pagina: 1, required: false, step: 2 },
+    { id: "input-sdi-ref", x: 230, y: 542, pagina: 1, required: true, step: 2 },
+    { id: "input-pec-ref", x: 319, y: 542, pagina: 1, required: true, step: 2 },
+    { id: "input-piva-ref", x: 450, y: 542, pagina: 1, required: true, step: 2 },
 
     { 
-        id: "input-nome-rop", x: 128, y: 496, pagina: 1, required: false, step: 3,
+        id: "input-nome-rop", x: 128, y: 496, pagina: 1, required: true, step: 3,
         render: (page, val, c) => {
             const cognome = document.getElementById("input-cognome-rop").value.trim().toUpperCase();
             page.drawText(`${val} ${cognome}`, { x: c.x, y: c.y, size: 8 });
         }
     },
-    { id: "input-cognome-rop", required: false, step: 3 },
-    { id: "input-ruolo-rop", x: 322, y: 496, pagina: 1, required: false, step: 3 },
-    { id: "input-email-rop", x: 80, y: 481, pagina: 1, required: false, step: 3 },
-    { id: "input-mob-rop", x: 350, y: 481, pagina: 1, required: false, step: 3 },
+    { id: "input-cognome-rop", required: true, step: 3 },
+    { id: "input-ruolo-rop", x: 322, y: 496, pagina: 1, required: true, step: 3 },
+    { id: "input-email-rop", x: 80, y: 481, pagina: 1, required: true, step: 3 },
+    { id: "input-mob-rop", x: 350, y: 481, pagina: 1, required: true, step: 3 },
 
     // Campi Pagina 3 (Indice pagina: 2)
     { id: "input-competitor", x: 63, y: 423, pagina: 2, required: false, step: 4},

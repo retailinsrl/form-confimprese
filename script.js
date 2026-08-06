@@ -72,11 +72,26 @@ function cambiaStep(direzione) {
     // Nascondi lo step corrente
     document.getElementById(`step-${stepCorrente}`).style.display = "none";
 
-    if(document.getElementById("input-ck-ref").checked && stepCorrente === 2 && direzione === 1) direzione++;
-
     // Aggiorna l'indice dello step
     stepCorrente += direzione;
     
+    // Skip step in caso una checkbox sia checked o un text esista
+    const mapSkip = [
+        {step: 3, id: "input-ck-ref", type: "checkbox"},
+        {step: 6, id: "input-m1-nome", type: "text"},
+        {step: 7, id: "input-m2-nome", type: "text"},
+        {step: 8, id: "input-m3-nome", type: "text"},
+    ];
+
+    mapSkip.forEach(c => {
+        if (
+            c.step === stepCorrente && (
+                (c.type === "checkbox" && document.getElementById(c.id).checked) || 
+                (c.type === "text" && ( !document.getElementById(c.id) || document.getElementById(c.id).value === "")
+            )))
+            cambiaStep(direzione);
+    })
+
     // Mostra il nuovo step
     document.getElementById(`step-${stepCorrente}`).style.display = "block";
     
@@ -98,7 +113,7 @@ function cambiaStep(direzione) {
 function aggiornaIndicatori() {
     // 1. Calcola la percentuale di completamento
     const percentuale = (stepCorrente / totaleStep) * 100;
-    
+
     // 2. Aggiorna la larghezza della barra colorata
     const barFill = document.getElementById("progress-bar-fill");
     if (barFill) {
@@ -114,10 +129,9 @@ function aggiornaIndicatori() {
 
 // Genera PDF per revisione
 async function avviaRevisione() {
-    
-    // Raccoglie tutti i valori del form
     const checkboxIds = ["input-div-ass", "input-rm1-ub-div", "input-rm2-ub-div", "input-rm3-ub-div", "input-rm2-cs-div", "input-rm3-cs-div"];
 
+    // Raccoglie tutti i valori del form
     const valori = campi.map(c => {
         const elemento = document.getElementById(c.id);
         let valoreEstratto;
