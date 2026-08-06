@@ -155,7 +155,7 @@ const campi = [
         }
     },
     { id: "input-altro-ass", x: 170, y: 188, pagina: 2, required: false, step: 4 },
-    { id: "input-ccnl", x: 63, y: 143.5, pagina: 2, required: false, step: 4, 
+    { id: "input-ccnl", x: 63, y: 143.5, pagina: 2, required: true, step: 4, 
         render: (page, val, c) => {
             const placeY = c.y - (15.45 * val);
             page.drawText(`X`, { x: c.x, y: placeY, size: 10 });
@@ -164,7 +164,7 @@ const campi = [
     { id: "input-altro-ccnl", x: 170, y: 98, pagina: 2, required: false, step: 4 },
 
     // Campi Pagina 4 (Indice pagina: 3)
-    { id: "input-ndip-sede", x: 140, y: 722, pagina: 3, required: false, step: 5 },
+    { id: "input-ndip-sede", x: 140, y: 722, pagina: 3, required: true, step: 5 },
     { id: "input-ndip-pv", x: 210, y: 707, pagina: 3, required: false, step: 5 },
     { id: "input-occ-indiretti", x: 345, y: 692, pagina: 3, required: false, step: 5 },
     { id: "input-fatt-24", x: 150, y: 677, pagina: 3, required: false, step: 5 },
