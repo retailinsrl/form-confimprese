@@ -56,7 +56,32 @@ const campi = [
         id: "input-nome-rappresentante", x: 200, y: 543, pagina: 0, required: true, step: 1,
         render: (page, val, c) => {
             const cognome = document.getElementById("input-cognome-rappresentante").value.trim().toUpperCase();
-            page.drawText(`${val} ${cognome}`, { x: c.x, y: c.y, size: 8 });
+            
+            var carica;
+            switch(document.getElementById("input-tipo-societa").value) {
+                case "SRL":
+                case "SRLS":
+                case "SB":  carica = "AMM. UNICO";
+                            break;
+                case "SPA": carica = "AMM. DELEGATO";
+                            break;
+                case "SAPA":
+                case "SAS": carica = "SOCIO ACCOMANDATARIO";
+                            break;
+                case "SNC":
+                case "SS":  carica = "SOCIO AMM.";
+                            break;
+                case "DI":
+                case "IF":  carica = "TITOLARE";
+                            break;
+                case "COOP":carica = "PRES. CDA";
+                            break;
+                    
+                default:    carica = "";
+            }
+
+
+            page.drawText(`${val} ${cognome} - ${carica}`, { x: c.x, y: c.y, size: 8 });
         }
     },
     { id: "input-cognome-rappresentante", required: true, step: 1 },
