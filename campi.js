@@ -9,7 +9,7 @@ const testoData = `MILANO, ${oggi}`;
 const campi = [
     // Luogo e data per firme
     { 
-        id: "data-luogo-pag1", x: 45, y: 152, pagina: 0, required: false, step: 1,
+        id: "data-luogo-pag1", x: 45, y: 152, pagina: 0, required: false,
         render: (page, val, c) => {
             page.drawText(testoData, { x: c.x, y: c.y, size: 10 });
         }
