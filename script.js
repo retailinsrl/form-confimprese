@@ -463,7 +463,28 @@ document.getElementById("input-radio-est").addEventListener('change', (event) =>
     document.getElementById("input-div-est").style.display = event.target.value === "0" ? "none" : "block";
 });
 
-// Funzione per aggiornare i numeri dei placeholder
+// 1. Funzione helper per sincronizzare due input tramite i loro ID
+function legaSincronizzazione(idSource, idTarget) {
+    const inputSource = document.getElementById(idSource);
+    const inputTarget = document.getElementById(idTarget);
+
+    if (inputSource && inputTarget) {
+        // Usa una flag per evitare loop infiniti tra gli eventi input dei due campi
+        inputSource.oninput = () => { inputTarget.value = inputSource.value; };
+        inputTarget.oninput = () => { inputSource.value = inputTarget.value; };
+
+        // Sincronizza subito il valore iniziale se uno dei due ne ha già uno
+        if (inputSource.value) inputTarget.value = inputSource.value;
+    }
+}
+
+// 2. Sincronizza tutti gli input attualmente presenti nel DOM (fino a 3)
+function sincronizzaTuttiMarchi() {
+    [1, 2, 3].forEach(i => {
+        legaSincronizzazione(`input-m${i}-nome`, `input-rm${i}-nome`);
+    });
+}
+
 function aggiornaMarchi() {
     const container = document.getElementById('container-marchi');
     const righe = container.querySelectorAll('.flex-form');
@@ -473,11 +494,11 @@ function aggiornaMarchi() {
         const inputM = row.querySelector('input[type="text"]');
         let btnRimuovi = row.querySelector('.btn-rimuovi-marchio');
 
-        // 1. Aggiorna ID e Placeholder di inputM
+        // Aggiorna ID e Placeholder di inputM
         inputM.id = `input-m${nuovoIndex}-nome`;
         inputM.placeholder = `Nome Marchio #${nuovoIndex}`;
 
-        // 2. Gestione del pulsante di rimozione e del layout
+        // Gestione pulsante rimozione e layout
         if (righe.length === 1) {
             inputM.style.width = '100%';
             if (btnRimuovi) btnRimuovi.remove();
@@ -494,66 +515,39 @@ function aggiornaMarchi() {
                 row.appendChild(btnRimuovi);
             }
 
-            // IMPORTANTE: Aggiorniamo SEMPRE l'evento click per riflettere la riga e l'indice corretti
             btnRimuovi.onclick = () => {
                 row.remove();
-
-                // Ricalcola tutti gli ID, placeholder e associazioni
                 aggiornaMarchi();
             };
         }
     });
+
+    // NUOVO: Ri-applica i listener di sincronizzazione ogni volta che cambia la struttura/gli ID
+    sincronizzaTuttiMarchi();
 }
 
+// Inizializzazione al caricamento della pagina
+document.addEventListener("DOMContentLoaded", () => {
+    // Prima sincronizzazione per le righe già presenti nel DOM
+    sincronizzaTuttiMarchi();
+});
+
+// Listener del bottone "Aggiungi"
 document.getElementById('btn-aggiungi-marchio').addEventListener('click', () => {
     const container = document.getElementById('container-marchi');
     const righeAttuali = container.querySelectorAll('.flex-form').length;
 
-    // Limite massimo 3
     if (righeAttuali >= 3) {
         alert('Puoi inserire al massimo 3 marchi.');
         return;
     }
 
-    // Crea la nuova riga (vuota, se ne occupa aggiornaMarchi)
     const row = document.createElement('div');
     row.className = 'flex-form marchi-row';
     row.innerHTML = `<input type="text" class="input-form">`;
 
     container.appendChild(row);
 
-    // Aggiorna subito ID, placeholder, bottoni di eliminazione e larghezze
+    // Aggiorna ID, layout, eliminazioni E risincronizza gli input
     aggiornaMarchi();
-});
-
-// 1. Attiva/Disattiva il campo di testo "Altro" in base alla checkbox
-function attivaAltroUbicazione(checkbox, i) {
-    const inputAltro = document.getElementById(`input-rm${i}-ub-altro`);
-    
-    inputAltro.disabled = !checkbox.checked;
-    
-    // Se viene deselezionata, pulisce il campo di testo
-    if (!checkbox.checked) {
-        inputAltro.value = "";
-    }
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    // Usiamo indici da 1 a 3 (1, 2, 3) per coincidere con ID (input-m1-nome, input-m2-nome, ...)
-    [1, 2, 3].forEach(i => {
-        const inputSource = document.getElementById(`input-m${i}-nome`);
-        const inputTarget = document.getElementById(`input-rm${i}-nome`);
-
-        // Sincronizza da input-mX a input-rmX
-        if (inputSource && inputTarget) {
-            inputSource.addEventListener("input", () => {
-                inputTarget.value = inputSource.value;
-            });
-
-            // Sincronizza bidirezionale (da input-rmX a input-mX)
-            inputTarget.addEventListener("input", () => {
-                inputSource.value = inputTarget.value;
-            });
-        }
-    });
 });
