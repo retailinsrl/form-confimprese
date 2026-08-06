@@ -215,7 +215,7 @@
                 </div>
                 <div class="flex-form">
                     <input type="text" id="input-sede-citta" placeholder="Città" class="input-form" style="width: 75%">
-                    <input type="number" id="input-sede-cap" placeholder="CAP" class="input-form" style="width: 25%" minlength="5" maxlength="5">
+                    <input type="text" id="input-sede-cap" placeholder="CAP" class="input-form" style="width: 25%" minlength="5" maxlength="5" pattern="\d{5}" inputmode="numeric">
                 </div>
                 <div class="flex-form">
                     <input type="text" id="input-sede-via" placeholder="Indirizzo della società" class="input-form" style="width: 70%">
@@ -232,7 +232,7 @@
                 <input type="text" id="input-ruolo-ref" name="input-ruolo-ref" class="input-form" placeholder="Ruolo in azienda">
                 <div class="flex-form">
                     <input type="email" id="input-email-ref" placeholder="Indirizzo Email" class="input-form" style="width: 80%">
-                    <input type="tel" id="input-mob-ref" placeholder="Recapito Tel." class="input-form" style="width: 20%">
+                    <input type="tel" id="input-mob-ref" placeholder="Recapito Tel." class="input-form" style="width: 20%" minlength="8" maxlength="15" pattern="\d{8,15}">
                 </div>
                 <input type="text" id="input-sito-ref" placeholder="Sito web" class="input-form">
                 <div id="container-marchi">
@@ -242,9 +242,9 @@
                 </div>
                 <button type="button" id="btn-aggiungi-marchio" style="margin-top: 0;margin-bottom: 10px;">+ Aggiungi marchio</button>
                 <div class="flex-form">
-                    <input type="text" id="input-sdi-ref" placeholder="Codice SDI" class="input-form" style="width: 33%">
+                    <input type="text" id="input-sdi-ref" placeholder="Codice SDI" class="input-form" style="width: 33%" minlength="6" maxlength="7" pattern="^[A-Za-z0-9]{6,7}$" style="text-transform: uppercase;">
                     <input type="email" id="input-pec-ref" placeholder="Indirizzo PEC" class="input-form" style="width: 34%">
-                    <input type="text" id="input-piva-ref" placeholder="Partita IVA" class="input-form" style="width: 33%">
+                    <input type="text" id="input-piva-ref" placeholder="Partita IVA" class="input-form" style="width: 33%" minlength="11" maxlength="11" pattern="\d{11}">
                 </div>
                 <div class="flex-form">
                         <input type="checkbox" id="input-ck-ref" name="input-ck-ref" onclick="stessoReferente(this)" style="width: 3%;">
@@ -262,7 +262,7 @@
                 <input type="text" id="input-ruolo-rop" name="input-ruolo-rop" class="input-form" placeholder="Ruolo in azienda">
                 <div class="flex-form">
                     <input type="email" id="input-email-rop" placeholder="Indirizzo Email" class="input-form" style="width: 80%">
-                    <input type="tel" id="input-mob-rop" placeholder="Recapito Tel." class="input-form" style="width: 20%">
+                    <input type="tel" id="input-mob-rop" placeholder="Recapito Tel." class="input-form" style="width: 20%"  minlength="8" maxlength="15" pattern="\d{8,15}">
                 </div>
             </div>
             
@@ -721,6 +721,8 @@
 
     <script src="campi.js"></script>
     <script src="province.js"></script>
+    <script src="progress.js"></script>
     <script src="script.js"></script>
+
 </body>
 </html>
