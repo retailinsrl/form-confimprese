@@ -1,7 +1,3 @@
-!image.png
-
-# Indice
-
 # Versioni del documento
 
 | **VERSIONE** | **OWNER** | **AZIENDA** | **DATA** | **NOTE** |
