@@ -1,5 +1,3 @@
-emailjs.init("71SGPlyyS9O_-kf1r"); 
-
 const { PDFDocument } = PDFLib;
 
 let pdfDoc;
@@ -541,7 +539,7 @@ function attivaAltroUbicazione(checkbox, i) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Usiamo indici da 1 a 3 (1, 2, 3) per coincidere con i tuoi ID (input-m1-nome, input-m2-nome, ...)
+    // Usiamo indici da 1 a 3 (1, 2, 3) per coincidere con ID (input-m1-nome, input-m2-nome, ...)
     [1, 2, 3].forEach(i => {
         const inputSource = document.getElementById(`input-m${i}-nome`);
         const inputTarget = document.getElementById(`input-rm${i}-nome`);
