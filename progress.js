@@ -132,3 +132,7 @@ function aggiornaIndicatori() {
         }
     }, 20); // Velocità dell'animazione (ogni 20ms aggiorna)
 }
+
+document.getElementById("btn-avanti").addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+})

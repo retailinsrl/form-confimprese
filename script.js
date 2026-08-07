@@ -18,11 +18,12 @@ async function inizializzaPdf(){
         
         pdfDoc = await PDFDocument.load(bytesIniziali);
 
-        document.getElementById('stato-caricamento').textContent = "PDF Base Caricato con Successo!";
+        //document.getElementById('stato-caricamento').textContent = "PDF Base Caricato con Successo!";
+        document.getElementById('stato-caricamento').textContent = "";
         document.getElementById('btn-revisiona').removeAttribute('disabled');
     } catch (error) {
         document.getElementById('stato-caricamento').style.color = '#c0392b';
-        document.getElementById('stato-caricamento').textContent = "Errore nel caricamento del PDF base.";
+        document.getElementById('stato-caricamento').textContent = "Errore nel caricamento delle risorse di base, contattare il Supporto Tecnico.";
         console.error(error);
     }
 }
