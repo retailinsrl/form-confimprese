@@ -265,8 +265,79 @@
                     <input type="tel" id="input-mob-rop" placeholder="Recapito Tel." class="input-form" style="width: 20%"  minlength="8" maxlength="15" pattern="\d{8,15}">
                 </div>
             </div>
-            
+
             <div id="step-4" class="form-step" style="display: none;">
+                <h3>Settore di appartenenza</h3>
+                <p>Seleziona una o più opzioni.</p>
+                <details>
+                    <summary><strong>Abbigliamento e accessori</strong></summary>
+                    <label><input type="checkbox" name="settori[]" id="input-set0-0"> Articoli per lo sport</label><br>
+                    <label><input type="checkbox" name="settori[]" id="input-set0-1"> Intimo</label><br>
+                    <label><input type="checkbox" name="settori[]" id="input-set0-2"> Uomo/donna</label><br>
+                    <label><input type="checkbox" name="settori[]" id="input-set0-3"> Bambino</label><br>
+                    <label><input type="checkbox" name="settori[]" id="input-set0-4"> Borse</label><br>
+                    <label><input type="checkbox" name="settori[]" id="input-set0-5"> Scarpe</label><br>
+                    <label><input type="checkbox" name="settori[]" id="input-set0-6"> Ottica</label><br>
+                    <label><input type="checkbox" name="settori[]" id="input-set0-7" value="Altro" onclick="attivaAltro(this, 0)"> Altro <input type="text" name="" id="input-set0-altro" disabled></label><br>
+                </details>
+                
+                <details>
+                    <summary><strong>Casa</strong></summary>
+                    <label><input type="checkbox" name="settori[]" id="input-set1-0"> Mobili</label><br>
+                    <label><input type="checkbox" name="settori[]" id="input-set1-1"> Complementi di arredo</label><br>
+                    <label><input type="checkbox" name="settori[]" id="input-set1-2"> Bricolage</label><br>
+                </details>
+
+                <details>
+                    <summary><strong>Elettronica e telefonia</strong></summary>
+                    <label><input type="checkbox" name="settori[]" id="input-set2-0"> Elettronica e telefonia</label><br>
+                </details>
+
+                <details>
+                    <summary><strong>Entertainment</strong></summary>
+                    <label><input type="checkbox" name="settori[]" id="input-set3-0"> Editoria</label><br>
+                    <label><input type="checkbox" name="settori[]" id="input-set3-1"> Cancelleria</label><br>
+                    <label><input type="checkbox" name="settori[]" id="input-set3-2"> Giochi elettronici</label><br>
+                    <label><input type="checkbox" name="settori[]" id="input-set3-3"> Giocattoli</label><br>
+                    <label><input type="checkbox" name="settori[]" id="input-set3-4" value="Altro" onclick="attivaAltro(this, 3)"> Altro <input type="text" name="" id="input-set3-altro" disabled></label><br>
+                </details>
+                
+                <details>
+                    <summary><strong>Gioiellerie</strong></summary>
+                    <label><input type="checkbox" name="settori[]" id="input-set4-0"> Gioiellerie</label><br>
+                </details>
+
+                <details>
+                    <summary><strong>Salute e benessere</strong></summary>
+                    <label><input type="checkbox" name="settori[]" id="input-set5-0"> Parrucchieri e centri estetici</label><br>
+                    <label><input type="checkbox" name="settori[]" id="input-set5-1"> Profumerie</label><br>
+                    <label><input type="checkbox" name="settori[]" id="input-set5-2" value="Altro" onclick="attivaAltro(this, 5)"> Altro <input type="text" name="" id="input-set5-altro" disabled></label><br>
+                </details>
+
+                <details>
+                    <summary><strong>Food Retail</strong></summary>
+                    <label><input type="checkbox" name="settori[]" id="input-set6-0"> Food Retail</label><br>
+                </details>
+
+                <details>
+                    <summary><strong>Altri servizi</strong></summary>
+                    <label><input type="checkbox" name="settori[]" id="input-set7-0"> Energia</label><br>
+                    <label><input type="checkbox" name="settori[]" id="input-set7-1"> Immobiliare</label><br>
+                    <label><input type="checkbox" name="settori[]" id="input-set7-2" value="Altro" onclick="attivaAltro(this, 7)"> Altro <input type="text" name="" id="input-set7-altro" disabled></label><br>
+                </details>
+
+                <details>
+                    <summary><strong>Ristorazione</strong></summary>
+                    <label><input type="checkbox" name="settori[]" id="input-set8-0"> Fine dining</label><br>
+                    <label><input type="checkbox" name="settori[]" id="input-set8-1"> Casual dining</label><br>
+                    <label><input type="checkbox" name="settori[]" id="input-set8-2"> Ristorazione senza servizio al tavolo</label><br>
+                    <label><input type="checkbox" name="settori[]" id="input-set8-3"> Bar/coffee shop</label><br>
+                    <label><input type="checkbox" name="settori[]" id="input-set8-4"> Gelateria</label><br>
+                    <label><input type="checkbox" name="settori[]" id="input-set8-5" value="Altro" onclick="attivaAltro(this, 8)"> Altro <input type="text" name="" id="input-set8-altro" disabled></label><br>
+                </details>
+            </div>
+            
+            <div id="step-5" class="form-step" style="display: none;">
                 <h3>Altre informazioni</h3>
                 <!-- Aggiungere Settore di appartenenza -->
                 <input type="text" id="input-competitor" class="input-form" placeholder="Principali competitor">
@@ -303,7 +374,7 @@
                 </div>
             </div>
 
-            <div id="step-5" class="form-step" style="display: none;">
+            <div id="step-6" class="form-step" style="display: none;">
                 <h3>Fattori Dimensionali Italia</h3>
 
                 <!-- Sezione Dipendenti -->
@@ -395,7 +466,7 @@
                 </fieldset>
             </div>
 
-            <div id="step-6" class="form-step" style="display: none">
+            <div id="step-7" class="form-step" style="display: none">
                 <h3>Dati Rete</h3>
                 <h4>Marchio #1</h4>
                 <div class="flex-form">
@@ -479,7 +550,7 @@
                 </div>
             </div>
 
-            <div id="step-7" class="form-step" style="display: none">
+            <div id="step-8" class="form-step" style="display: none">
                 <h3>Dati Rete</h3>
                 <h4>Marchio #2</h4>
                 <div class="flex-form">
@@ -563,7 +634,7 @@
                 </div>
             </div>
 
-            <div id="step-8" class="form-step" style="display: none">
+            <div id="step-9" class="form-step" style="display: none">
                 <h3>Dati Rete</h3>
                 <h4>Marchio #3</h4>
                 <div class="flex-form">
@@ -647,7 +718,7 @@
                 </div>
             </div>
 
-            <div id="step-9" class="form-step" style="display: none;">
+            <div id="step-10" class="form-step" style="display: none;">
                 <h3>Fattori Dimensionali Estero</h3>
                 <div id="input-radio-est" class="flex-form" style="flex: 1;">
                     <strong>Siete presenti all'estero?</strong>
@@ -694,8 +765,78 @@
                     </fieldset>
                 </div>
             </div>
-
+            
+            <!--
             <div id="step-10" class="form-step" style="display: none;">
+                <h3>Organigramma aziendale</h3>
+                <div id="input-radio-org0" class="flex-form" style="flex: 1;">
+                    <strong>Presidente</strong>
+                    <input type="radio" name="input-radio-org0-selected" id="input-radio-org0-y" value="1">Si
+                    <input type="radio" name="input-radio-org0-selected" id="input-radio-org0-n" value="0" checked>No
+                </div>
+                <div id="input-div-org0" style="display: none; margin-top: 10px;">
+                    <div class="flex-form">
+                            <input type="text" id="input-nome-org0" placeholder="Nome" class="input-form" style="width:50%">
+                            <input type="text" id="input-cognome-org0" placeholder="Cognome" class="input-form" style="width:50%">
+                    </div>
+                    <input type="email" id="input-email-org0" placeholder="Indirizzo Email" class="input-form" style="width: 100%">
+                    <div class="flex-form">
+                        <input type="email" id="input-email-seg-org0" placeholder="Indirizzo Email Segreteria" class="input-form" style="width: 80%">
+                        <input type="tel" id="input-mob-org0" placeholder="Tel. Segreteria" class="input-form" style="width: 20%"  minlength="8" maxlength="15" pattern="\d{8,15}">
+                    </div>
+                </div>
+                <div id="input-radio-org1" class="flex-form" style="flex: 1;">
+                    <strong>Amministratore Delegato</strong>
+                    <input type="radio" name="input-radio-org1-selected" id="input-radio-org1-y" value="1">Si
+                    <input type="radio" name="input-radio-org1-selected" id="input-radio-org1-n" value="0" checked>No
+                </div>
+                <div id="input-div-org1" style="display: none; margin-top: 10px;">
+                    <div class="flex-form">
+                            <input type="text" id="input-nome-org1" placeholder="Nome" class="input-form" style="width:50%">
+                            <input type="text" id="input-cognome-org1" placeholder="Cognome" class="input-form" style="width:50%">
+                    </div>
+                    <input type="email" id="input-email-org1" placeholder="Indirizzo Email" class="input-form" style="width: 100%">
+                    <div class="flex-form">
+                        <input type="email" id="input-email-seg-org1" placeholder="Indirizzo Email Segreteria" class="input-form" style="width: 80%">
+                        <input type="tel" id="input-mob-org1" placeholder="Tel. Segreteria" class="input-form" style="width: 20%"  minlength="8" maxlength="15" pattern="\d{8,15}">
+                    </div>
+                </div>
+                <div id="input-radio-org2" class="flex-form" style="flex: 1;">
+                    <strong>Country Manager</strong>
+                    <input type="radio" name="input-radio-org2-selected" id="input-radio-org2-y" value="1">Si
+                    <input type="radio" name="input-radio-org2-selected" id="input-radio-org2-n" value="0" checked>No
+                </div>
+                <div id="input-div-org2" style="display: none; margin-top: 10px;">
+                    <div class="flex-form">
+                            <input type="text" id="input-nome-org2" placeholder="Nome" class="input-form" style="width:50%">
+                            <input type="text" id="input-cognome-org2" placeholder="Cognome" class="input-form" style="width:50%">
+                    </div>
+                    <input type="email" id="input-email-org2" placeholder="Indirizzo Email" class="input-form" style="width: 100%">
+                    <div class="flex-form">
+                        <input type="email" id="input-email-seg-org2" placeholder="Indirizzo Email Segreteria" class="input-form" style="width: 80%">
+                        <input type="tel" id="input-mob-org2" placeholder="Tel. Segreteria" class="input-form" style="width: 20%"  minlength="8" maxlength="15" pattern="\d{8,15}">
+                    </div>
+                </div>
+                <div id="input-radio-org3" class="flex-form" style="flex: 1;">
+                    <strong>Direttore Generale</strong>
+                    <input type="radio" name="input-radio-org3-selected" id="input-radio-org3-y" value="1">Si
+                    <input type="radio" name="input-radio-org3-selected" id="input-radio-org3-n" value="0" checked>No
+                </div>
+                <div id="input-div-org3" style="display: none; margin-top: 10px;">
+                    <div class="flex-form">
+                            <input type="text" id="input-nome-org3" placeholder="Nome" class="input-form" style="width:50%">
+                            <input type="text" id="input-cognome-org3" placeholder="Cognome" class="input-form" style="width:50%">
+                    </div>
+                    <input type="email" id="input-email-org3" placeholder="Indirizzo Email" class="input-form" style="width: 100%">
+                    <div class="flex-form">
+                        <input type="email" id="input-email-seg-org3" placeholder="Indirizzo Email Segreteria" class="input-form" style="width: 80%">
+                        <input type="tel" id="input-mob-org3" placeholder="Tel. Segreteria" class="input-form" style="width: 20%"  minlength="8" maxlength="15" pattern="\d{8,15}">
+                    </div>
+                </div>
+            </div>
+            -->
+
+            <div id="step-11" class="form-step" style="display: none;">
                 <h3>E-mail con copia Modulo</h3>
                 <p>Inserisci da 1 a 5 indirizzi e-mail a cui inviare una copia del Modulo compilato.</p>
                 <div id="container-email">

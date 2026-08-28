@@ -1,5 +1,5 @@
 let stepCorrente = 0;
-const totaleStep = 10;
+const totaleStep = 11;
 
 // 2. Funzione per navigare tra gli step del form
 function cambiaStep(direzione) {
@@ -53,9 +53,9 @@ function cambiaStep(direzione) {
     // Skip step in caso una checkbox sia checked o un text esista
     const mapSkip = [
         {step: 3, id: "input-ck-ref", type: "checkbox"},
-        {step: 6, id: "input-m1-nome", type: "text"},
-        {step: 7, id: "input-m2-nome", type: "text"},
-        {step: 8, id: "input-m3-nome", type: "text"},
+        {step: 7, id: "input-m1-nome", type: "text"},
+        {step: 8, id: "input-m2-nome", type: "text"},
+        {step: 9, id: "input-m3-nome", type: "text"},
     ];
 
     mapSkip.forEach(c => {

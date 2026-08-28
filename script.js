@@ -454,3 +454,21 @@ document.getElementById('btn-aggiungi-marchio').addEventListener('click', () => 
     // Aggiorna ID, layout, eliminazioni E risincronizza gli input
     aggiornaMarchi();
 });
+
+/*
+[0, 1, 2, 3].forEach(i => {
+    document.getElementById(`input-radio-org${i}`).addEventListener('change', (event) => {
+        document.getElementById(`input-div-org${i}`).style.display = event.target.value === "0" ? "none" : "block";
+    });
+});
+*/
+
+function attivaAltro(checkbox, settore) {
+    // Attiva se selezionato, disattiva se deselezionato
+    document.getElementById(`input-set${settore}-altro`).disabled = !checkbox.checked;
+    
+    // Se viene deselezionato, pulisce il testo digitato in precedenza
+    if (!checkbox.checked) {
+        document.getElementById(`input-set${settore}-altro`).value = "";
+    }
+}

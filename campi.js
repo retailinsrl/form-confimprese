@@ -6,6 +6,10 @@ const oggi = new Intl.DateTimeFormat("it-IT", {
 
 const testoData = `MILANO, ${oggi}`;
 
+const renderX = (page, val, c) => {
+    if (val) page.drawText(`X`, { x: c.x, y: c.y, size: 10 });
+};
+
 const campi = [
     // Luogo e data per firme
     { 
@@ -135,9 +139,117 @@ const campi = [
     { id: "input-email-rop", x: 80, y: 481, pagina: 1, required: true, step: 3 },
     { id: "input-mob-rop", x: 350, y: 481, pagina: 1, required: true, step: 3 },
 
+    { id: "input-set0-0", x: 70, y: 353.5, pagina: 1, required: false, step: 4, 
+        render: renderX
+    },
+    { id: "input-set0-1", x: 70, y: 338.7, pagina: 1, required: false, step: 4, 
+        render: renderX
+    },
+    { id: "input-set0-2", x: 70, y: 323.9, pagina: 1, required: false, step: 4, 
+        render: renderX
+    },
+    { id: "input-set0-3", x: 70, y: 309.1, pagina: 1, required: false, step: 4, 
+        render: renderX
+    },
+    { id: "input-set0-4", x: 67, y: 279, pagina: 1, required: false, step: 4, 
+        render: renderX
+    },
+    { id: "input-set0-5", x: 67, y: 264.2, pagina: 1, required: false, step: 4, 
+        render: renderX
+    },
+    { id: "input-set0-6", x: 67, y: 249.4, pagina: 1, required: false, step: 4, 
+        render: renderX
+    },
+    { id: "input-set0-7", x: 67, y: 235, pagina: 1, required: false, step: 4, 
+        render: renderX
+    },
+    { id: "input-set0-altro", x: 175, y: 236, pagina: 1, required: false, step: 4 },
+
+    { id: "input-set1-0", x: 63, y: 177.5, pagina: 1, required: false, step: 4, 
+        render: renderX
+    },
+    { id: "input-set1-1", x: 63, y: 162.7, pagina: 1, required: false, step: 4, 
+        render: renderX
+    },
+    { id: "input-set1-2", x: 63, y: 147.9, pagina: 1, required: false, step: 4, 
+        render: renderX
+    },
+
+    { id: "input-set2-0", x: 52, y: 133.5, pagina: 1, required: false, step: 4, 
+        render: renderX
+    },
+
+    { id: "input-set3-0", x: 63, y: 103.5, pagina: 1, required: false, step: 4, 
+        render: renderX
+    },
+    { id: "input-set3-1", x: 63, y: 88.7, pagina: 1, required: false, step: 4, 
+        render: renderX
+    },
+    { id: "input-set3-2", x: 63, y: 73.9, pagina: 1, required: false, step: 4, 
+        render: renderX
+    },
+
     // Campi Pagina 3 (Indice pagina: 2)
-    { id: "input-competitor", x: 63, y: 423, pagina: 2, required: false, step: 4},
-    { id: "input-div-ass", selector: 'input[name="associazioni[]"]:checked', x: 63, y: 362.5, pagina: 2, required: false, step: 4, 
+    { id: "input-set3-3", x: 63, y: 738, pagina: 2, required: false, step: 4, 
+        render: renderX
+    },
+    { id: "input-set3-4", x: 63, y: 721.8, pagina: 2, required: false, step: 4, 
+        render: renderX
+    },
+    { id: "input-set3-altro", x: 175, y: 723.8, pagina: 2, required: false, step: 4 },
+
+    { id: "input-set4-0", x: 52, y: 708.7, pagina: 2, required: false, step: 4, 
+        render: renderX
+    },
+
+    { id: "input-set5-0", x: 63, y: 679.1, pagina: 2, required: false, step: 4, 
+        render: renderX
+    },
+    { id: "input-set5-1", x: 63, y: 664.3, pagina: 2, required: false, step: 4, 
+        render: renderX
+    },
+    { id: "input-set5-2", x: 63, y: 649.5, pagina: 2, required: false, step: 4, 
+        render: renderX
+    },
+    { id: "input-set5-altro", x: 175, y: 651, pagina: 2, required: false, step: 4 },
+
+    { id: "input-set6-0", x: 52, y: 635, pagina: 2, required: false, step: 4, 
+        render: renderX
+    },
+
+    { id: "input-set7-0", x: 63, y: 605, pagina: 2, required: false, step: 4, 
+        render: renderX
+    },
+    { id: "input-set7-1", x: 63, y: 590.2, pagina: 2, required: false, step: 4, 
+        render: renderX
+    },
+    { id: "input-set7-2", x: 63, y: 575.4, pagina: 2, required: false, step: 4, 
+        render: renderX
+    },
+    { id: "input-set7-altro", x: 175, y: 576.4, pagina: 2, required: false, step: 4 },
+
+    { id: "input-set8-0", x: 63, y: 535, pagina: 2, required: false, step: 4, 
+        render: renderX
+    },
+    { id: "input-set8-1", x: 63, y: 521.55, pagina: 2, required: false, step: 4, 
+        render: renderX
+    },
+    { id: "input-set8-2", x: 63, y: 508.1, pagina: 2, required: false, step: 4, 
+        render: renderX
+    },
+    { id: "input-set8-3", x: 63, y: 494.65, pagina: 2, required: false, step: 4, 
+        render: renderX
+    },
+    { id: "input-set8-4", x: 63, y: 481.2, pagina: 2, required: false, step: 4, 
+        render: renderX
+    },
+    { id: "input-set8-5", x: 63, y: 467.75, pagina: 2, required: false, step: 4, 
+        render: renderX
+    },
+    { id: "input-set8-altro", x: 175, y: 468.75, pagina: 2, required: false, step: 4 },
+
+    { id: "input-competitor", x: 63, y: 423, pagina: 2, required: false, step: 5},
+    { id: "input-div-ass", selector: 'input[name="associazioni[]"]:checked', x: 63, y: 362.5, pagina: 2, required: false, step: 5, 
         render: (page, valArray, c) => {
             if (!valArray || !Array.isArray(valArray)) return; 
 
@@ -154,37 +266,37 @@ const campi = [
             });
         }
     },
-    { id: "input-altro-ass", x: 170, y: 188, pagina: 2, required: false, step: 4 },
-    { id: "input-ccnl", x: 63, y: 143.5, pagina: 2, required: true, step: 4, 
+    { id: "input-altro-ass", x: 170, y: 188, pagina: 2, required: false, step: 5 },
+    { id: "input-ccnl", x: 63, y: 143.5, pagina: 2, required: true, step: 5, 
         render: (page, val, c) => {
             const placeY = c.y - (15.45 * val);
             page.drawText(`X`, { x: c.x, y: placeY, size: 10 });
         }
     },
-    { id: "input-altro-ccnl", x: 170, y: 98, pagina: 2, required: false, step: 4 },
+    { id: "input-altro-ccnl", x: 170, y: 98, pagina: 2, required: false, step: 5 },
 
     // Campi Pagina 4 (Indice pagina: 3)
-    { id: "input-ndip-sede", x: 140, y: 722, pagina: 3, required: true, step: 5 },
-    { id: "input-ndip-pv", x: 210, y: 707, pagina: 3, required: false, step: 5 },
-    { id: "input-occ-indiretti", x: 345, y: 692, pagina: 3, required: false, step: 5 },
-    { id: "input-fatt-24", x: 150, y: 677, pagina: 3, required: false, step: 5 },
-    { id: "input-fatt-23", x: 282, y: 677, pagina: 3, required: false, step: 5 },
-    { id: "input-fatt-22", x: 415, y: 677, pagina: 3, required: false, step: 5 },
-    { id: "input-varf-24", x: 256, y: 662, pagina: 3, required: false, step: 5 },
-    { id: "input-varf-23", x: 345, y: 662, pagina: 3, required: false, step: 5 },
-    { id: "input-varf-22", x: 440, y: 662, pagina: 3, required: false, step: 5 },
-    { id: "input-sell-out", x: 130, y: 647, pagina: 3, required: false, step: 5 },
-    { id: "input-quota-mercato", x: 160, y: 630, pagina: 3, required: false, step: 5 },
-    { id: "input-fma-dir", x: 225, y: 615, pagina: 3, required: false, step: 5 },
-    { id: "input-fma-franchising", x: 245, y: 601, pagina: 3, required: false, step: 5 },
+    { id: "input-ndip-sede", x: 140, y: 722, pagina: 3, required: true, step: 6 },
+    { id: "input-ndip-pv", x: 210, y: 707, pagina: 3, required: false, step: 6 },
+    { id: "input-occ-indiretti", x: 345, y: 692, pagina: 3, required: false, step: 6 },
+    { id: "input-fatt-24", x: 150, y: 677, pagina: 3, required: false, step: 6 },
+    { id: "input-fatt-23", x: 282, y: 677, pagina: 3, required: false, step: 6 },
+    { id: "input-fatt-22", x: 415, y: 677, pagina: 3, required: false, step: 6 },
+    { id: "input-varf-24", x: 256, y: 662, pagina: 3, required: false, step: 6 },
+    { id: "input-varf-23", x: 345, y: 662, pagina: 3, required: false, step: 6 },
+    { id: "input-varf-22", x: 440, y: 662, pagina: 3, required: false, step: 6 },
+    { id: "input-sell-out", x: 130, y: 647, pagina: 3, required: false, step: 6 },
+    { id: "input-quota-mercato", x: 160, y: 630, pagina: 3, required: false, step: 6 },
+    { id: "input-fma-dir", x: 225, y: 615, pagina: 3, required: false, step: 6 },
+    { id: "input-fma-franchising", x: 245, y: 601, pagina: 3, required: false, step: 6 },
     
-    { id: "input-rm1-nome", x: 130, y: 534, pagina: 3, required: false, step: 6 },
-    { id: "input-rm1-anno", x: 230, y: 519, pagina: 3, required: false, step: 6 },
-    { id: "input-rm1-npv-dir", x: 115, y: 504, pagina: 3, required: false, step: 6 },
-    { id: "input-rm1-npv-fr", x: 243, y: 504, pagina: 3, required: false, step: 6 },
-    { id: "input-rm1-npv-altro", x: 440, y: 504, pagina: 3, required: false, step: 6 },
+    { id: "input-rm1-nome", x: 130, y: 534, pagina: 3, required: false, step: 7 },
+    { id: "input-rm1-anno", x: 230, y: 519, pagina: 3, required: false, step: 7 },
+    { id: "input-rm1-npv-dir", x: 115, y: 504, pagina: 3, required: false, step: 7 },
+    { id: "input-rm1-npv-fr", x: 243, y: 504, pagina: 3, required: false, step: 7 },
+    { id: "input-rm1-npv-altro", x: 440, y: 504, pagina: 3, required: false, step: 7 },
     
-    { id: "input-rm1-ub-div", selector: 'input[name="ubicazioni1[]"]:checked', x: 55.5, y: 456, pagina: 3, required: false, step: 6, 
+    { id: "input-rm1-ub-div", selector: 'input[name="ubicazioni1[]"]:checked', x: 55.5, y: 456, pagina: 3, required: false, step: 7, 
         render: (page, valArray, c) => {
             if (!valArray || !Array.isArray(valArray)) return; 
 
@@ -201,57 +313,47 @@ const campi = [
             });
         }
     },
-    { id: "input-rm1-ub-altro", x: 170, y: 365, pagina: 3, required: false, step: 6 },
-    { id: "input-rm1-mq-dir", x: 63, y: 315, pagina: 3, required: false, step: 6, 
+    { id: "input-rm1-ub-altro", x: 170, y: 365, pagina: 3, required: false, step: 7 },
+    { id: "input-rm1-mq-dir", x: 63, y: 315, pagina: 3, required: false, step: 7, 
         render: (page, val, c) => {
             const placeY = c.y - (15.45 * val);
             page.drawText(`X`, { x: c.x, y: placeY, size: 10 });
         }
     },
-    { id: "input-rm1-mq-fr", x: 63, y: 237.5, pagina: 3, required: false, step: 6, 
+    { id: "input-rm1-mq-fr", x: 63, y: 237.5, pagina: 3, required: false, step: 7, 
         render: (page, val, c) => {
             const placeY = c.y - (15.45 * val);
             page.drawText(`X`, { x: c.x, y: placeY, size: 10 });
         }
     },
-    { id: "input-rm1-ps-dir", x: 170, y: 161.5, pagina: 3, required: false, step: 6 },
-    { id: "input-rm1-ps-fr", x: 200, y: 145.5, pagina: 3, required: false, step: 6 },
+    { id: "input-rm1-ps-dir", x: 170, y: 161.5, pagina: 3, required: false, step: 7 },
+    { id: "input-rm1-ps-fr", x: 200, y: 145.5, pagina: 3, required: false, step: 7 },
     
-    { id: "input-rm1-cs-0", x: 63, y: 98.5, pagina: 3, required: false, step: 6, 
-        render: (page, val, c) => {
-            if(val) page.drawText(`X`, { x: c.x, y: c.y, size: 10 });
-        }
+    { id: "input-rm1-cs-0", x: 63, y: 98.5, pagina: 3, required: false, step: 7, 
+        render: renderX
     },
-    { id: "input-rm1-cs-1", x: 63, y: 83, pagina: 3, required: false, step: 6, 
-        render: (page, val, c) => {
-            if(val) page.drawText(`X`, { x: c.x, y: c.y, size: 10 });
-        }
+    { id: "input-rm1-cs-1", x: 63, y: 83, pagina: 3, required: false, step: 7, 
+        render: renderX
     },
 
     // Campi Pagina 5 (Indice pagina: 4)
-    { id: "input-rm1-cs-2", x: 63, y: 738.5, pagina: 4, required: false, step: 6, 
-        render: (page, val, c) => {
-            if(val) page.drawText(`X`, { x: c.x, y: c.y, size: 10 });
-        }
+    { id: "input-rm1-cs-2", x: 63, y: 738.5, pagina: 4, required: false, step: 7, 
+        render: renderX
     },
-    { id: "input-rm1-cs-3", x: 63, y: 723, pagina: 4, required: false, step: 6, 
-        render: (page, val, c) => {
-            if(val) page.drawText(`X`, { x: c.x, y: c.y, size: 10 });
-        }
+    { id: "input-rm1-cs-3", x: 63, y: 723, pagina: 4, required: false, step: 7, 
+        render: renderX
     },
-    { id: "input-rm1-cs-4", x: 63, y: 708, pagina: 4, required: false, step: 6, 
-        render: (page, val, c) => {
-            if(val) page.drawText(`X`, { x: c.x, y: c.y, size: 10 });
-        }
+    { id: "input-rm1-cs-4", x: 63, y: 708, pagina: 4, required: false, step: 7, 
+        render: renderX
     },
 
-    { id: "input-rm2-nome", x: 130, y: 663, pagina: 4, required: false, step: 7 },
-    { id: "input-rm2-anno", x: 230, y: 648, pagina: 4, required: false, step: 7 },
-    { id: "input-rm2-npv-dir", x: 115, y: 633, pagina: 4, required: false, step: 7 },
-    { id: "input-rm2-npv-fr", x: 243, y: 633, pagina: 4, required: false, step: 7 },
-    { id: "input-rm2-npv-altro", x: 440, y: 633, pagina: 4, required: false, step: 7 },
+    { id: "input-rm2-nome", x: 130, y: 663, pagina: 4, required: false, step: 8 },
+    { id: "input-rm2-anno", x: 230, y: 648, pagina: 4, required: false, step: 8 },
+    { id: "input-rm2-npv-dir", x: 115, y: 633, pagina: 4, required: false, step: 8 },
+    { id: "input-rm2-npv-fr", x: 243, y: 633, pagina: 4, required: false, step: 8 },
+    { id: "input-rm2-npv-altro", x: 440, y: 633, pagina: 4, required: false, step: 8 },
     
-    { id: "input-rm2-ub-div", selector: 'input[name="ubicazioni2[]"]:checked', x: 55.5, y: 585, pagina: 4, required: false, step: 7, 
+    { id: "input-rm2-ub-div", selector: 'input[name="ubicazioni2[]"]:checked', x: 55.5, y: 585, pagina: 4, required: false, step: 8, 
         render: (page, valArray, c) => {
             if (!valArray || !Array.isArray(valArray)) return; 
 
@@ -268,22 +370,22 @@ const campi = [
             });
         }
     },
-    { id: "input-rm2-ub-altro", x: 170, y: 492, pagina: 4, required: false, step: 7 },
-    { id: "input-rm2-mq-dir", x: 63, y: 443, pagina: 4, required: false, step: 7, 
+    { id: "input-rm2-ub-altro", x: 170, y: 492, pagina: 4, required: false, step: 8 },
+    { id: "input-rm2-mq-dir", x: 63, y: 443, pagina: 4, required: false, step: 8, 
         render: (page, val, c) => {
             const placeY = c.y - (15.45 * val);
             page.drawText(`X`, { x: c.x, y: placeY, size: 10 });
         }
     },
-    { id: "input-rm2-mq-fr", x: 63, y: 365.5, pagina: 4, required: false, step: 7, 
+    { id: "input-rm2-mq-fr", x: 63, y: 365.5, pagina: 4, required: false, step: 8, 
         render: (page, val, c) => {
             const placeY = c.y - (15.45 * val);
             page.drawText(`X`, { x: c.x, y: placeY, size: 10 });
         }
     },
-    { id: "input-rm2-ps-dir", x: 170, y: 289.5, pagina: 4, required: false, step: 7 },
-    { id: "input-rm2-ps-fr", x: 200, y: 274.5, pagina: 4, required: false, step: 7 },
-    { id: "input-rm2-cs-div", selector: 'input[name="canali2[]"]:checked', x: 63, y: 226.5, pagina: 4, required: false, step: 7, 
+    { id: "input-rm2-ps-dir", x: 170, y: 289.5, pagina: 4, required: false, step: 8 },
+    { id: "input-rm2-ps-fr", x: 200, y: 274.5, pagina: 4, required: false, step: 8 },
+    { id: "input-rm2-cs-div", selector: 'input[name="canali2[]"]:checked', x: 63, y: 226.5, pagina: 4, required: false, step: 8, 
         render: (page, valArray, c) => {
             if (!valArray || !Array.isArray(valArray)) return; 
 
@@ -303,13 +405,13 @@ const campi = [
 
 
     // Campi Pagina 6 (Indice pagina: 5)
-    { id: "input-rm3-nome", x: 130, y: 725, pagina: 5, required: false, step: 7 },
-    { id: "input-rm3-anno", x: 230, y: 710, pagina: 5, required: false, step: 7 },
-    { id: "input-rm3-npv-dir", x: 115, y: 695, pagina: 5, required: false, step: 7 },
-    { id: "input-rm3-npv-fr", x: 243, y: 695, pagina: 5, required: false, step: 7 },
-    { id: "input-rm3-npv-altro", x: 440, y: 695, pagina: 5, required: false, step: 7 },
+    { id: "input-rm3-nome", x: 130, y: 725, pagina: 5, required: false, step: 9 },
+    { id: "input-rm3-anno", x: 230, y: 710, pagina: 5, required: false, step: 9 },
+    { id: "input-rm3-npv-dir", x: 115, y: 695, pagina: 5, required: false, step: 9 },
+    { id: "input-rm3-npv-fr", x: 243, y: 695, pagina: 5, required: false, step: 9 },
+    { id: "input-rm3-npv-altro", x: 440, y: 695, pagina: 5, required: false, step: 9 },
 
-    { id: "input-rm3-ub-div", selector: 'input[name="ubicazioni3[]"]:checked', x: 55.5, y: 647, pagina: 5, required: false, step: 7, 
+    { id: "input-rm3-ub-div", selector: 'input[name="ubicazioni3[]"]:checked', x: 55.5, y: 647, pagina: 5, required: false, step: 9, 
         render: (page, valArray, c) => {
             if (!valArray || !Array.isArray(valArray)) return; 
 
@@ -326,22 +428,22 @@ const campi = [
             });
         }
     },
-    { id: "input-rm3-ub-altro", x: 170, y: 554, pagina: 5, required: false, step: 7 },
-    { id: "input-rm3-mq-dir", x: 63, y: 505, pagina: 5, required: false, step: 7, 
+    { id: "input-rm3-ub-altro", x: 170, y: 554, pagina: 5, required: false, step: 9 },
+    { id: "input-rm3-mq-dir", x: 63, y: 505, pagina: 5, required: false, step: 9, 
         render: (page, val, c) => {
             const placeY = c.y - (15.45 * val);
             page.drawText(`X`, { x: c.x, y: placeY, size: 10 });
         }
     },
-    { id: "input-rm3-mq-fr", x: 63, y: 427.5, pagina: 5, required: false, step: 7, 
+    { id: "input-rm3-mq-fr", x: 63, y: 427.5, pagina: 5, required: false, step: 9, 
         render: (page, val, c) => {
             const placeY = c.y - (15.45 * val);
             page.drawText(`X`, { x: c.x, y: placeY, size: 10 });
         }
     },
-    { id: "input-rm3-ps-dir", x: 170, y: 351.5, pagina: 5, required: false, step: 7 },
-    { id: "input-rm3-ps-fr", x: 200, y: 336.5, pagina: 5, required: false, step: 7 },
-    { id: "input-rm3-cs-div", selector: 'input[name="canali3[]"]:checked', x: 63, y: 288.5, pagina: 5, required: false, step: 7, 
+    { id: "input-rm3-ps-dir", x: 170, y: 351.5, pagina: 5, required: false, step: 9 },
+    { id: "input-rm3-ps-fr", x: 200, y: 336.5, pagina: 5, required: false, step: 9 },
+    { id: "input-rm3-cs-div", selector: 'input[name="canali3[]"]:checked', x: 63, y: 288.5, pagina: 5, required: false, step: 9, 
         render: (page, valArray, c) => {
             if (!valArray || !Array.isArray(valArray)) return; 
 
@@ -360,7 +462,7 @@ const campi = [
     },
 
     // Campi Pagina 7 (Indice pagina: 6)
-    { id: "input-radio-est", selector: 'input[name="input-radio-est-selected"]:checked', x: 212, y: 705.3, pagina: 6, required: false, step: 9,
+    { id: "input-radio-est", selector: 'input[name="input-radio-est-selected"]:checked', x: 212, y: 705.3, pagina: 6, required: false, step: 10,
         render: (page, val, c) => {
             // 1. Convertiamo il valore in un numero intero
             const index = parseInt(val, 10);
@@ -373,12 +475,12 @@ const campi = [
             page.drawText(`X`, { x: placeX, y: c.y, size: 10 });
         }
     },
-    { id: "input-paesi-estero", x: 63, y: 660, pagina: 6, required: false, step: 9 },
-    { id: "input-est-dir", x: 110, y: 602, pagina: 6, required: false, step: 9 },
-    { id: "input-est-fr", x: 235, y: 602, pagina: 6, required: false, step: 9 },
-    { id: "input-est-altro", x: 405, y: 602, pagina: 6, required: false, step: 9 },
-    { id: "input-est-plan", x: 63, y: 557, pagina: 6, required: false, step: 9 },
-    { id: "input-plan-dir", x: 115, y: 512, pagina: 6, required: false, step: 9 },
-    { id: "input-plan-fr", x: 130, y: 497, pagina: 6, required: false, step: 9 },
-    { id: "input-plan-altro", x: 150, y: 482, pagina: 6, required: false, step: 9 },
+    { id: "input-paesi-estero", x: 63, y: 660, pagina: 6, required: false, step: 10 },
+    { id: "input-est-dir", x: 110, y: 602, pagina: 6, required: false, step: 10 },
+    { id: "input-est-fr", x: 235, y: 602, pagina: 6, required: false, step: 10 },
+    { id: "input-est-altro", x: 405, y: 602, pagina: 6, required: false, step: 10 },
+    { id: "input-est-plan", x: 63, y: 557, pagina: 6, required: false, step: 10 },
+    { id: "input-plan-dir", x: 115, y: 512, pagina: 6, required: false, step: 10 },
+    { id: "input-plan-fr", x: 130, y: 497, pagina: 6, required: false, step: 10 },
+    { id: "input-plan-altro", x: 150, y: 482, pagina: 6, required: false, step: 10 },
 ];
