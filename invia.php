@@ -34,50 +34,7 @@ caricaVariabiliAmbiente(__DIR__ . '/.env');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        // =============================================================
-        // === INTEGRAZIONE CLOUDFLARE TURNSTILE ===
-        // =============================================================
-        $turnstileResponse = $_POST['cf-turnstile-response'] ?? '';
-        $secretKey = getenv('TURNSTILE_SECRET_KEY');
-
-        // Se non usi il file .env per questa chiave, puoi decommentare la riga sotto:
-        // $secretKey = "LA_TUA_SECRET_KEY_PRIVATA_DI_RETE";
-
-        if (empty($turnstileResponse)) {
-            echo json_encode([
-                'status' => 'error',
-                'message' => 'Verifica di sicurezza mancante. Riprova.'
-            ]);
-            exit;
-        }
-
-        // Richiesta di verifica a Cloudflare
-        $url = 'https://cloudflare.com';
-        $data = [
-            'secret'   => $secretKey,
-            'response' => $turnstileResponse,
-            'remoteip' => $_SERVER['REMOTE_ADDR']
-        ];
-
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-        $response = curl_exec($ch);
-        curl_close($ch);
-
-        $responseData = json_decode($response, true);
-
-        // Se la validazione fallisce, blocca subito tutto
-        if (!$responseData['success']) {
-            echo json_encode([
-                'status' => 'error',
-                'message' => 'Verifica di sicurezza fallita (Turnstile). Riprova.'
-            ]);
-            exit;
-        }
-        // =============================================================
-
+        
         // 1. Raccogliamo i dati dai normali array di PHP
         $nomeUtente = $_POST['nomeUtente'] ?? 'Utente';
         
