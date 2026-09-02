@@ -1,8 +1,45 @@
 let stepCorrente = 0;
 const totaleStep = 11;
 
+async function checkReCaptcha() {
+    const turnstileToken = turnstile.getResponse();
+
+    if (!turnstileToken) {
+        alert("Per favore, completa la verifica di sicurezza per proseguire.");
+        return false; // Blocca qui
+    }
+
+    try {
+        // Prepariamo i dati da mandare a recaptcha.php
+        const datiVerifica = new FormData();
+        datiVerifica.append('cf-turnstile-response', turnstileToken);
+
+        // Chiamata immediata al file PHP dedicato
+        const risposta = await fetch('recaptcha.php', {
+            method: 'POST',
+            body: datiVerifica
+        });
+
+        const risultato = await risposta.json();
+
+        if (risultato.status !== 'success') {
+            alert("Verifica di sicurezza fallita: " + risultato.message);
+            turnstile.reset(); // Resetta il widget in caso di fallimento
+            return false; // BLOCCHIAMO il cambio step
+        }
+        
+        // Se la risposta è 'success', il codice prosegue ed esegue il cambio step sotto
+        return true;
+
+    } catch (errore) {
+        console.error("Errore di rete:", errore);
+        alert("Errore di connessione durante la verifica di sicurezza.");
+        return false; // Blocca in caso di errore di rete
+    }
+}
+
 // 2. Funzione per navigare tra gli step del form
-function cambiaStep(direzione) {
+async function cambiaStep(direzione) {
     // Verifica che i campi obblicatori dello step corrente siano stati compilati
     // Raccoglie tutti i valori del form
     const valori = campi
@@ -41,9 +78,19 @@ function cambiaStep(direzione) {
             alert("Per favore, compila tutti i campi in questa pagina prima di proseguire.");
             return;
         }
+
+        // === NUOVA INTEGRAZIONE: VERIFICA SEPARATA LATO SERVER ===
+         if (stepCorrente === 0) { 
+            // Attende l'esito del server prima di procedere
+            const verificaSuperata = await checkReCaptcha();
+            
+            // Se la verifica fallisce, blocca il cambio step immediatamente
+            if (!verificaSuperata) {
+                return; 
+            }
+        }
+
     }
-
-
     // Nascondi lo step corrente
     document.getElementById(`step-${stepCorrente}`).style.display = "none";
 
@@ -135,4 +182,4 @@ function aggiornaIndicatori() {
 
 document.getElementById("btn-avanti").addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
-})
+});
