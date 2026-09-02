@@ -71,6 +71,7 @@ if ($validation['success']) {
         'status' => 'success',
         'message' => 'Verifica completata con successo!'
     ]);
+    turnstile.reset();
     exit;
 } else {
     $errorCodes = isset($validation['error-codes']) ? implode(', ', $validation['error-codes']) : 'Sconosciuto';
@@ -82,6 +83,7 @@ if ($validation['success']) {
         'message' => 'Verifica fallita. Per favore riprova.',
         'error_codes' => $errorCodes
     ]);
+    turnstile.reset();
     exit;
 }
 ?>
