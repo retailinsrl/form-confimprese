@@ -110,6 +110,8 @@ async function revisionaModuli(){
         <div class="pdf-viewer-container">
             <iframe src="${anteprimaUrl}"></iframe>
         </div>
+
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAAEk40c8GoyJ7SXhG"></div>
         
         <button onclick="confermaEInvia(event)" style="background-color: #2ecc71; margin-top: 15px;">Conferma e Invia Mail</button>
     `;
