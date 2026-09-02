@@ -34,8 +34,8 @@ function validateTurnstile($token, $secret, $remoteip = null) {
 $secret_key = getenv('TURNSTILE_SECRET_KEY');
 $token = $_POST['cf-turnstile-response'] ?? '';
 $remoteip = $\_SERVER['HTTP_CF_CONNECTING_IP'] ??
-$\_SERVER['HTTP_X_FORWARDED_FOR'] ??
-$\_SERVER['REMOTE_ADDR'];
+$_SERVER['HTTP_X_FORWARDED_FOR'] ??
+$_SERVER['REMOTE_ADDR'];
 
 $validation = validateTurnstile($token, $secret_key, $remoteip);
 
