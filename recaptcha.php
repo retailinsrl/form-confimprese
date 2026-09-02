@@ -1,18 +1,30 @@
+
 <?php
-// 1. Forza la risposta in formato JSON per dialogare correttamente con JavaScript fetch
+// 1. Avvia la sessione PHP (deve essere la primissima istruzione del file)
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Forza la risposta in formato JSON per dialogare correttamente con JavaScript
 header('Content-Type: application/json');
 
-// 2. Inserisci qui la tua SECRET KEY privata fornita dalla dashboard di Cloudflare
-// NOTA: Se usi un file .env puoi recuperarla con getenv('TURNSTILE_SECRET_KEY')
+// 2. Inserisci qui la tua SECRET KEY privata di Cloudflare
 $secretKey = getenv('TURNSTILE_SECRET_KEY');
 
-// 3. Verifica che la richiesta sia effettivamente di tipo POST
+// 3. Verifica se l'utente ha GIÀ superato il controllo in precedenza (Evita controlli duplicati)
+if (isset($_SESSION['turnstile_verificato']) && $_SESSION['turnstile_verificato'] === true) {
+    echo json_encode([
+        'status' => 'success',
+        'message' => 'Verifica già effettuata in precedenza.'
+    ]);
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     // Recupera il token inviato dal FormData di JavaScript
     $token = $_POST['cf-turnstile-response'] ?? '';
 
-    // Se il token non è presente nei dati inviati
     if (empty($token)) {
         echo json_encode([
             'status' => 'error',
@@ -21,40 +33,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // 4. Prepara i parametri per l'endpoint di verifica di Cloudflare
+    // 4. Parametri per l'endpoint di Cloudflare
     $url = 'https://cloudflare.com';
     $data = [
         'secret'   => $secretKey,
         'response' => $token,
-        'remoteip' => $_SERVER['REMOTE_ADDR'] // Invia l'IP dell'utente per maggiore sicurezza
+        'remoteip' => $_SERVER['REMOTE_ADDR']
     ];
 
-    // 5. Esegui la chiamata HTTP POST in background verso Cloudflare usando cURL
+    // 5. Chiamata HTTP POST via cURL
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
     
-    // OPZIONALE (Solo per test in locale / localhost se riscontri errori di certificato SSL):
+    // Decommenta le due righe sotto se testi in localhost e ricevi errori SSL:
     // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     // curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 
     $response = curl_exec($ch);
+
+    // === INTEGRAZIONE PER IL DEBUG ===
+    if ($response === false) {
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Errore di rete cURL: ' . curl_error($ch)
+        ]);
+        curl_close($ch);
+        exit;
+    }
+// =================================
+
     curl_close($ch);
 
-    // 6. Decodifica la risposta JSON nativa di Cloudflare
     $responseData = json_decode($response, true);
 
-    // 7. Controlla il risultato restituito dall'API di Turnstile
+    // 6. Controlla l'esito della verifica
     if (isset($responseData['success']) && $responseData['success'] === true) {
-        // Verifica superata: l'utente è un umano
+        
+        // --- SALVATAGGIO IN SESSIONE ---
+        $_SESSION['turnstile_verificato'] = true;
+        $_SESSION['turnstile_data']       = time(); // Salva il momento esatto della verifica
+        $_SESSION['turnstile_ip']         = $_SERVER['REMOTE_ADDR']; // Salva l'IP per controlli futuri
+        
         echo json_encode([
             'status' => 'success',
-            'message' => 'Verifica di sicurezza completata.'
+            'message' => 'Verifica di sicurezza completata con successo.'
         ]);
     } else {
-        // Verifica fallita: potrebbe essere un bot o il token è scaduto/già usato
-        // Recupera i codici di errore se presenti per aiutare il debug
         $errorCodes = isset($responseData['error-codes']) ? implode(', ', $responseData['error-codes']) : 'Sconosciuto';
         
         echo json_encode([
@@ -63,7 +89,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
     }
 } else {
-    // Se qualcuno prova ad accedere direttamente al file tramite browser (GET)
     http_response_code(405);
     echo json_encode([
         'status' => 'error',

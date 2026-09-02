@@ -8,6 +8,17 @@ require 'PHPMailer/Exception.php';
 require 'PHPMailer/PHPMailer.php';
 require 'PHPMailer/SMTP.php';
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Se la sessione non esiste o è vuota, blocca l'accesso malevolo
+if (!isset($_SESSION['turnstile_verificato']) || $_SESSION['turnstile_verificato'] !== true) {
+    http_response_code(403);
+    echo json_encode(['status' => 'error', 'message' => 'Accesso negato: verifica di sicurezza non superata.']);
+    exit;
+}
+
 // --- FUNZIONE PER CARICARE IL FILE .ENV ---
 function caricaVariabiliAmbiente($percorso) {
     if (!file_exists($percorso)) {
@@ -34,7 +45,7 @@ caricaVariabiliAmbiente(__DIR__ . '/.env');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        
+
         // 1. Raccogliamo i dati dai normali array di PHP
         $nomeUtente = $_POST['nomeUtente'] ?? 'Utente';
         
