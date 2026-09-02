@@ -778,6 +778,8 @@
                 <button type="button" id="btn-aggiungi-email" style="margin-top: 5px;">+ Aggiungi destinatario</button>
             </div>
 
+            <div id="cf-captcha" class="cf-turnstile" data-sitekey="0x4AAAAAAEk40c8GoyJ7SXhG"></div>
+
             <div style="display: flex; justify-content: space-between; margin-top: 20px; width: 100%; gap: 15px">
                 <button id="btn-indietro" onclick="cambiaStep(-1)" style="display: none;">Indietro</button>
                 <button id="btn-avanti" onclick="cambiaStep(1)" disabled>Avanti</button>
@@ -791,6 +793,7 @@
         </div>
     </div>
 
+    <script src="https://cloudflare.com" async defer></script>
     <script src="campi.js"></script>
     <script src="province.js"></script>
     <script src="progress.js"></script>

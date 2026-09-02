@@ -159,6 +159,18 @@ async function confermaEInvia(event) {
         }
         // ------------------------------------------------------------
 
+        // === INTEGRAZIONE TURNSTILE ===
+        // Recupera il token generato nel div HTML
+        const turnstileToken = turnstile.getResponse();
+
+        if (!turnstileToken) {
+            alert("Per favore, completa la verifica di sicurezza (Turnstile).");
+            btn.textContent = "Conferma e Invia Mail";
+            btn.disabled = false;
+            return;
+        }
+        // ==============================
+
         // Salva i byte del PDF
         pdfBytesModificato = await pdfDoc.save();
 
@@ -178,6 +190,10 @@ async function confermaEInvia(event) {
         const nomeFile = `modulo_${nomeUtente.replace(/[^a-zA-Z0-9_-]/g, '_')}.pdf`;
         datiForm.append('filePdf', pdfBlob, nomeFile);
 
+        // === PASSA IL TOKEN AL FORM DATA ===
+        datiForm.append('cf-turnstile-response', turnstileToken);
+        // ===================================
+
         // 3. Facciamo la richiesta POST a PHP
         const risposta = await fetch('invia.php', {
             method: 'POST',
@@ -189,10 +205,16 @@ async function confermaEInvia(event) {
         if (risultato.status === 'success') {
             alert(risultato.message);
             btn.textContent = "Inviato ✓";
+
+            // Resetta il widget Turnstile dopo un invio riuscito
+            turnstile.reset();
         } else {
             alert('Errore dal server: ' + risultato.message);
             btn.textContent = "Conferma e Invia Mail";
             btn.disabled = false;
+
+            // Resetta il widget in caso di errore per permettere all'utente di riprovare
+            turnstile.reset();
         }
 
     } catch (err) {
@@ -200,6 +222,8 @@ async function confermaEInvia(event) {
         alert("Errore di connessione con il server PHP.");
         btn.textContent = "Conferma e Invia Mail";
         btn.disabled = false;
+
+        if (typeof turnstile !== 'undefined') turnstile.reset();
     }
 }
 
