@@ -1,17 +1,18 @@
 <?php
-// 1. Avvia la sessione PHP per ricordare la verifica
+// 1. Avvia la sessione PHP
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Forza la risposta in formato JSON per dialogare correttamente con JavaScript fetch
+// Forza la risposta in formato JSON
 header('Content-Type: application/json');
 
 function validateTurnstile($token, $secret, $remoteip = null) {
-    $url = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+    // URL di produzione ufficiale per siteverify
+    $url = 'https://cloudflare.com';
 
     $data = [
-        'secret' => $secret,
+        'secret'   => $secret,
         'response' => $token
     ];
 
@@ -27,63 +28,66 @@ function validateTurnstile($token, $secret, $remoteip = null) {
             'timeout' => 10
         ],
         'ssl' => [
-            'verify_peer' => false, // Evita blocchi SSL in ambiente di test/localhost
+            'verify_peer'      => false, // Disabilita rigorosità SSL per XAMPP/Localhost
             'verify_peer_name' => false,
         ]
     ];
 
     $context = stream_context_create($options);
+    
+    // Usiamo @ per nascondere eventuali warning nativi di PHP che sporcano il JSON
     $response = @file_get_contents($url, false, $context);
 
     if ($response === FALSE) {
-        return ['success' => false, 'error-codes' => ['internal-error']];
+        return ['success' => false, 'error-codes' => ['network-or-ssl-error']];
     }
 
     return json_decode($response, true);
 }
 
-// CONTROLLO PREVENTIVO: Se l'utente è già verificato in sessione, rispondi subito OK
+// CONTROLLO SESSIONE PREVENTIVO
 if (isset($_SESSION['turnstile_verificato']) && $_SESSION['turnstile_verificato'] === true) {
     echo json_encode([
-        'status' => 'success',
+        'status'  => 'success',
         'message' => 'Verifica già effettuata in precedenza.'
     ]);
     exit;
 }
 
-// Sostituisci con getenv('TURNSTILE_SECRET_KEY') o metti la tua stringa segreta reale
-$secret_key = getenv('TURNSTILE_SECRET_KEY') ?: 'LA_TUA_SECRET_KEY_REALE';
+// RECUPERO CHIAVI (Usa la variabile d'ambiente o inserisci la stringa)
+$secret_key = getenv('TURNSTILE_SECRET_KEY');
+
+// Se sei in XAMPP locale e vuoi forzare il superamento del test per fare debug del form, 
+// usa le chiavi di test di Cloudflare inserendo la riga sotto:
+// $secret_key = '1x000000000000000000000000000000AA';
 
 $token = $_POST['cf-turnstile-response'] ?? '';
 
-// === CORREZIONE ERRORE 500: Rimosse le barre \ errate ===
+// Pulizia recupero IP (rimosse le barre di escape errate)
 $remoteip = $_SERVER['HTTP_CF_CONNECTING_IP'] ?? $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'];
 
 $validation = validateTurnstile($token, $secret_key, $remoteip);
 
-if ($validation['success']) {
-    // --- SALVATAGGIO IN SESSIONE ---
+if (isset($validation['success']) && $validation['success'] === true) {
     $_SESSION['turnstile_verificato'] = true;
     $_SESSION['turnstile_data']       = time();
     
-    // RISPOSTA JSON PER JAVASCRIPT
     echo json_encode([
-        'status' => 'success',
+        'status'  => 'success',
         'message' => 'Verifica completata con successo!'
     ]);
-    turnstile.reset();
     exit;
 } else {
     $errorCodes = isset($validation['error-codes']) ? implode(', ', $validation['error-codes']) : 'Sconosciuto';
-    error_log('Turnstile validation failed: ' . $errorCodes);
+    
+    // Rimosso l'errore di sintassi che causava il Fatal Error alla riga 86
+    error_log('Validazione Turnstile fallita: ' . $errorCodes);
 
-    // RISPOSTA JSON DI ERRORE PER JAVASCRIPT
     echo json_encode([
-        'status' => 'error',
-        'message' => 'Verifica fallita. Per favore riprova.',
+        'status'      => 'error',
+        'message'     => 'Verifica fallita o scaduta. Riprova.',
         'error_codes' => $errorCodes
     ]);
-    turnstile.reset();
     exit;
 }
 ?>

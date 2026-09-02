@@ -4,39 +4,45 @@ const totaleStep = 11;
 async function checkReCaptcha() {
     const turnstileToken = turnstile.getResponse();
 
+    // === AGGIUNGI QUESTO PER IL DEBUG IN CONSOLE ===
+    console.log("Token estratto da Turnstile:", turnstileToken);
+    // ===============================================
+
     if (!turnstileToken) {
         alert("Per favore, completa la verifica di sicurezza per proseguire.");
-        return false; // Blocca qui
+        return false; 
     }
 
     try {
-        // Prepariamo i dati da mandare a recaptcha.php
         const datiVerifica = new FormData();
         datiVerifica.append('cf-turnstile-response', turnstileToken);
 
-        // Chiamata immediata al file PHP dedicato
         const risposta = await fetch('recaptcha.php', {
             method: 'POST',
             body: datiVerifica
         });
 
         const risultato = await risposta.json();
+        
+        // === AGGIUNGI QUESTO PER VEDERE COSA RISPONDE IL PHP ===
+        console.log("Risposta server PHP:", risultato);
+        // ======================================================
 
         if (risultato.status !== 'success') {
             alert("Verifica di sicurezza fallita: " + risultato.message);
-            turnstile.reset(); // Resetta il widget in caso di fallimento
-            return false; // BLOCCHIAMO il cambio step
+            if (typeof turnstile !== 'undefined') turnstile.reset(); 
+            return false; 
         }
         
-        // Se la risposta è 'success', il codice prosegue ed esegue il cambio step sotto
-        return true;
+        return true; 
 
     } catch (errore) {
         console.error("Errore di rete:", errore);
         alert("Errore di connessione durante la verifica di sicurezza.");
-        return false; // Blocca in caso di errore di rete
+        return false; 
     }
 }
+
 
 // 2. Funzione per navigare tra gli step del form
 async function cambiaStep(direzione) {
