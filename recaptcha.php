@@ -48,8 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
     
     // Decommenta le due righe sotto se testi in localhost e ricevi errori SSL:
-    // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    // curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 
     $response = curl_exec($ch);
 
