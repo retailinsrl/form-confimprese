@@ -1,14 +1,14 @@
 <?php
-// 1. Avvia la sessione PHP
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Forza la risposta in formato JSON
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 
-function validateTurnstile($token, $secret) {
-    // URL di produzione ufficiale per siteverify
+
+function validateTurnstile(string $token, string $secret): array
+{
     $url = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 
     $data = [
@@ -18,68 +18,138 @@ function validateTurnstile($token, $secret) {
 
     $options = [
         'http' => [
-            'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
             'method'  => 'POST',
+            'header'  => "Content-Type: application/x-www-form-urlencoded\r\n",
             'content' => http_build_query($data),
             'timeout' => 10
-        ],
-        'ssl' => [
-            'verify_peer'      => true, // Disabilita rigorosità SSL per XAMPP/Localhost
-            'verify_peer_name' => true,
         ]
     ];
 
     $context = stream_context_create($options);
-    
-    // Usiamo @ per nascondere eventuali warning nativi di PHP che sporcano il JSON
-    $response = @file_get_contents($url, false, $context);
 
-    if ($response === FALSE) {
-        return ['success' => false, 'error-codes' => ['network-or-ssl-error']];
+    $response = @file_get_contents(
+        $url,
+        false,
+        $context
+    );
+
+    if ($response === false) {
+        return [
+            'success' => false,
+            'error-codes' => ['network-error']
+        ];
     }
 
-    return json_decode($response, true);
+    $result = json_decode($response, true);
+
+    if (!is_array($result)) {
+        return [
+            'success' => false,
+            'error-codes' => ['invalid-cloudflare-response']
+        ];
+    }
+
+    return $result;
 }
 
-// CONTROLLO SESSIONE PREVENTIVO
-if (isset($_SESSION['turnstile_verificato']) && $_SESSION['turnstile_verificato'] === true) {
+
+// ============================================================
+// 1. CONTROLLO SESSIONE
+// ============================================================
+
+if (
+    isset($_SESSION['turnstile_verificato']) &&
+    $_SESSION['turnstile_verificato'] === true
+) {
     echo json_encode([
         'status'  => 'success',
         'message' => 'Verifica già effettuata in precedenza.'
     ]);
+
     exit;
 }
 
-// RECUPERO CHIAVI (Usa la variabile d'ambiente o inserisci la stringa)
-//$secret_key = getenv('TURNSTILE_SECRET_KEY');
 
-// Se sei in XAMPP locale e vuoi forzare il superamento del test per fare debug del form, 
-// usa le chiavi di test di Cloudflare inserendo la riga sotto:
+// ============================================================
+// 2. SECRET KEY
+// ============================================================
+
+// SOLO PER IL TEST CON LE CHIAVI DUMMY DI CLOUDFLARE
 $secret_key = '1x000000000000000000000000000000AA';
+
+
+// ============================================================
+// 3. RECUPERO TOKEN
+// ============================================================
 
 $token = $_POST['cf-turnstile-response'] ?? '';
 
-$validation = validateTurnstile($token, $secret_key);
+if (empty($token)) {
 
-if (isset($validation['success']) && $validation['success'] === true) {
+    echo json_encode([
+        'status'  => 'error',
+        'message' => 'Token Turnstile mancante.',
+        'error_codes' => 'missing-input-response'
+    ]);
+
+    exit;
+}
+
+
+// ============================================================
+// 4. VERIFICA CON CLOUDFLARE
+// ============================================================
+
+$validation = validateTurnstile(
+    $token,
+    $secret_key
+);
+
+
+// ============================================================
+// 5. RISULTATO
+// ============================================================
+
+if (
+    isset($validation['success']) &&
+    $validation['success'] === true
+) {
+
     $_SESSION['turnstile_verificato'] = true;
-    $_SESSION['turnstile_data']       = time();
-    
+    $_SESSION['turnstile_data'] = time();
+
     echo json_encode([
         'status'  => 'success',
         'message' => 'Verifica completata con successo!'
     ]);
-    exit;
-} else {
-    $errorCodes = isset($validation['error-codes']) ? implode(', ', $validation['error-codes']) : 'Sconosciuto';
-    
-    error_log('Validazione Turnstile fallita: ' . $errorCodes);
 
-    echo json_encode([
-        'status'      => 'error',
-        'message'     => 'Verifica fallita o scaduta. Riprova.',
-        'error_codes' => $errorCodes
-    ]);
     exit;
 }
+
+
+// ============================================================
+// 6. ERRORE
+// ============================================================
+
+$errorCodes = 'Sconosciuto';
+
+if (
+    isset($validation['error-codes']) &&
+    is_array($validation['error-codes'])
+) {
+    $errorCodes = implode(', ', $validation['error-codes']);
+}
+
+error_log(
+    'Validazione Turnstile fallita: ' . $errorCodes
+);
+
+echo json_encode([
+    'status'      => 'error',
+    'message'     => 'Verifica fallita o scaduta. Riprova.',
+    'error_codes' => $errorCodes
+]);
+
+exit;
+
 ?>
