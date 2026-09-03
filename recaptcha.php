@@ -1,5 +1,29 @@
 <?php
 
+// --- FUNZIONE PER CARICARE IL FILE .ENV ---
+function caricaVariabiliAmbiente($percorso) {
+    if (!file_exists($percorso)) {
+        return false;
+    }
+
+    $righe = file($percorso, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($righe as $riga) {
+        if (strpos(trim($riga), '#') === 0) continue;
+
+        list($chiave, $valore) = explode('=', $riga, 2);
+        
+        $chiave = trim($chiave);
+        $valore = trim($valore);
+
+        $valore = trim($valore, '"\'');
+
+        putenv(sprintf('%s=%s', $chiave, $valore));
+    }
+    return true;
+}
+
+caricaVariabiliAmbiente(__DIR__ . '/.env');
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -91,7 +115,7 @@ if (
 // 2. SECRET KEY
 // ============================================================
 
-$secret_key = '0x4AAAAAAEk40V6btqd-nWiWtSv97hsFFNg';//getenv('TURNSTILE_SECRET_KEY');
+$secret_key = getenv('TURNSTILE_SECRET_KEY');
 
 // ============================================================
 // 3. RECUPERO TOKEN
