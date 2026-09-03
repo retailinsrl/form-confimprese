@@ -18,7 +18,6 @@ function inizializzaTurnstile() {
 
             callback: function(token) {
                 console.log("Turnstile completato.");
-                console.log("Token estratto da Turnstile:", token);
             },
 
             'expired-callback': function() {
