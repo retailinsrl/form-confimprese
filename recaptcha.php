@@ -27,29 +27,20 @@ function validateTurnstile(string $token, string $secret): array
 
     $context = stream_context_create($options);
 
-    $response = @file_get_contents(
-        $url,
-        false,
-        $context
-    );
+    $response = file_get_contents($url, false, $context);
 
     if ($response === false) {
+
+        $error = error_get_last();
+
         return [
             'success' => false,
-            'error-codes' => ['network-error']
+            'error-codes' => [
+                'network-error'
+            ],
+            'php-error' => $error['message'] ?? 'Errore sconosciuto'
         ];
     }
-
-    $result = json_decode($response, true);
-
-    if (!is_array($result)) {
-        return [
-            'success' => false,
-            'error-codes' => ['invalid-cloudflare-response']
-        ];
-    }
-
-    return $result;
 }
 
 // ============================================================
@@ -143,8 +134,9 @@ error_log(
 
 echo json_encode([
     'status'      => 'error',
-    'message'     => 'Verifica fallita o scaduta. Riprova.',
-    'error_codes' => $errorCodes
+    'message'     => 'Verifica fallita.',
+    'error_codes' => $errorCodes,
+    'debug'       => $validation['php-error'] ?? null
 ]);
 
 exit;
