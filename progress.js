@@ -1,45 +1,151 @@
 let stepCorrente = 0;
 const totaleStep = 11;
 
+let turnstileWidgetId = null;
+let turnstileVerificato = false;
+
+
+// ============================================================
+// INIZIALIZZAZIONE TURNSTILE
+// ============================================================
+
+function inizializzaTurnstile() {
+
+    turnstileWidgetId = turnstile.render(
+        '#turnstile-container',
+        {
+            sitekey: '0x4AAAAAAEk40c8GoyJ7SXhG',
+
+            callback: function(token) {
+                console.log("Turnstile completato.");
+                console.log("Token estratto da Turnstile:", token);
+            },
+
+            'expired-callback': function() {
+                console.log("Token Turnstile scaduto.");
+                turnstileVerificato = false;
+            },
+
+            'error-callback': function(error) {
+                console.error("Errore Turnstile:", error);
+                turnstileVerificato = false;
+            }
+        }
+    );
+}
+
 async function checkReCaptcha() {
-    const turnstileToken = turnstile.getResponse();
 
-    // === AGGIUNGI QUESTO PER IL DEBUG IN CONSOLE ===
-    console.log("Token estratto da Turnstile:", turnstileToken);
-    // ===============================================
-
-    if (!turnstileToken) {
-        alert("Per favore, completa la verifica di sicurezza per proseguire.");
-        return false; 
+    // Se abbiamo già verificato nella sessione corrente
+    if (turnstileVerificato) {
+        return true;
     }
 
-    try {
-        const datiVerifica = new FormData();
-        datiVerifica.append('cf-turnstile-response', turnstileToken);
 
-        const risposta = await fetch('recaptcha.php', {
-            method: 'POST',
-            body: datiVerifica
-        });
+    // Recupera il token del widget specifico
+    const turnstileToken = turnstile.getResponse(turnstileWidgetId);
+
+    console.log(
+        "Token estratto da Turnstile:",
+        turnstileToken
+    );
+
+
+    if (!turnstileToken) {
+
+        alert(
+            "Per favore, completa la verifica di sicurezza per proseguire."
+        );
+
+        return false;
+    }
+
+
+    try {
+
+        const datiVerifica = new FormData();
+
+        datiVerifica.append(
+            'cf-turnstile-response',
+            turnstileToken
+        );
+
+
+        const risposta = await fetch(
+            'recaptcha.php',
+            {
+                method: 'POST',
+                body: datiVerifica
+            }
+        );
+
+
+        if (!risposta.ok) {
+
+            console.error(
+                "Errore HTTP:",
+                risposta.status,
+                risposta.statusText
+            );
+
+            throw new Error(
+                `HTTP ${risposta.status}`
+            );
+        }
+
 
         const risultato = await risposta.json();
-        
-        // === AGGIUNGI QUESTO PER VEDERE COSA RISPONDE IL PHP ===
-        console.log("Risposta server PHP:", risultato);
-        // ======================================================
+
+
+        console.log(
+            "Risposta server PHP:",
+            JSON.stringify(risultato, null, 2)
+        );
+
 
         if (risultato.status !== 'success') {
-            alert("Verifica di sicurezza fallita: " + risultato.message);
-            if (typeof turnstile !== 'undefined') turnstile.reset(); 
-            return false; 
+
+            alert(
+                "Verifica di sicurezza fallita: " +
+                risultato.message
+            );
+
+
+            turnstileVerificato = false;
+
+            if (
+                typeof turnstile !== 'undefined' &&
+                turnstileWidgetId !== null
+            ) {
+                turnstile.reset(turnstileWidgetId);
+            }
+
+            return false;
         }
-        
-        return true; 
+
+
+        // Verifica completata
+        turnstileVerificato = true;
+
+        console.log(
+            "✓ Turnstile verificato correttamente."
+        );
+
+        return true;
+
 
     } catch (errore) {
-        console.error("Errore di rete:", errore);
-        alert("Errore di connessione durante la verifica di sicurezza.");
-        return false; 
+
+        console.error(
+            "Errore durante la verifica Turnstile:",
+            errore
+        );
+
+        alert(
+            "Errore di connessione durante la verifica di sicurezza."
+        );
+
+        return false;
     }
 }
 

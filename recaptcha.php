@@ -75,7 +75,7 @@ if (
 // ============================================================
 
 // SOLO PER IL TEST CON LE CHIAVI DUMMY DI CLOUDFLARE
-$secret_key = '1x000000000000000000000000000000AA';
+$secret_key = getenv('TURNSTILE_SECRET_KEY');
 
 
 // ============================================================
