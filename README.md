@@ -189,19 +189,25 @@ Il metodo di firma e validazione giuridica del documento non è ancora stato con
 
 La logica di invio mail è stata implementata tramite script PHP che utilizza la libreria `PHPMailer` .
 
+I parametri relativi alla connessione SMTP sono contenuti, per questioni di privacy, all’interno del file `.env`.
+
+## Integrazione reCAPTCHA
+
+È stata integrata la verifica reCAPTCHA all’inizio del form utilizzando Cloudflare Turnstile.
+
+La secret key del widget utilizzato è contenuta, per motivi di riservatezza, all’interno del file `.env`.
+
+Per ulteriori informazioni sul metodo di implementazione, rimandiamo alla documentazione ufficiale di Cloudflare.
+
 # Tecnologie utilizzate
 
 Di seguito vengono riportate le tecnologie utilizzate nel corso degli sviluppi.
 
-## Front-end
-
 - HTML
 - CSS
 - JavaScript
-
-## Back-end
-
 - PHP
+- Cloudflare Turnstile
 
 # Repository
 
