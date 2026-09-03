@@ -28,8 +28,8 @@ function validateTurnstile($token, $secret, $remoteip = null) {
             'timeout' => 10
         ],
         'ssl' => [
-            'verify_peer'      => false, // Disabilita rigorosità SSL per XAMPP/Localhost
-            'verify_peer_name' => false,
+            'verify_peer'      => true, // Disabilita rigorosità SSL per XAMPP/Localhost
+            'verify_peer_name' => true,
         ]
     ];
 
