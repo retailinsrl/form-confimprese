@@ -91,7 +91,7 @@ if (
 // 2. SECRET KEY
 // ============================================================
 
-$secret_key = getenv('TURNSTILE_SECRET_KEY');
+$secret_key = '0x4AAAAAAEk40V6btqd-nWiWtSv97hsFFNg';//getenv('TURNSTILE_SECRET_KEY');
 
 // ============================================================
 // 3. RECUPERO TOKEN
