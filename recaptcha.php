@@ -7,7 +7,7 @@ if (session_status() === PHP_SESSION_NONE) {
 // Forza la risposta in formato JSON
 header('Content-Type: application/json');
 
-function validateTurnstile($token, $secret, $remoteip = null) {
+function validateTurnstile($token, $secret) {
     // URL di produzione ufficiale per siteverify
     $url = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 
@@ -15,10 +15,6 @@ function validateTurnstile($token, $secret, $remoteip = null) {
         'secret'   => $secret,
         'response' => $token
     ];
-
-    if ($remoteip) {
-        $data['remoteip'] = $remoteip;
-    }
 
     $options = [
         'http' => [
@@ -63,10 +59,7 @@ $secret_key = '1x000000000000000000000000000000AA';
 
 $token = $_POST['cf-turnstile-response'] ?? '';
 
-// Pulizia recupero IP (rimosse le barre di escape errate)
-$remoteip = $_SERVER['HTTP_CF_CONNECTING_IP'] ?? $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'];
-
-$validation = validateTurnstile($token, $secret_key, $remoteip);
+$validation = validateTurnstile($token, $secret_key);
 
 if (isset($validation['success']) && $validation['success'] === true) {
     $_SESSION['turnstile_verificato'] = true;
@@ -80,7 +73,6 @@ if (isset($validation['success']) && $validation['success'] === true) {
 } else {
     $errorCodes = isset($validation['error-codes']) ? implode(', ', $validation['error-codes']) : 'Sconosciuto';
     
-    // Rimosso l'errore di sintassi che causava il Fatal Error alla riga 86
     error_log('Validazione Turnstile fallita: ' . $errorCodes);
 
     echo json_encode([
