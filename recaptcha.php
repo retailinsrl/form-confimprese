@@ -55,11 +55,11 @@ if (isset($_SESSION['turnstile_verificato']) && $_SESSION['turnstile_verificato'
 }
 
 // RECUPERO CHIAVI (Usa la variabile d'ambiente o inserisci la stringa)
-$secret_key = getenv('TURNSTILE_SECRET_KEY');
+//$secret_key = getenv('TURNSTILE_SECRET_KEY');
 
 // Se sei in XAMPP locale e vuoi forzare il superamento del test per fare debug del form, 
 // usa le chiavi di test di Cloudflare inserendo la riga sotto:
-// $secret_key = '1x000000000000000000000000000000AA';
+$secret_key = '1x000000000000000000000000000000AA';
 
 $token = $_POST['cf-turnstile-response'] ?? '';
 
