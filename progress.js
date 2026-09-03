@@ -44,11 +44,6 @@ async function checkReCaptcha() {
     // Recupera il token del widget specifico
     const turnstileToken = turnstile.getResponse(turnstileWidgetId);
 
-    console.log(
-        "Token estratto da Turnstile:",
-        turnstileToken
-    );
-
     if (!turnstileToken) {
 
         alert(
@@ -102,12 +97,9 @@ async function checkReCaptcha() {
 
             turnstileVerificato = false;
 
-            if (
-                typeof turnstile !== 'undefined' &&
-                turnstileWidgetId !== null
-            ) {
+            if (typeof turnstile !== 'undefined' && turnstileWidgetId !== null)
                 turnstile.reset(turnstileWidgetId);
-            }
+
             return false;
         }
 
@@ -126,6 +118,7 @@ async function checkReCaptcha() {
         alert(
             "Errore di connessione durante la verifica di sicurezza."
         );
+        turnstile.reset(turnstileWidgetId);
         return false;
     }
 }
