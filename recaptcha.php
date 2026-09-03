@@ -11,36 +11,64 @@ function validateTurnstile(string $token, string $secret): array
 {
     $url = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 
-    $data = [
-        'secret'   => $secret,
-        'response' => $token
-    ];
+    $ch = curl_init($url);
 
-    $options = [
-        'http' => [
-            'method'  => 'POST',
-            'header'  => "Content-Type: application/x-www-form-urlencoded\r\n",
-            'content' => http_build_query($data),
-            'timeout' => 10
-        ]
-    ];
+    curl_setopt_array($ch, [
+        CURLOPT_POST => true,
 
-    $context = stream_context_create($options);
+        CURLOPT_POSTFIELDS => [
+            'secret'   => $secret,
+            'response' => $token
+        ],
 
-    $response = file_get_contents($url, false, $context);
+        CURLOPT_RETURNTRANSFER => true,
+
+        CURLOPT_TIMEOUT => 10,
+
+        CURLOPT_SSL_VERIFYPEER => true,
+        CURLOPT_SSL_VERIFYHOST => 2
+    ]);
+
+    $response = curl_exec($ch);
 
     if ($response === false) {
 
-        $error = error_get_last();
+        $error = curl_error($ch);
+
+        curl_close($ch);
 
         return [
             'success' => false,
-            'error-codes' => [
-                'network-error'
-            ],
-            'php-error' => $error['message'] ?? 'Errore sconosciuto'
+            'error-codes' => ['curl-error'],
+            'debug' => $error
         ];
     }
+
+    $httpCode = curl_getinfo(
+        $ch,
+        CURLINFO_HTTP_CODE
+    );
+
+    curl_close($ch);
+
+    $result = json_decode(
+        $response,
+        true
+    );
+
+    if (!is_array($result)) {
+
+        return [
+            'success' => false,
+            'error-codes' => ['invalid-response'],
+            'http-code' => $httpCode,
+            'debug' => $response
+        ];
+    }
+
+    $result['_http_code'] = $httpCode;
+
+    return $result;
 }
 
 // ============================================================
@@ -63,7 +91,6 @@ if (
 // 2. SECRET KEY
 // ============================================================
 
-// SOLO PER IL TEST CON LE CHIAVI DUMMY DI CLOUDFLARE
 $secret_key = getenv('TURNSTILE_SECRET_KEY');
 
 // ============================================================
