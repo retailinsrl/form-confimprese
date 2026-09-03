@@ -9,7 +9,7 @@ header('Content-Type: application/json');
 
 function validateTurnstile($token, $secret, $remoteip = null) {
     // URL di produzione ufficiale per siteverify
-    $url = 'https://cloudflare.com';
+    $url = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 
     $data = [
         'secret'   => $secret,
