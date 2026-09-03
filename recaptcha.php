@@ -52,7 +52,6 @@ function validateTurnstile(string $token, string $secret): array
     return $result;
 }
 
-
 // ============================================================
 // 1. CONTROLLO SESSIONE
 // ============================================================
@@ -69,14 +68,12 @@ if (
     exit;
 }
 
-
 // ============================================================
 // 2. SECRET KEY
 // ============================================================
 
 // SOLO PER IL TEST CON LE CHIAVI DUMMY DI CLOUDFLARE
 $secret_key = getenv('TURNSTILE_SECRET_KEY');
-
 
 // ============================================================
 // 3. RECUPERO TOKEN
