@@ -15,6 +15,7 @@ function inizializzaTurnstile() {
         '#turnstile-container',
         {
             sitekey: '0x4AAAAAAEk40c8GoyJ7SXhG',
+            theme: "light",
 
             callback: function(token) {
                 console.log("Turnstile completato.");
