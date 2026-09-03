@@ -41,7 +41,6 @@ async function checkReCaptcha() {
         return true;
     }
 
-
     // Recupera il token del widget specifico
     const turnstileToken = turnstile.getResponse(turnstileWidgetId);
 
@@ -49,7 +48,6 @@ async function checkReCaptcha() {
         "Token estratto da Turnstile:",
         turnstileToken
     );
-
 
     if (!turnstileToken) {
 
@@ -60,16 +58,13 @@ async function checkReCaptcha() {
         return false;
     }
 
-
     try {
-
         const datiVerifica = new FormData();
 
         datiVerifica.append(
             'cf-turnstile-response',
             turnstileToken
         );
-
 
         const risposta = await fetch(
             'recaptcha.php',
@@ -78,7 +73,6 @@ async function checkReCaptcha() {
                 body: datiVerifica
             }
         );
-
 
         if (!risposta.ok) {
 
@@ -93,23 +87,18 @@ async function checkReCaptcha() {
             );
         }
 
-
         const risultato = await risposta.json();
-
 
         console.log(
             "Risposta server PHP:",
             JSON.stringify(risultato, null, 2)
         );
 
-
         if (risultato.status !== 'success') {
-
             alert(
                 "Verifica di sicurezza fallita: " +
                 risultato.message
             );
-
 
             turnstileVerificato = false;
 
@@ -119,23 +108,16 @@ async function checkReCaptcha() {
             ) {
                 turnstile.reset(turnstileWidgetId);
             }
-
             return false;
         }
 
-
         // Verifica completata
         turnstileVerificato = true;
-
         console.log(
             "✓ Turnstile verificato correttamente."
         );
-
         return true;
-
-
     } catch (errore) {
-
         console.error(
             "Errore durante la verifica Turnstile:",
             errore
@@ -144,7 +126,6 @@ async function checkReCaptcha() {
         alert(
             "Errore di connessione durante la verifica di sicurezza."
         );
-
         return false;
     }
 }
