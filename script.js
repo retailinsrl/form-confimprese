@@ -379,7 +379,7 @@ function legaSincronizzazione(idSource, idTarget) {
 
         // Sincronizza subito il valore iniziale se uno dei due ne ha già uno
         if (inputSource.value) inputTarget.value = inputSource.value;
-    }
+    } else inputTarget.value = null;
 }
 
 // 2. Sincronizza tutti gli input attualmente presenti nel DOM (fino a 3)
